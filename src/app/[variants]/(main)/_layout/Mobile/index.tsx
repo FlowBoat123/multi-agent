@@ -31,7 +31,7 @@ const Layout = memo(({ children }: PropsWithChildren) => {
 
   return (
     <>
-      {showCloudPromotion && <CloudBanner mobile />}
+      {/* {showCloudPromotion && <CloudBanner mobile />} */}
       {children}
       {showNav && <NavBar />}
     </>

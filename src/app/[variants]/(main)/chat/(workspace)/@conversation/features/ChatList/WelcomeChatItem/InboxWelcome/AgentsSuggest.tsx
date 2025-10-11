@@ -88,24 +88,24 @@ const AgentsSuggest = memo<{ mobile?: boolean }>(({ mobile }) => {
         {isLoading || !assistantList
           ? loadingCards
           : assistantList.items.map((item: DiscoverAssistantItem) => (
-              <Link
-                href={urlJoin('/discover/assistant', item.identifier)}
-                key={item.identifier}
-                prefetch={false}
-              >
-                <Block className={styles.card} clickable gap={12} horizontal variant={'outlined'}>
-                  <Avatar avatar={item.avatar} style={{ flex: 'none' }} />
-                  <Flexbox gap={2} style={{ overflow: 'hidden', width: '100%' }}>
-                    <Text className={styles.cardTitle} ellipsis={{ rows: 1 }}>
-                      {item.title}
-                    </Text>
-                    <Text className={styles.cardDesc} ellipsis={{ rows: mobile ? 1 : 2 }}>
-                      {item.description}
-                    </Text>
-                  </Flexbox>
-                </Block>
-              </Link>
-            ))}
+            <Link
+              href={urlJoin('/discover/assistant', item.identifier)}
+              key={item.identifier}
+              prefetch={false}
+            >
+              <Block className={styles.card} clickable gap={12} horizontal variant={'outlined'}>
+                <Avatar avatar={item.avatar} style={{ flex: 'none' }} />
+                <Flexbox gap={2} style={{ overflow: 'hidden', width: '100%' }}>
+                  <Text className={styles.cardTitle} ellipsis={{ rows: 1 }}>
+                    {item.title}
+                  </Text>
+                  <Text className={styles.cardDesc} ellipsis={{ rows: mobile ? 1 : 2 }}>
+                    {item.description}
+                  </Text>
+                </Flexbox>
+              </Block>
+            </Link>
+          ))}
       </Grid>
     </Flexbox>
   );

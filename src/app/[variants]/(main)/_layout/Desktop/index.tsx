@@ -28,7 +28,7 @@ const Layout = memo<PropsWithChildren>(({ children }) => {
   return (
     <HotkeysProvider initiallyActiveScopes={[HotkeyScopeEnum.Global]}>
       {isDesktop && <TitleBar />}
-      {showCloudPromotion && <CloudBanner />}
+      {/* {showCloudPromotion && <CloudBanner />} */}
       <Flexbox
         height={
           isDesktop

@@ -65,25 +65,25 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
   ai_image: true,
 
   check_updates: true,
-  welcome_suggest: true,
+  welcome_suggest: false,
   token_counter: true,
 
   knowledge_base: true,
-  rag_eval: false,
+  rag_eval: true,
 
   clerk_sign_up: true,
 
   cloud_promotion: false,
 
-  market: true,
+  market: false,
   speech_to_text: true,
   changelog: true,
 
   // the flags below can only be used with commercial license
   // if you want to use it in the commercial usage
   // please contact us for more information: hello@lobehub.com
-  commercial_hide_github: false,
-  commercial_hide_docs: false,
+  commercial_hide_github: true,
+  commercial_hide_docs: true,
 };
 
 export const mapFeatureFlagsEnvToState = (config: IFeatureFlags) => {
