@@ -1,4 +1,4 @@
-import { ChatFileItem, ChatImageItem, ChatVideoItem } from '@lobechat/types';
+import { ChatFileItem, ChatImageItem, ChatVideoItem } from '@agent/types';
 import { describe, expect, it } from 'vitest';
 
 import { filesPrompts } from './index';

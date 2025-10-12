@@ -3,9 +3,9 @@ import {
   AgentRuntimeError,
   ChatCompletionErrorPayload,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { ChatErrorType, ClientSecretPayload } from '@lobechat/types';
-import { getXorPayload } from '@lobechat/utils/server';
+} from '@agent/model-runtime';
+import { ChatErrorType, ClientSecretPayload } from '@agent/types';
+import { getXorPayload } from '@agent/utils/server';
 import { NextRequest } from 'next/server';
 
 import {
@@ -51,7 +51,6 @@ export const checkAuth =
       // check the Auth With payload and clerk auth
       let clerkAuth = {} as AuthObject;
 
-      // TODO: V2 完整移除 client 模式下的 clerk 集成代码
       if (enableClerk) {
         const auth = new ClerkAuth();
         const data = auth.getAuthFromRequest(req as NextRequest);

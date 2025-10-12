@@ -1,4 +1,4 @@
-import { NetworkProxySettings, ShortcutUpdateResult } from '@lobechat/electron-client-ipc';
+import { NetworkProxySettings, ShortcutUpdateResult } from '@agent/electron-client-ipc';
 import isEqual from 'fast-deep-equal';
 import useSWR, { SWRResponse, mutate } from 'swr';
 import type { StateCreator } from 'zustand/vanilla';

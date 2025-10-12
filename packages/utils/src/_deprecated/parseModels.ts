@@ -1,4 +1,4 @@
-import { ChatModelCard } from '@lobechat/types';
+import { ChatModelCard } from '@agent/types';
 import { produce } from 'immer';
 
 import { LOBE_DEFAULT_MODEL_LIST } from '@/config/modelProviders';

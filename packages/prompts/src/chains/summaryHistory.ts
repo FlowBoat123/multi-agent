@@ -1,4 +1,4 @@
-import { ChatMessage, ChatStreamPayload } from '@lobechat/types';
+import { ChatMessage, ChatStreamPayload } from '@agent/types';
 
 import { chatHistoryPrompts } from '../prompts';
 

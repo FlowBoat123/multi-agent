@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix, typescript-sort-keys/interface */
 // Disable the auto sort key eslint rule to make the code more logic and readable
-import { knowledgeBaseQAPrompts } from '@lobechat/prompts';
-import { TraceEventType, TraceNameMap } from '@lobechat/types';
+import { knowledgeBaseQAPrompts } from '@agent/prompts';
+import { TraceEventType, TraceNameMap } from '@agent/types';
 import { t } from 'i18next';
 import { produce } from 'immer';
 import { StateCreator } from 'zustand/vanilla';

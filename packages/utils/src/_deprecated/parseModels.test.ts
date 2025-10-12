@@ -1,4 +1,4 @@
-import { ChatModelCard } from '@lobechat/types';
+import { ChatModelCard } from '@agent/types';
 import { describe, expect, it } from 'vitest';
 
 import { LOBE_DEFAULT_MODEL_LIST, OpenAIProviderCard } from '@/config/modelProviders';

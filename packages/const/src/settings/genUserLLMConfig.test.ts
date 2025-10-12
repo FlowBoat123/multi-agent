@@ -1,4 +1,4 @@
-import { ModelProviderCard } from '@lobechat/types';
+import { ModelProviderCard } from '@agent/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { genUserLLMConfig } from './genUserLLMConfig';

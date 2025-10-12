@@ -26,9 +26,6 @@ const MCP_TOOL_TIMEOUT = (() => {
   return Number.isFinite(val) && val > 0 ? val : 60_000;
 })();
 
-/**
- * 预检查 stdio 命令，捕获详细的错误信息
- */
 async function preCheckStdioCommand(params: {
   args: string[];
   command: string;
@@ -53,7 +50,6 @@ async function preCheckStdioCommand(params: {
     let stderr = '';
     let resolved = false;
 
-    // 设置超时时间 (5秒)
     const timeout = setTimeout(() => {
       if (!resolved) {
         resolved = true;
@@ -72,12 +68,10 @@ async function preCheckStdioCommand(params: {
       }
     }, 5000);
 
-    // 收集 stdout
     child.stdout?.on('data', (data) => {
       stdout += data.toString();
     });
 
-    // 收集 stderr - 这是关键部分
     child.stderr?.on('data', (data) => {
       stderr += data.toString();
       log('Captured stderr: %s', data.toString());
@@ -131,7 +125,6 @@ async function preCheckStdioCommand(params: {
       }
     });
 
-    // 发送简单的 JSON-RPC 初始化消息来测试连接
     try {
       const initMessage =
         JSON.stringify({
@@ -165,10 +158,8 @@ export class MCPClient {
       case 'http': {
         log('Using HTTP transport with url: %s', params.url);
 
-        // 构建头部信息，包括用户自定义的 headers 和认证信息
         const headers: Record<string, string> = { ...params.headers };
 
-        // 处理认证配置
         if (params.auth) {
           switch (params.auth.type) {
             case 'bearer': {
@@ -187,13 +178,11 @@ export class MCPClient {
             }
 
             default: {
-              // 不需要认证
               break;
             }
           }
         }
 
-        // 创建 StreamableHTTPClientTransport 并传递 headers
         this.transport = new StreamableHTTPClientTransport(new URL(params.url), {
           requestInit: { headers },
         });
@@ -248,7 +237,6 @@ export class MCPClient {
         throw e;
       }
 
-      // 对于 stdio 连接失败，尝试预检查命令以获取详细错误信息
       if (this.params.type === 'stdio') {
         log('Attempting to pre-check stdio command for detailed error information...');
 

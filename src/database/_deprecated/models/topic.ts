@@ -31,12 +31,10 @@ class _TopicModel extends BaseModel {
     // get all topics
     const allTopics = await this.table.where('sessionId').equals(sessionId).toArray();
 
-    // 将所有主题按星标消息优先，时间倒序进行排序
     const sortedTopics = allTopics.sort((a, b) => {
-      if (a.favorite && !b.favorite) return -1; // a是星标，b不是，a排前面
-      if (!a.favorite && b.favorite) return 1; // b是星标，a不是，b排前面
+      if (a.favorite && !b.favorite) return -1;
+      if (!a.favorite && b.favorite) return 1;
 
-      // 如果星标状态相同，则按时间倒序排序
       return b.createdAt - a.createdAt;
     });
 

@@ -21,20 +21,17 @@ const UserUpdater = memo(() => {
   useStoreUpdater('isSignedIn', isSignedIn);
   useStoreUpdater('nextSession', session!);
 
-  // 使用 useEffect 处理需要保持同步的用户数据
   useEffect(() => {
     if (nextUser) {
       const userAvatar = useUserStore.getState().user?.avatar;
 
       const lobeUser = {
-        // 头像使用设置的，而不是从 next-auth 中获取
         avatar: userAvatar || '',
         email: nextUser.email,
         fullName: nextUser.name,
         id: nextUser.id,
       } as LobeUser;
 
-      // 更新用户相关数据
       useUserStore.setState({ nextUser: nextUser, user: lobeUser });
     }
   }, [nextUser]);

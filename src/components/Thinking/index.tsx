@@ -1,4 +1,4 @@
-import { ChatCitationItem } from '@lobechat/types';
+import { ChatCitationItem } from '@agent/types';
 import { ActionIcon, CopyButton, Icon, Markdown, ScrollShadow } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
 import { AnimatePresence, motion } from 'framer-motion';

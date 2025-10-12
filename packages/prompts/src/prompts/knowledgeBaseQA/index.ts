@@ -1,4 +1,4 @@
-import { ChatSemanticSearchChunk, KnowledgeItem } from '@lobechat/types';
+import { ChatSemanticSearchChunk, KnowledgeItem } from '@agent/types';
 
 import { chunkPrompts } from './chunk';
 import { knowledgePrompts } from './knowledge';

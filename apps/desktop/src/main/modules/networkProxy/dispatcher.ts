@@ -1,4 +1,4 @@
-import { NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import { NetworkProxySettings } from '@agent/electron-client-ipc';
 import { SocksProxies, socksDispatcher } from 'fetch-socks';
 import { Agent, ProxyAgent, getGlobalDispatcher, setGlobalDispatcher } from 'undici';
 
@@ -102,9 +102,9 @@ export class ProxyDispatcherManager {
             type: 5,
             ...(url.username && url.password
               ? {
-                  password: url.password,
-                  userId: url.username,
-                }
+                password: url.password,
+                userId: url.username,
+              }
               : {}),
           },
         ];

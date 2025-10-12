@@ -1,5 +1,5 @@
-import { UploadFileParams } from '@lobechat/electron-client-ipc';
-import { CreateFileParams } from '@lobechat/electron-server-ipc';
+import { UploadFileParams } from '@agent/electron-client-ipc';
+import { CreateFileParams } from '@agent/electron-server-ipc';
 
 import FileService from '@/services/fileSrv';
 

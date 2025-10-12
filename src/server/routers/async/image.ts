@@ -1,5 +1,5 @@
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { AsyncTaskError, AsyncTaskErrorType, AsyncTaskStatus } from '@lobechat/types';
+import { AgentRuntimeErrorType } from '@agent/model-runtime';
+import { AsyncTaskError, AsyncTaskErrorType, AsyncTaskStatus } from '@agent/types';
 import debug from 'debug';
 import { RuntimeImageGenParams } from 'model-bank';
 import { z } from 'zod';
@@ -64,7 +64,6 @@ const categorizeError = (
   error: any,
   isAborted: boolean,
 ): { errorMessage: string; errorType: AsyncTaskErrorType } => {
-  // FIXME: 401 的问题应该放到 agentRuntime 中处理会更好
   if (error.errorType === AgentRuntimeErrorType.InvalidProviderAPIKey || error?.status === 401) {
     return {
       errorMessage: 'Invalid provider API key, please check your API key',

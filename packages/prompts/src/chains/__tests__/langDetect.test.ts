@@ -1,4 +1,4 @@
-import { ChatStreamPayload } from '@lobechat/types';
+import { ChatStreamPayload } from '@agent/types';
 import { describe, expect, it } from 'vitest';
 
 import { chainLangDetect } from '../langDetect';

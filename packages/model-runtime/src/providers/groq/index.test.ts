@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { LobeOpenAICompatibleRuntime } from '@lobechat/model-runtime';
+import { LobeOpenAICompatibleRuntime } from '@agent/model-runtime';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { testProvider } from '../../providerTestUtils';
@@ -14,7 +14,7 @@ testProvider({
 });
 
 // Mock the console.error to avoid polluting test output
-vi.spyOn(console, 'error').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => { });
 
 let instance: LobeOpenAICompatibleRuntime;
 

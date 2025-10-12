@@ -19,8 +19,8 @@ import {
   LobeZeroOneAI,
   LobeZhipuAI,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { ClientSecretPayload } from '@lobechat/types';
+} from '@agent/model-runtime';
+import { ClientSecretPayload } from '@agent/types';
 import { ModelProvider } from 'model-bank';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -29,7 +29,6 @@ import { initModelRuntimeWithUserPayload } from './index';
 // 模拟依赖项
 vi.mock('@/envs/llm', () => ({
   getLLMConfig: vi.fn(() => ({
-    // 确保为每个provider提供必要的配置信息
     OPENAI_API_KEY: 'test-openai-key',
     GOOGLE_API_KEY: 'test-google-key',
 
@@ -58,7 +57,7 @@ vi.mock('@/envs/llm', () => ({
 
 /**
  * Test cases for function initModelRuntimeWithUserPayload
- * this method will use ModelRuntime from `@lobechat/model-runtime`
+ * this method will use ModelRuntime from `@agent/model-runtime`
  * and method `getLlmOptionsFromPayload` to initialize runtime
  * with user payload. Test case below will test both the methods
  */
@@ -237,14 +236,12 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.ZhiPu, jwtPayload);
 
-      // 假设 LobeZhipuAI 是 ZhiPu 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeZhipuAI);
     });
 
     it('Google provider: without apikey', async () => {
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Google, {});
 
-      // 假设 LobeGoogleAI 是 Google 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeGoogleAI);
     });
 
@@ -252,7 +249,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Moonshot, jwtPayload);
 
-      // 假设 LobeMoonshotAI 是 Moonshot 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeMoonshotAI);
     });
 
@@ -260,7 +256,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Qwen, jwtPayload);
 
-      // 假设 LobeQwenAI 是 Qwen 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeQwenAI);
     });
 
@@ -268,9 +263,7 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = { apiKey: 'user-qwen-key' };
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Qwen, jwtPayload);
 
-      // 假设 LobeQwenAI 是 Qwen 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeQwenAI);
-      // endpoint 不存在，应返回 DEFAULT_BASE_URL
       expect(runtime['_runtime'].baseURL).toBe('https://dashscope.aliyuncs.com/compatible-mode/v1');
     });
 
@@ -278,7 +271,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Bedrock, jwtPayload);
 
-      // 假设 LobeBedrockAI 是 Bedrock 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeBedrockAI);
     });
 
@@ -286,7 +278,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Ollama, jwtPayload);
 
-      // 假设 LobeOllamaAI 是 Ollama 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeOllamaAI);
     });
 
@@ -294,7 +285,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Perplexity, jwtPayload);
 
-      // 假设 LobePerplexityAI 是 Perplexity 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobePerplexityAI);
     });
 
@@ -302,7 +292,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Anthropic, jwtPayload);
 
-      // 假设 LobeAnthropicAI 是 Anthropic 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeAnthropicAI);
     });
 
@@ -310,7 +299,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Minimax, jwtPayload);
 
-      // 假设 LobeMistralAI 是 Mistral 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeMinimaxAI);
     });
 
@@ -318,7 +306,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Mistral, jwtPayload);
 
-      // 假设 LobeMistralAI 是 Mistral 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeMistralAI);
     });
 
@@ -326,7 +313,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.OpenRouter, jwtPayload);
 
-      // 假设 LobeOpenRouterAI 是 OpenRouter 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeOpenRouterAI);
     });
 
@@ -334,7 +320,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.DeepSeek, jwtPayload);
 
-      // 假设 LobeDeepSeekAI 是 DeepSeek 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeDeepSeekAI);
     });
 
@@ -342,7 +327,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Stepfun, jwtPayload);
 
-      // 假设 LobeDeepSeekAI 是 DeepSeek 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeStepfunAI);
     });
 
@@ -350,7 +334,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.TogetherAI, jwtPayload);
 
-      // 假设 LobeTogetherAI 是 TogetherAI 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeTogetherAI);
     });
 
@@ -360,7 +343,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.OpenAI, jwtPayload);
       expect(runtime['_runtime']).toBeInstanceOf(LobeOpenAI);
-      // 应返回 OPENAI_PROXY_URL
       expect(runtime['_runtime'].baseURL).toBe('https://proxy.example.com/v1');
     });
 
@@ -370,9 +352,7 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload: ClientSecretPayload = {};
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Qwen, jwtPayload);
 
-      // 假设 LobeQwenAI 是 Qwen 提供者的实现类
       expect(runtime['_runtime']).toBeInstanceOf(LobeQwenAI);
-      // endpoint 不存在，应返回 DEFAULT_BASE_URL
       expect(runtime['_runtime'].baseURL).toBe('https://dashscope.aliyuncs.com/compatible-mode/v1');
     });
 
@@ -380,8 +360,6 @@ describe('initModelRuntimeWithUserPayload method', () => {
       const jwtPayload = {};
       const runtime = await initModelRuntimeWithUserPayload('unknown', jwtPayload);
 
-      // 根据实际实现，你可能需要检查是否返回了默认的 runtime 实例，或者是否抛出了异常
-      // 例如，如果默认使用 OpenAI:
       expect(runtime['_runtime']).toBeInstanceOf(LobeOpenAI);
     });
   });

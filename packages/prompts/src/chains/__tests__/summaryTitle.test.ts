@@ -1,4 +1,4 @@
-import { OpenAIChatMessage } from '@lobechat/types';
+import { OpenAIChatMessage } from '@agent/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { chainSummaryTitle } from '../summaryTitle';

@@ -1,9 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { 
+import {
   ShowTrayNotificationParams,
   UpdateTrayIconParams,
   UpdateTrayTooltipParams
-} from '@lobechat/electron-client-ipc';
+} from '@agent/electron-client-ipc';
 
 import type { App } from '@/core/App';
 
@@ -69,7 +69,7 @@ describe('TrayMenuCtr', () => {
     it('should display balloon notification on Windows platform', async () => {
       // 模拟 Windows 平台
       Object.defineProperty(process, 'platform', { value: 'win32' });
-      
+
       const mockedTray = {
         displayBalloon: mockDisplayBalloon,
       };
@@ -125,7 +125,7 @@ describe('TrayMenuCtr', () => {
 
       expect(mockGetMainTray).toHaveBeenCalled();
       expect(mockDisplayBalloon).not.toHaveBeenCalled();
-      expect(result).toEqual({ 
+      expect(result).toEqual({
         error: '托盘通知仅在 Windows 平台支持',
         success: false
       });
@@ -136,7 +136,7 @@ describe('TrayMenuCtr', () => {
     it('should update tray icon on Windows platform', async () => {
       // 模拟 Windows 平台
       Object.defineProperty(process, 'platform', { value: 'win32' });
-      
+
       const mockedTray = {
         updateIcon: mockUpdateIcon,
       };
@@ -156,7 +156,7 @@ describe('TrayMenuCtr', () => {
     it('should handle errors when updating icon', async () => {
       // 模拟 Windows 平台
       Object.defineProperty(process, 'platform', { value: 'win32' });
-      
+
       const error = new Error('Failed to update icon');
       const mockedTray = {
         updateIcon: vi.fn().mockImplementation(() => {
@@ -198,7 +198,7 @@ describe('TrayMenuCtr', () => {
     it('should update tray tooltip on Windows platform', async () => {
       // 模拟 Windows 平台
       Object.defineProperty(process, 'platform', { value: 'win32' });
-      
+
       const mockedTray = {
         updateTooltip: mockUpdateTooltip,
       };
@@ -234,7 +234,7 @@ describe('TrayMenuCtr', () => {
     it('should return error when tooltip is not provided', async () => {
       // 模拟 Windows 平台
       Object.defineProperty(process, 'platform', { value: 'win32' });
-      
+
       const mockedTray = {
         updateTooltip: mockUpdateTooltip,
       };

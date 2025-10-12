@@ -1,4 +1,4 @@
-import { ChatImageItem } from '@lobechat/types';
+import { ChatImageItem } from '@agent/types';
 
 const imagePrompt = (item: ChatImageItem, attachUrl: boolean) =>
   attachUrl

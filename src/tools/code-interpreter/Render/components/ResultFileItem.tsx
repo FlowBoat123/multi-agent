@@ -1,4 +1,4 @@
-import { CodeInterpreterFileItem } from '@lobechat/types';
+import { CodeInterpreterFileItem } from '@agent/types';
 import { Icon, Image, MaterialFileTypeIcon, Text, Tooltip } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
 import { Download } from 'lucide-react';

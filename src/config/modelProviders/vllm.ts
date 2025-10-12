@@ -2,7 +2,7 @@ import { ModelProviderCard } from '@/types/llm';
 
 const VLLM: ModelProviderCard = {
   chatModels: [],
-  description: 'vLLM 是一个快速且易于使用的库，用于 LLM 推理和服务。',
+  description: '',
   id: 'vllm',
   modelList: { showModelFetcher: true },
   modelsUrl: 'https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models',

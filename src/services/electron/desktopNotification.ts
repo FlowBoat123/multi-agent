@@ -2,7 +2,7 @@ import {
   DesktopNotificationResult,
   ShowDesktopNotificationParams,
   dispatch,
-} from '@lobechat/electron-client-ipc';
+} from '@agent/electron-client-ipc';
 
 /**
  * 桌面通知服务

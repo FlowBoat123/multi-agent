@@ -1,5 +1,5 @@
-import { ModelRuntime } from '@lobechat/model-runtime';
-import { ClientSecretPayload } from '@lobechat/types';
+import { ModelRuntime } from '@agent/model-runtime';
+import { ClientSecretPayload } from '@agent/types';
 import { ModelProvider } from 'model-bank';
 
 import { getLLMConfig } from '@/envs/llm';

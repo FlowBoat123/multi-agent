@@ -1,4 +1,4 @@
-import { exportFile } from '@lobechat/utils/client';
+import { exportFile } from '@agent/utils/client';
 import { Block, Button, Highlighter, Segmented } from '@lobehub/ui';
 import { Drawer } from 'antd';
 import { createStyles } from 'antd-style';

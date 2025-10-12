@@ -1,5 +1,5 @@
-import { FORM_STYLE } from '@lobechat/const';
-import { exportFile } from '@lobechat/utils/client';
+import { FORM_STYLE } from '@agent/const';
+import { exportFile } from '@agent/utils/client';
 import { Button, Form, type FormItemProps, copyToClipboard } from '@lobehub/ui';
 import { App, Switch } from 'antd';
 import isEqual from 'fast-deep-equal';

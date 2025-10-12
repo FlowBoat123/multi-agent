@@ -1,4 +1,4 @@
-import * as runtimeModule from '@lobechat/model-runtime';
+import * as runtimeModule from '@agent/model-runtime';
 import type { EnabledAiModel, ModelAbilities } from 'model-bank';
 import { describe, expect, it, vi } from 'vitest';
 

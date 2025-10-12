@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { ModelProvider } from 'model-bank';
 
 import { createOpenAICompatibleRuntime } from '../../core/openaiCompatibleFactory';
@@ -20,15 +20,15 @@ export const LobeBaichuanAI = createOpenAICompatibleRuntime({
 
       const baichuanTools = enabledSearch
         ? [
-            ...(tools || []),
-            {
-              type: 'web_search',
-              web_search: {
-                enable: true,
-                search_mode: process.env.BAICHUAN_SEARCH_MODE || 'performance_first', // performance_first or quality_first
-              },
+          ...(tools || []),
+          {
+            type: 'web_search',
+            web_search: {
+              enable: true,
+              search_mode: process.env.BAICHUAN_SEARCH_MODE || 'performance_first', // performance_first or quality_first
             },
-          ]
+          },
+        ]
         : tools;
 
       return {

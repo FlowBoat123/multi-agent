@@ -1,6 +1,6 @@
 'use client';
 
-import { GlobalLLMProviderKey } from '@lobechat/types';
+import { GlobalLLMProviderKey } from '@agent/types';
 import { InputPassword, Markdown } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
 import { useTranslation } from 'react-i18next';

@@ -1,34 +1,12 @@
 import { t } from 'i18next';
 
-/**
- * 迁移接口
- * @template T - 状态类型
- */
 export interface Migration<T = any> {
-  /**
-   * 迁移数据
-   * @param data - 迁移数据
-   * @returns 迁移后的数据
-   */
   migrate(data: MigrationData<T>): MigrationData;
-  /**
-   * 迁移版本号
-   */
   version: number;
 }
 
-/**
- * 迁移数据接口
- * @template T - 状态类型
- */
 export interface MigrationData<T = any> {
-  /**
-   * 状态数据
-   */
   state: T;
-  /**
-   * 迁移版本号
-   */
   version: number;
 }
 export class VersionController<T> {
@@ -59,7 +37,7 @@ export class VersionController<T> {
       nextData = migration.migrate(nextData);
 
       nextData.version += 1;
-      console.debug('迁移器：', migration, '数据：', nextData, '迁移后版本:', nextData.version);
+      console.debug('Migration: ', migration, 'Nexr Data: ', nextData, 'Version: :', nextData.version);
     }
 
     return nextData;

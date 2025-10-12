@@ -1,4 +1,4 @@
-import { ModelTokensUsage } from '@lobechat/types';
+import { ModelTokensUsage } from '@agent/types';
 import OpenAI from 'openai';
 
 export const convertUsage = (

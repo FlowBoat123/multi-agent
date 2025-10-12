@@ -1,4 +1,4 @@
-import { ClientDispatchEventKey, DispatchInvoke } from '@lobechat/electron-client-ipc';
+import { ClientDispatchEventKey, DispatchInvoke } from '@agent/electron-client-ipc';
 import { ipcRenderer } from 'electron';
 
 /**

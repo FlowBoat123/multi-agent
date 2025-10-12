@@ -1,4 +1,4 @@
-import { getUserAuth } from '@lobechat/utils/server';
+import { getUserAuth } from '@agent/utils/server';
 import { notFound } from 'next/navigation';
 import { Flexbox } from 'react-layout-kit';
 

@@ -1,4 +1,4 @@
-import { UserTTSConfig } from '@lobechat/types';
+import { UserTTSConfig } from '@agent/types';
 
 export const DEFAULT_TTS_CONFIG: UserTTSConfig = {
   openAI: {

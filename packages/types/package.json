@@ -1,10 +1,10 @@
 {
-  "name": "@lobechat/types",
+  "name": "@agent/types",
   "version": "1.0.0",
   "private": true,
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/web-crawler": "workspace:*",
+    "@agent/web-crawler": "workspace:*",
     "@lobehub/chat-plugin-sdk": "^1.32.4",
     "type-fest": "^4.41.0",
     "zod": "^3.25.76"

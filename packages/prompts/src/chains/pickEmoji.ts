@@ -1,4 +1,4 @@
-import { ChatStreamPayload } from '@lobechat/types';
+import { ChatStreamPayload } from '@agent/types';
 
 /**
  * pick emoji for user prompt

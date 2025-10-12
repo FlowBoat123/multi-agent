@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix , typescript-sort-keys/interface */
-import type { ILobeAgentRuntimeErrorType } from '@lobechat/model-runtime';
+import type { ILobeAgentRuntimeErrorType } from '@agent/model-runtime';
 import type { IPluginErrorType } from '@lobehub/chat-plugin-sdk';
 
 import { ErrorType } from '../fetch';
@@ -92,7 +92,7 @@ export interface ModelSpeed {
   latency?: number;
 }
 
-export interface MessageMetadata extends ModelUsage, ModelSpeed {}
+export interface MessageMetadata extends ModelUsage, ModelSpeed { }
 
 export type MessageRoleType = 'user' | 'system' | 'assistant' | 'tool';
 

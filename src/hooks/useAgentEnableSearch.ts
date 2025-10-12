@@ -11,9 +11,7 @@ export const useAgentEnableSearch = () => {
 
   const searchImpl = useAiInfraStore(aiModelSelectors.modelBuiltinSearchImpl(model, provider));
 
-  // 只要是内置的搜索实现，一定可以联网搜索
   if (searchImpl === 'internal') return true;
 
-  // 如果是关闭状态，一定不能联网搜索
   return agentSearchMode !== 'off';
 };

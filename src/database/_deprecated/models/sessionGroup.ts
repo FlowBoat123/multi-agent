@@ -16,24 +16,18 @@ class _SessionGroupModel extends BaseModel {
   async query(): Promise<SessionGroups> {
     const allGroups = await this.table.toArray();
 
-    // 自定义排序，先按 sort 存在与否分组，然后分别排序
     return allGroups.sort((a, b) => {
-      // 如果两个项都有 sort，则按 sort 排序
       if (a.sort !== undefined && b.sort !== undefined) {
-        // 如果sort 一样，按时间倒序排序
         if (a.sort === b.sort) return b.createdAt - a.createdAt;
 
         return a.sort - b.sort;
       }
-      // 如果 a 有 sort 而 b 没有，则 a 排在前面
       if (a.sort !== undefined) {
         return -1;
       }
-      // 如果 b 有 sort 而 a 没有，则 b 排在前面
       if (b.sort !== undefined) {
         return 1;
       }
-      // 如果两个项都没有 sort，则按 createdAt 倒序排序
       return b.createdAt - a.createdAt;
     });
   }

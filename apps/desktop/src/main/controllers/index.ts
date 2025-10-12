@@ -1,5 +1,5 @@
-import type { ClientDispatchEvents } from '@lobechat/electron-client-ipc';
-import type { ServerDispatchEvents } from '@lobechat/electron-server-ipc';
+import type { ClientDispatchEvents } from '@agent/electron-client-ipc';
+import type { ServerDispatchEvents } from '@agent/electron-server-ipc';
 
 import type { App } from '@/core/App';
 import { IoCContainer } from '@/core/infrastructure/IoCContainer';
@@ -7,16 +7,16 @@ import { ShortcutActionType } from '@/shortcuts';
 
 const ipcDecorator =
   (name: string, mode: 'client' | 'server') =>
-  (target: any, methodName: string, descriptor?: any) => {
-    const actions = IoCContainer.controllers.get(target.constructor) || [];
-    actions.push({
-      methodName,
-      mode,
-      name,
-    });
-    IoCContainer.controllers.set(target.constructor, actions);
-    return descriptor;
-  };
+    (target: any, methodName: string, descriptor?: any) => {
+      const actions = IoCContainer.controllers.get(target.constructor) || [];
+      actions.push({
+        methodName,
+        mode,
+        name,
+      });
+      IoCContainer.controllers.set(target.constructor, actions);
+      return descriptor;
+    };
 
 /**
  *  controller 用的 ipc client event 装饰器

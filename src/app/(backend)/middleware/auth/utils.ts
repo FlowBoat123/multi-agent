@@ -1,6 +1,6 @@
 import { type AuthObject } from '@clerk/backend';
-import { AgentRuntimeError } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeError } from '@agent/model-runtime';
+import { ChatErrorType } from '@agent/types';
 
 import { enableClerk, enableNextAuth } from '@/const/auth';
 import { getAppConfig } from '@/envs/app';
@@ -46,7 +46,7 @@ export const checkAuthMethod = ({
   if (!ACCESS_CODES.length) return;
 
   if (!accessCode || !ACCESS_CODES.includes(accessCode)) {
-    console.warn('tracked an invalid access code, 检查到输入的错误密码：', accessCode);
+    console.warn('tracked an invalid access code: ', accessCode);
     throw AgentRuntimeError.createError(ChatErrorType.InvalidAccessCode);
   }
 };

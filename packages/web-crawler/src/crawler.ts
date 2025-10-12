@@ -18,10 +18,6 @@ export class Crawler {
       : defaultImpls;
   }
 
-  /**
-   * 爬取网页内容
-   * @param options 爬取选项
-   */
   async crawl({
     url,
     impls: userImpls,
@@ -31,14 +27,12 @@ export class Crawler {
     impls?: CrawlImplType[];
     url: string;
   }) {
-    // 应用URL规则
     const {
       transformedUrl,
       filterOptions: ruleFilterOptions,
       impls: ruleImpls,
     } = applyUrlRules(url, crawUrlRules);
 
-    // 合并用户提供的过滤选项和规则中的过滤选项，用户选项优先
     const mergedFilterOptions = {
       ...ruleFilterOptions,
       ...userFilterOptions,
@@ -53,7 +47,6 @@ export class Crawler {
       ? (userImpls.filter((impl) => Object.keys(crawlImpls).includes(impl)) as CrawlImplType[])
       : systemImpls;
 
-    //   按照内置的实现顺序依次尝试
     for (const impl of finalImpls) {
       try {
         const res = await crawlImpls[impl](transformedUrl, { filterOptions: mergedFilterOptions });

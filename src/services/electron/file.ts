@@ -1,4 +1,4 @@
-import { dispatch } from '@lobechat/electron-client-ipc';
+import { dispatch } from '@agent/electron-client-ipc';
 
 import { FileMetadata } from '@/types/files';
 

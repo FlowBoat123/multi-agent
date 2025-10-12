@@ -1,5 +1,5 @@
-import { ChatCompletionErrorPayload, PullModelParams } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { ChatCompletionErrorPayload, PullModelParams } from '@agent/model-runtime';
+import { ChatErrorType } from '@agent/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';

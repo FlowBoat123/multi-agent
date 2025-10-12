@@ -1,4 +1,4 @@
-import { TraceEventType } from '@lobechat/types';
+import { TraceEventType } from '@agent/types';
 import { diffChars } from 'diff';
 import { LangfuseTraceClient } from 'langfuse-core';
 
@@ -10,9 +10,6 @@ import {
   TraceEventRegenerateMessage,
 } from '@/types/trace';
 
-/**
- * trace 事件得分
- */
 export enum EventScore {
   DeleteAndRegenerate = -1,
   Regenerate = -0.6,

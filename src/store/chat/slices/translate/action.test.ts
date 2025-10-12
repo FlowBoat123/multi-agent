@@ -1,5 +1,5 @@
-import { chainLangDetect } from '@lobechat/prompts';
-import { chainTranslate } from '@lobechat/prompts';
+import { chainLangDetect } from '@agent/prompts';
+import { chainTranslate } from '@agent/prompts';
 import { act, renderHook } from '@testing-library/react';
 import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

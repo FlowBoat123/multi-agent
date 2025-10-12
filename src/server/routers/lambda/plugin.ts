@@ -65,7 +65,6 @@ export const pluginRouter = router({
       return data.identifier;
     }),
 
-  // TODO: 未来这部分方法也需要使用 authedProcedure
   getPlugins: publicProcedure.query(async ({ ctx }): Promise<LobeTool[]> => {
     if (!ctx.userId) return [];
 

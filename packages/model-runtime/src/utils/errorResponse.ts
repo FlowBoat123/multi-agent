@@ -1,4 +1,4 @@
-import { ChatErrorType, ErrorResponse, ErrorType } from '@lobechat/types';
+import { ChatErrorType, ErrorResponse, ErrorType } from '@agent/types';
 
 import { AgentRuntimeErrorType, ILobeAgentRuntimeErrorType } from '../types';
 

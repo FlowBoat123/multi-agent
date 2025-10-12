@@ -1,4 +1,4 @@
-import { BuiltinToolManifest } from '@lobechat/types';
+import { BuiltinToolManifest } from '@agent/types';
 
 export const CodeInterpreterIdentifier = 'lobe-code-interpreter';
 

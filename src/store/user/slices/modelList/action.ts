@@ -4,7 +4,7 @@ import type {
   ModelProviderCard,
   UserKeyVaults,
   UserModelProviderConfig,
-} from '@lobechat/types';
+} from '@agent/types';
 import { produce } from 'immer';
 import { ModelProvider } from 'model-bank';
 import useSWR, { SWRResponse } from 'swr';

@@ -1,6 +1,6 @@
-import { isDesktop } from '@lobechat/const';
-import { HotkeyEnum, KeyEnum } from '@lobechat/types';
-import { isCommandPressed } from '@lobechat/utils';
+import { isDesktop } from '@agent/const';
+import { HotkeyEnum, KeyEnum } from '@agent/types';
+import { isCommandPressed } from '@agent/utils';
 import {
   ReactCodePlugin,
   ReactCodeblockPlugin,
@@ -120,8 +120,8 @@ const InputEditor = memo<{ defaultRows?: number }>(() => {
           renderComp: expand
             ? undefined
             : (props) => (
-                <FloatMenu {...props} getPopupContainer={() => (slashMenuRef as any)?.current} />
-              ),
+              <FloatMenu {...props} getPopupContainer={() => (slashMenuRef as any)?.current} />
+            ),
         }),
       ]}
       slashOption={{
@@ -129,10 +129,10 @@ const InputEditor = memo<{ defaultRows?: number }>(() => {
         renderComp: expand
           ? undefined
           : (props) => {
-              return (
-                <SlashMenu {...props} getPopupContainer={() => (slashMenuRef as any)?.current} />
-              );
-            },
+            return (
+              <SlashMenu {...props} getPopupContainer={() => (slashMenuRef as any)?.current} />
+            );
+          },
       }}
       type={'text'}
       variant={'chat'}

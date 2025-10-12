@@ -1,8 +1,8 @@
 // @vitest-environment node
 import { getAuth } from '@clerk/nextjs/server';
-import { LobeRuntimeAI, ModelRuntime } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
-import { getXorPayload } from '@lobechat/utils/server';
+import { LobeRuntimeAI, ModelRuntime } from '@agent/model-runtime';
+import { ChatErrorType } from '@agent/types';
+import { getXorPayload } from '@agent/utils/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { checkAuthMethod } from '@/app/(backend)/middleware/auth/utils';
@@ -18,7 +18,7 @@ vi.mock('@/app/(backend)/middleware/auth/utils', () => ({
   checkAuthMethod: vi.fn(),
 }));
 
-vi.mock('@lobechat/utils/server', () => ({
+vi.mock('@agent/utils/server', () => ({
   getXorPayload: vi.fn(),
 }));
 

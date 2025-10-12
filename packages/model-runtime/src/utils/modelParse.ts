@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { AIBaseModelCard } from 'model-bank';
 
 import type { ModelProviderKey } from '../types';

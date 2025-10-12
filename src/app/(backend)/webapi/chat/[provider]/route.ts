@@ -2,8 +2,8 @@ import {
   AGENT_RUNTIME_ERROR_SET,
   ChatCompletionErrorPayload,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+} from '@agent/model-runtime';
+import { ChatErrorType } from '@agent/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { createTraceOptions, initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';

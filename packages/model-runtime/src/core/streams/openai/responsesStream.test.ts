@@ -1,4 +1,4 @@
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
+import { AgentRuntimeErrorType } from '@agent/model-runtime';
 import { describe, expect, it, vi } from 'vitest';
 
 import { FIRST_CHUNK_ERROR_KEY } from '../protocol';

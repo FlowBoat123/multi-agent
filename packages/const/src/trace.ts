@@ -1,4 +1,4 @@
-import { TraceNameMap } from '@lobechat/types';
+import { TraceNameMap } from '@agent/types';
 
 export const LOBE_CHAT_TRACE_HEADER = 'X-lobe-trace';
 export const LOBE_CHAT_TRACE_ID = 'X-lobe-chat-trace-id';

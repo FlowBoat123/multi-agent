@@ -102,20 +102,20 @@ class _DEBUG_MODEL extends BaseModel<'sessions'> {
       this.db.messages,
       async () => {
         // Batch insert sessions, topics, and messages
-        console.log('开始插入 sessions');
-        console.time('插入sessions');
+        console.log('Start inserting sessions');
+        console.time('Insert sessions');
         await this.db.sessions.bulkAdd(sessionsData);
-        console.timeEnd('插入sessions');
+        console.timeEnd('Insert sessions');
 
-        console.log('开始插入 topics');
-        console.time('插入topics');
+        console.log('Start inserting topics');
+        console.time('Insert topics');
         await this.db.topics.bulkAdd(topicsData);
-        console.timeEnd('插入topics');
+        console.timeEnd('Insert topics');
 
-        console.log('开始插入 messages');
-        console.time('插入messages');
+        console.log('Start inserting messages');
+        console.time('Insert messages');
         await this.db.messages.bulkAdd(messagesData);
-        console.timeEnd('插入messages');
+        console.timeEnd('Insert messages');
       },
     );
   };

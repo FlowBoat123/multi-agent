@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { LOBE_DEFAULT_MODEL_LIST } from 'model-bank';

@@ -4,7 +4,7 @@ import {
   ChatStreamCallbacks,
   ChatStreamPayload,
   LobeOpenAICompatibleRuntime,
-} from '@lobechat/model-runtime';
+} from '@agent/model-runtime';
 import { ModelProvider } from 'model-bank';
 import OpenAI from 'openai';
 import type { Stream } from 'openai/streaming';
@@ -25,7 +25,7 @@ const bizErrorType = 'ProviderBizError';
 const invalidErrorType = 'InvalidProviderAPIKey';
 
 // Mock the console.error to avoid polluting test output
-vi.spyOn(console, 'error').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => { });
 
 let instance: LobeOpenAICompatibleRuntime;
 
@@ -66,7 +66,7 @@ describe('LobeOpenAICompatibleFactory', () => {
         public parts: any[],
         public name: string,
         public opts?: any,
-      ) {}
+      ) { }
     };
   }
 
@@ -1469,7 +1469,7 @@ describe('LobeOpenAICompatibleFactory', () => {
       };
 
       vi.spyOn(instance['client'].responses, 'create').mockResolvedValue(mockResponse as any);
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
       const payload = {
         messages: [{ content: 'Generate data', role: 'user' as const }],
@@ -1492,7 +1492,7 @@ describe('LobeOpenAICompatibleFactory', () => {
       };
 
       vi.spyOn(instance['client'].responses, 'create').mockResolvedValue(mockResponse as any);
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
       const payload = {
         messages: [{ content: 'Generate data', role: 'user' as const }],
@@ -1673,7 +1673,7 @@ describe('LobeOpenAICompatibleFactory', () => {
         vi.spyOn(instance['client'].chat.completions, 'create').mockResolvedValue(
           mockResponse as any,
         );
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
         const payload = {
           messages: [{ content: 'Generate data', role: 'user' as const }],
@@ -1704,7 +1704,7 @@ describe('LobeOpenAICompatibleFactory', () => {
         vi.spyOn(instance['client'].chat.completions, 'create').mockResolvedValue(
           mockResponse as any,
         );
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
         const payload = {
           messages: [{ content: 'Generate data', role: 'user' as const }],

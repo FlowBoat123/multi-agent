@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { AiModelType, CHAT_MODEL_IMAGE_GENERATION_PARAMS } from 'model-bank';
 
 // Whitelist for automatic image model generation

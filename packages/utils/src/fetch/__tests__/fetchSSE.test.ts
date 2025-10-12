@@ -1,5 +1,5 @@
-import { MESSAGE_CANCEL_FLAT } from '@lobechat/const';
-import { ChatMessageError } from '@lobechat/types';
+import { MESSAGE_CANCEL_FLAT } from '@agent/const';
+import { ChatMessageError } from '@agent/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { FetchEventSourceInit } from '../../client/fetchEventSource';
@@ -464,7 +464,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -481,7 +481,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         type: 'UnknownChatFetchError',
@@ -506,7 +506,7 @@ describe('fetchSSE', () => {
 
           try {
             await options.onopen!(res as any);
-          } catch (e) {}
+          } catch (e) { }
         },
       );
 
@@ -540,7 +540,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -557,7 +557,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         body: {

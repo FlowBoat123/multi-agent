@@ -1,4 +1,4 @@
-import { getModelPropertyWithFallback } from '@lobechat/model-runtime';
+import { getModelPropertyWithFallback } from '@agent/model-runtime';
 import { produce } from 'immer';
 import { AiFullModelCard, AiModelType } from 'model-bank';
 

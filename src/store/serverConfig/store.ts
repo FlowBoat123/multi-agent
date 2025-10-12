@@ -1,4 +1,4 @@
-import { StoreApiWithSelector } from '@lobechat/types';
+import { StoreApiWithSelector } from '@agent/types';
 import { StoreApi } from 'zustand';
 import { createContext } from 'zustand-utils';
 import { shallow } from 'zustand/shallow';
@@ -27,7 +27,7 @@ const initialState: ServerConfigState = {
 
 //  ===============  聚合 createStoreFn ============ //
 
-export interface ServerConfigStore extends ServerConfigState, ServerConfigAction {}
+export interface ServerConfigStore extends ServerConfigState, ServerConfigAction { }
 
 type CreateStore = (
   initState: Partial<ServerConfigStore>,
@@ -35,10 +35,10 @@ type CreateStore = (
 
 const createStore: CreateStore =
   (runtimeState) =>
-  (...params) => ({
-    ...merge(initialState, runtimeState),
-    ...createServerConfigSlice(...params),
-  });
+    (...params) => ({
+      ...merge(initialState, runtimeState),
+      ...createServerConfigSlice(...params),
+    });
 
 //  ===============  实装 useStore ============ //
 

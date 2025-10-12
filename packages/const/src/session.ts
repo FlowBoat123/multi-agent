@@ -1,4 +1,4 @@
-import { LobeAgentSession, LobeGroupSession, LobeSessionType } from '@lobechat/types';
+import { LobeAgentSession, LobeGroupSession, LobeSessionType } from '@agent/types';
 
 import { DEFAULT_AGENT_META, DEFAULT_INBOX_AVATAR } from './meta';
 import { DEFAULT_AGENT_CONFIG } from './settings';

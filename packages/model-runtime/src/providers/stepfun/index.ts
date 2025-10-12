@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { ModelProvider } from 'model-bank';
 
 import { createOpenAICompatibleRuntime } from '../../core/openaiCompatibleFactory';
@@ -15,14 +15,14 @@ export const LobeStepfunAI = createOpenAICompatibleRuntime({
 
       const stepfunTools = enabledSearch
         ? [
-            ...(tools || []),
-            {
-              function: {
-                description: 'use web_search to search information on the internet',
-              },
-              type: 'web_search',
+          ...(tools || []),
+          {
+            function: {
+              description: 'use web_search to search information on the internet',
             },
-          ]
+            type: 'web_search',
+          },
+        ]
         : tools;
 
       return {

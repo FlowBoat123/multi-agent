@@ -1,4 +1,4 @@
-import { InterceptRouteParams } from '@lobechat/electron-client-ipc';
+import { InterceptRouteParams } from '@agent/electron-client-ipc';
 import { Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AppBrowsersIdentifiers, BrowsersIdentifiers } from '@/appBrowsers';

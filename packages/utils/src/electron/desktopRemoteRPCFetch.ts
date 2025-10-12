@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import { ProxyTRPCRequestParams, dispatch, streamInvoke } from '@lobechat/electron-client-ipc';
+import { isDesktop } from '@agent/const';
+import { ProxyTRPCRequestParams, dispatch, streamInvoke } from '@agent/electron-client-ipc';
 import debug from 'debug';
 
 import { getElectronStoreState } from '@/store/electron';

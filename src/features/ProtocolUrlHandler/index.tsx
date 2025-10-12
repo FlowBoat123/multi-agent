@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@agent/electron-client-ipc';
 import { useCallback, useState } from 'react';
 
 import { McpInstallRequest } from '@/features/ProtocolUrlHandler/InstallPlugin/types';

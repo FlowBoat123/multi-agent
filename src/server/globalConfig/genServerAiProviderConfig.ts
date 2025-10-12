@@ -1,6 +1,6 @@
-import { ProviderConfig } from '@lobechat/types';
-import { extractEnabledModels, transformToAiModelList } from '@lobechat/utils';
-import { ModelProvider , AiFullModelCard } from 'model-bank';
+import { ProviderConfig } from '@agent/types';
+import { extractEnabledModels, transformToAiModelList } from '@agent/utils';
+import { ModelProvider, AiFullModelCard } from 'model-bank';
 import * as AiModels from 'model-bank';
 
 import { getLLMConfig } from '@/envs/llm';

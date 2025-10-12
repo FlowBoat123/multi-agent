@@ -1,4 +1,4 @@
-import { ChatCitationItem, ChatMessageError } from '@lobechat/types';
+import { ChatCitationItem, ChatMessageError } from '@agent/types';
 import OpenAI from 'openai';
 import type { Stream } from 'openai/streaming';
 
@@ -23,16 +23,16 @@ const transformOpenAIStream = (
   chunk:
     | OpenAI.Responses.ResponseStreamEvent
     | {
-        annotation: {
-          end_index: number;
-          start_index: number;
-          title: string;
-          type: 'url_citation';
-          url: string;
-        };
-        item_id: string;
-        type: 'response.output_text.annotation.added';
-      },
+      annotation: {
+        end_index: number;
+        start_index: number;
+        title: string;
+        type: 'url_citation';
+        url: string;
+      };
+      item_id: string;
+      type: 'response.output_text.annotation.added';
+    },
   streamContext: StreamContext,
   payload?: ChatPayloadForTransformStream,
 ): StreamProtocolChunk | StreamProtocolChunk[] => {

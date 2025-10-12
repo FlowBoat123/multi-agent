@@ -6,7 +6,7 @@ import {
   HotkeyItem,
   HotkeyScopeEnum,
   KeyEnum,
-} from '@lobechat/types';
+} from '@agent/types';
 
 const combineKeys = (keys: string[]) => keys.join('+');
 

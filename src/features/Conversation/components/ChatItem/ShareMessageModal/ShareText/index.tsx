@@ -1,4 +1,4 @@
-import { exportFile } from '@lobechat/utils/client';
+import { exportFile } from '@agent/utils/client';
 import { Button, copyToClipboard } from '@lobehub/ui';
 import { App } from 'antd';
 import isEqual from 'fast-deep-equal';

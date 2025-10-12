@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { LobeOpenAICompatibleRuntime } from '@lobechat/model-runtime';
+import { LobeOpenAICompatibleRuntime } from '@agent/model-runtime';
 import { ModelProvider } from 'model-bank';
 import OpenAI from 'openai';
 import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -83,7 +83,7 @@ describe('LobeTaichuAI', () => {
             }),
             expect.objectContaining({}),
           );
-        } catch (e) {}
+        } catch (e) { }
       }
     });
   });

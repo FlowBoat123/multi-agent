@@ -2,7 +2,7 @@ import {
   LobeChatGroupChatConfig,
   LobeChatGroupFullConfig,
   LobeChatGroupMetaConfig,
-} from '@lobechat/types';
+} from '@agent/types';
 
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from './llm';
 

@@ -12,7 +12,7 @@ import { nanoid } from '@/utils/uuid';
  */
 export interface CreateMessageParams
   extends Partial<Omit<ChatMessage, 'content' | 'role'>>,
-    Pick<ChatMessage, 'content' | 'role'> {
+  Pick<ChatMessage, 'content' | 'role'> {
   files?: string[];
   fromModel?: string;
   fromProvider?: string;
@@ -44,11 +44,11 @@ class _MessageModel extends BaseModel {
 
     const query = !!topicId
       ? // TODO: The query {"sessionId":"xxx","topicId":"xxx"} on messages would benefit of a compound index [sessionId+topicId]
-        this.table.where({ sessionId, topicId }) // Use a compound index
+      this.table.where({ sessionId, topicId }) // Use a compound index
       : this.table
-          .where('sessionId')
-          .equals(sessionId)
-          .and((message) => !message.topicId);
+        .where('sessionId')
+        .equals(sessionId)
+        .and((message) => !message.topicId);
 
     const dbMessages: DBModel<DB_Message>[] = await query
       .sortBy('createdAt')
@@ -70,10 +70,8 @@ class _MessageModel extends BaseModel {
 
     for (const item of messages) {
       if (!item.parentId || !messageMap.has(item.parentId)) {
-        // 如果消息没有父消息或者父消息不在列表中，直接添加
         addItem(item);
       } else {
-        // 如果消息有父消息，确保先添加父消息
         addItem(messageMap.get(item.parentId)!);
         addItem(item);
       }
@@ -123,7 +121,6 @@ class _MessageModel extends BaseModel {
 
   async duplicateMessages(messages: ChatMessage[]): Promise<ChatMessage[]> {
     const duplicatedMessages = await this.createDuplicateMessages(messages);
-    // 批量添加复制后的消息到数据库
     await this.batchCreate(duplicatedMessages);
     return duplicatedMessages;
   }
@@ -157,9 +154,9 @@ class _MessageModel extends BaseModel {
     const query = !!topicId
       ? this.table.where({ sessionId, topicId }) // Use a compound index
       : this.table
-          .where('sessionId')
-          .equals(sessionId)
-          .and((message) => !message.topicId);
+        .where('sessionId')
+        .equals(sessionId)
+        .and((message) => !message.topicId);
 
     // Retrieve a collection of message IDs that satisfy the criteria
     const messageIds = await query.primaryKeys();
@@ -231,10 +228,8 @@ class _MessageModel extends BaseModel {
   // **************** Helper *************** //
 
   private async createDuplicateMessages(messages: ChatMessage[]): Promise<ChatMessage[]> {
-    // 创建一个映射来存储原始消息ID和复制消息ID之间的关系
     const idMapping = new Map<string, string>();
 
-    // 首先复制所有消息，并为每个复制的消息生成新的ID
     const duplicatedMessages = messages.map((originalMessage) => {
       const newId = nanoid();
       idMapping.set(originalMessage.id, newId);
@@ -242,7 +237,6 @@ class _MessageModel extends BaseModel {
       return { ...originalMessage, id: newId };
     });
 
-    // 更新 parentId 为复制后的新ID
     for (const duplicatedMessage of duplicatedMessages) {
       if (duplicatedMessage.parentId && idMapping.has(duplicatedMessage.parentId)) {
         duplicatedMessage.parentId = idMapping.get(duplicatedMessage.parentId);

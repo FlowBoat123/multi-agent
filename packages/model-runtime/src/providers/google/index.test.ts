@@ -1,7 +1,7 @@
 // @vitest-environment edge-runtime
 import { GenerateContentResponse, Tool } from '@google/genai';
-import { OpenAIChatMessage } from '@lobechat/model-runtime';
-import { ChatStreamPayload } from '@lobechat/types';
+import { OpenAIChatMessage } from '@agent/model-runtime';
+import { ChatStreamPayload } from '@agent/types';
 import OpenAI from 'openai';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -16,7 +16,7 @@ const bizErrorType = 'ProviderBizError';
 const invalidErrorType = 'InvalidProviderAPIKey';
 
 // Mock the console.error to avoid polluting test output
-vi.spyOn(console, 'error').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => { });
 
 let instance: LobeGoogleAI;
 
@@ -24,7 +24,7 @@ beforeEach(() => {
   instance = new LobeGoogleAI({ apiKey: 'test' });
 
   // Use vi.spyOn to mock the chat.completions.create method
-  const mockStreamData = (async function* (): AsyncGenerator<GenerateContentResponse> {})();
+  const mockStreamData = (async function* (): AsyncGenerator<GenerateContentResponse> { })();
   vi.spyOn(instance['client'].models, 'generateContentStream').mockResolvedValue(mockStreamData);
 });
 

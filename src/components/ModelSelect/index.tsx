@@ -1,4 +1,4 @@
-import { ChatModelCard } from '@lobechat/types';
+import { ChatModelCard } from '@agent/types';
 import { IconAvatarProps, ModelIcon, ProviderIcon } from '@lobehub/icons';
 import { Avatar, Icon, Tag, Text, Tooltip } from '@lobehub/ui';
 import { createStyles, useResponsive } from 'antd-style';

@@ -4,8 +4,7 @@ import { ModelProviderCard } from '@/types/llm';
 const Doubao: ModelProviderCard = {
   chatModels: [],
   checkModel: 'doubao-1-5-lite-32k-250115',
-  description:
-    '字节跳动推出的大模型服务的开发平台，提供功能丰富、安全以及具备价格竞争力的模型调用服务，同时提供模型数据、精调、推理、评测等端到端功能，全方位保障您的 AI 应用开发落地。',
+  description: '',
   id: 'volcengine',
   modelsUrl: 'https://www.volcengine.com/docs/82379/1330310',
   name: 'Volcengine',

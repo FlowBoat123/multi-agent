@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/context-engine",
+  "name": "@agent/context-engine",
   "version": "0.1.0",
   "private": true,
   "description": "Context Pipeline Engine for LobeChat - A flexible and configurable context processing system",
@@ -18,9 +18,9 @@
     "test:update": "vitest -u"
   },
   "dependencies": {
-    "@lobechat/prompts": "workspace:*",
-    "@lobechat/types": "workspace:*",
-    "@lobechat/utils": "workspace:*",
+    "@agent/prompts": "workspace:*",
+    "@agent/types": "workspace:*",
+    "@agent/utils": "workspace:*",
     "debug": "^4.3.4",
     "immer": "^10.0.3",
     "lodash-es": "^4.17.21"

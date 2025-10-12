@@ -1,4 +1,4 @@
-import { chainSummaryGenerationTitle } from '@lobechat/prompts';
+import { chainSummaryGenerationTitle } from '@agent/prompts';
 import isEqual from 'fast-deep-equal';
 import { SWRResponse, mutate } from 'swr';
 import { StateCreator } from 'zustand/vanilla';

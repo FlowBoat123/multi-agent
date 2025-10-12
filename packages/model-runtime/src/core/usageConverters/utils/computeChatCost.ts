@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { CREDITS_PER_DOLLAR } from '@lobechat/const/currency';
+import { CREDITS_PER_DOLLAR } from '@agent/const/currency';
 import debug from 'debug';
 import {
   FixedPricingUnit,

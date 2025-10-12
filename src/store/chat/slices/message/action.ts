@@ -14,7 +14,7 @@ import {
   TraceEventPayloads,
   TraceEventType,
   UpdateMessageRAGParams,
-} from '@lobechat/types';
+} from '@agent/types';
 import { copyToClipboard } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import { SWRResponse, mutate } from 'swr';

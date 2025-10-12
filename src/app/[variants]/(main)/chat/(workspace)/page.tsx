@@ -11,7 +11,6 @@ import { DynamicLayoutProps } from '@/types/next';
 import { RouteVariants } from '@/utils/server/routeVariants';
 
 import PageTitle from '../features/PageTitle';
-import Changelog from './features/ChangelogModal';
 import TelemetryNotification from './features/TelemetryNotification';
 
 export const generateMetadata = async (props: DynamicLayoutProps) => {
@@ -25,7 +24,7 @@ export const generateMetadata = async (props: DynamicLayoutProps) => {
 };
 
 const Page = async (props: DynamicLayoutProps) => {
-  const { hideDocs, showChangelog } = serverFeatureFlags();
+  const { hideDocs } = serverFeatureFlags();
   const { isMobile, locale } = await RouteVariants.getVariantsFromProps(props);
   const { t } = await translation('metadata', locale);
   const ld = ldModule.generate({
@@ -39,9 +38,9 @@ const Page = async (props: DynamicLayoutProps) => {
       <StructuredData ld={ld} />
       <PageTitle />
       <TelemetryNotification mobile={isMobile} />
-      {!isDesktop && showChangelog && !hideDocs && !isMobile && (
+      {!isDesktop && !hideDocs && !isMobile && (
         <Suspense>
-          <Changelog />
+          null
         </Suspense>
       )}
     </>

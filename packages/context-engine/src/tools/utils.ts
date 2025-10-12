@@ -20,7 +20,7 @@ const genToolCallShortMD5Hash = (name: string): string => {
 
 /**
  * Generate tool calling name
- * Default tool name generation logic (copied from @lobechat/utils)
+ * Default tool name generation logic (copied from @agent/utils)
  */
 export const generateToolName = (identifier: string, name: string, type: string = 'default'): string => {
   const pluginType = type && type !== 'default' ? `${PLUGIN_SCHEMA_SEPARATOR + type}` : '';
@@ -45,10 +45,10 @@ export const generateToolName = (identifier: string, name: string, type: string 
 export function validateManifest(manifest: any): manifest is LobeChatPluginManifest {
   return Boolean(
     manifest &&
-      typeof manifest === 'object' &&
-      typeof manifest.identifier === 'string' &&
-      Array.isArray(manifest.api) &&
-      manifest.api.length > 0,
+    typeof manifest === 'object' &&
+    typeof manifest.identifier === 'string' &&
+    Array.isArray(manifest.api) &&
+    manifest.api.length > 0,
   );
 }
 

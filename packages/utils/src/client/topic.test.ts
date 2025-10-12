@@ -1,4 +1,4 @@
-import { ChatTopic } from '@lobechat/types';
+import { ChatTopic } from '@agent/types';
 import dayjs from 'dayjs';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 

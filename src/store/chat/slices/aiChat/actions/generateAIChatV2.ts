@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix, typescript-sort-keys/interface */
 // Disable the auto sort key eslint rule to make the code more logic and readable
-import { INBOX_SESSION_ID, isDesktop } from '@lobechat/const';
-import { knowledgeBaseQAPrompts } from '@lobechat/prompts';
+import { INBOX_SESSION_ID, isDesktop } from '@agent/const';
+import { knowledgeBaseQAPrompts } from '@agent/prompts';
 import {
   ChatMessage,
   ChatTopic,
@@ -9,7 +9,7 @@ import {
   SendMessageParams,
   SendMessageServerResponse,
   TraceNameMap,
-} from '@lobechat/types';
+} from '@agent/types';
 import { TRPCClientError } from '@trpc/client';
 import { t } from 'i18next';
 import { produce } from 'immer';
@@ -168,9 +168,9 @@ export const generateAIChatV2: StateCreator<
           threadId: activeThreadId,
           newTopic: !activeTopicId
             ? {
-                topicMessageIds: messages.map((m) => m.id),
-                title: t('defaultTitle', { ns: 'topic' }),
-              }
+              topicMessageIds: messages.map((m) => m.id),
+              title: t('defaultTitle', { ns: 'topic' }),
+            }
             : undefined,
           sessionId: activeId === INBOX_SESSION_ID ? undefined : activeId,
           newAssistantMessage: { model, provider: provider! },

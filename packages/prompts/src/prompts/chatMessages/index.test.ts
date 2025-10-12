@@ -1,4 +1,4 @@
-import { ChatMessage } from '@lobechat/types';
+import { ChatMessage } from '@agent/types';
 import { describe, expect, it } from 'vitest';
 
 import { chatHistoryPrompts } from './index';

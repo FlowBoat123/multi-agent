@@ -1,4 +1,4 @@
-import { CreateNewEvalDatasets } from '@lobechat/types';
+import { CreateNewEvalDatasets } from '@agent/types';
 import { Button, Form, Input } from '@lobehub/ui';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';

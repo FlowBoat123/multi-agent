@@ -1,10 +1,10 @@
-import { ChatImageItem, ChatMessage, ChatVideoItem } from '@lobechat/types';
+import { ChatImageItem, ChatMessage, ChatVideoItem } from '@agent/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { PipelineContext } from '../../types';
 import { MessageContentProcessor } from '../MessageContent';
 
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@agent/utils', () => ({
   imageUrlToBase64: vi.fn().mockResolvedValue({
     base64: 'base64-data',
     mimeType: 'image/png',

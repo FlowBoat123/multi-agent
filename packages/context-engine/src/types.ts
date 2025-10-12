@@ -1,4 +1,4 @@
-import { ChatMessage } from '@lobechat/types';
+import { ChatMessage } from '@agent/types';
 
 /**
  * 智能体状态 - 从原项目类型推断
@@ -198,4 +198,4 @@ export class PipelineError extends Error {
   }
 }
 
-export type { ChatMessage } from '@lobechat/types';
+export type { ChatMessage } from '@agent/types';

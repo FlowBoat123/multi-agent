@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {

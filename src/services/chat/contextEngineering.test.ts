@@ -1,4 +1,4 @@
-import { ChatMessage } from '@lobechat/types';
+import { ChatMessage } from '@agent/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import * as isCanUseFCModule from '@/helpers/isCanUseFC';
@@ -19,7 +19,7 @@ vi.mock('@/utils/client/parserPlaceholder', () => ({
 // 默认设置 isServerMode 为 false
 let isServerMode = false;
 
-vi.mock('@lobechat/const', async (importOriginal) => {
+vi.mock('@agent/const', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as any),

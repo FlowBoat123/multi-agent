@@ -1,4 +1,4 @@
-import { MainBroadcastEventKey, MainBroadcastParams } from '@lobechat/electron-client-ipc';
+import { MainBroadcastEventKey, MainBroadcastParams } from '@agent/electron-client-ipc';
 import { WebContents } from 'electron';
 
 import { createLogger } from '@/utils/logger';

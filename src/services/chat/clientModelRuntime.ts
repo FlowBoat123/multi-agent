@@ -1,4 +1,4 @@
-import { ModelRuntime } from '@lobechat/model-runtime';
+import { ModelRuntime } from '@agent/model-runtime';
 
 import { createPayloadWithKeyVaults } from '../_auth';
 

@@ -17,7 +17,7 @@ import {
   LobeZeroOneAI,
   LobeZhipuAI,
   ModelRuntime,
-} from '@lobechat/model-runtime';
+} from '@agent/model-runtime';
 import { merge } from 'lodash-es';
 import { ModelProvider } from 'model-bank';
 import OpenAI from 'openai';
@@ -53,7 +53,7 @@ vi.mock('@/utils/imageToBase64', () => ({
   imageUrlToBase64: vi.fn(),
 }));
 
-vi.mock('@lobechat/model-runtime', async (importOriginal) => {
+vi.mock('@agent/model-runtime', async (importOriginal) => {
   const actual = await importOriginal();
 
   return {
@@ -83,7 +83,7 @@ beforeEach(async () => {
   // Set default mock return values for image processing utilities
   const { isLocalUrl } = await import('@/utils/url');
   const { imageUrlToBase64 } = await import('@/utils/imageToBase64');
-  const { parseDataUri } = await import('@lobechat/model-runtime');
+  const { parseDataUri } = await import('@agent/model-runtime');
 
   vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
   vi.mocked(isLocalUrl).mockReturnValue(false);

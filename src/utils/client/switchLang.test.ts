@@ -1,4 +1,4 @@
-import { setCookie } from '@lobechat/utils';
+import { setCookie } from '@agent/utils';
 import { changeLanguage } from 'i18next';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -11,7 +11,7 @@ vi.mock('i18next', () => ({
   changeLanguage: vi.fn(),
 }));
 
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@agent/utils', () => ({
   setCookie: vi.fn(),
 }));
 

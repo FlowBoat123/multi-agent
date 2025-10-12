@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/agent-runtime",
+  "name": "@agent/agent-runtime",
   "version": "1.0.0",
   "private": true,
   "main": "./src/index.ts",

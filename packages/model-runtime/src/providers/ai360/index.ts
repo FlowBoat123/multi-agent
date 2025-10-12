@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import { ModelProvider } from 'model-bank';
 
 import { createOpenAICompatibleRuntime } from '../../core/openaiCompatibleFactory';
@@ -17,14 +17,14 @@ export const LobeAi360AI = createOpenAICompatibleRuntime({
 
       const ai360Tools = enabledSearch
         ? [
-            ...(tools || []),
-            {
-              type: 'web_search',
-              web_search: {
-                search_mode: 'auto',
-              },
+          ...(tools || []),
+          {
+            type: 'web_search',
+            web_search: {
+              search_mode: 'auto',
             },
-          ]
+          },
+        ]
         : tools;
 
       return {

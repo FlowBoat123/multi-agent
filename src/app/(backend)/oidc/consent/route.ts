@@ -1,4 +1,4 @@
-import { correctOIDCUrl, getUserAuth } from '@lobechat/utils/server';
+import { correctOIDCUrl, getUserAuth } from '@agent/utils/server';
 import debug from 'debug';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -57,14 +57,10 @@ export async function POST(request: NextRequest) {
       } else {
         log(`Handling 'consent' prompt`);
 
-        // 1. 获取必要的 ID
         const clientId = details.params.client_id as string;
 
-        // 2. 查找或创建 Grant 对象
         const grant = await oidcService.findOrCreateGrants(userId!, clientId, details.grantId);
 
-        // 3. 将用户同意的 scopes 和 claims 添加到 Grant 对象
-        //    这些信息通常在 details.prompt.details 中
         const missingOIDCScope = (prompt.details.missingOIDCScope as string[]) || [];
         if (missingOIDCScope) {
           grant.addOIDCScope(missingOIDCScope.join(' '));
@@ -84,16 +80,13 @@ export async function POST(request: NextRequest) {
             log('Added resource scopes for %s to grant: %s', indicator, scopes.join(' '));
           }
         }
-        // 如果使用了 RAR (Rich Authorization Requests)，也需要添加到 grant
         // if (prompt.details.rar) {
         //   prompt.details.rar.forEach(detail => grant.addRar(detail));
         // }
 
-        // 4. 保存 Grant 对象以获取其 jti (grantId)
         const newGrantId = await grant.save();
         log('Saved grant with ID: %s', newGrantId);
 
-        // 5. 准备包含 grantId 的 result
         result = { consent: { grantId: newGrantId } };
 
         log('Consent result prepared with grantId');

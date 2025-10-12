@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { ChatCompletionTool } from '@lobechat/model-runtime';
+import { ChatCompletionTool } from '@agent/model-runtime';
 import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as debugStreamModule from '../../utils/debugStream';
@@ -11,7 +11,7 @@ const bizErrorType = 'ProviderBizError';
 const invalidErrorType = 'InvalidProviderAPIKey';
 
 // Mock the console.error to avoid polluting test output
-vi.spyOn(console, 'error').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => { });
 
 let instance: LobeCloudflareAI;
 const textEncoder = new TextEncoder();

@@ -1,6 +1,6 @@
-import { isDesktop, isServerMode } from '@lobechat/const';
-import { parseDataUri } from '@lobechat/model-runtime';
-import { uuid } from '@lobechat/utils';
+import { isDesktop, isServerMode } from '@agent/const';
+import { parseDataUri } from '@agent/model-runtime';
+import { uuid } from '@agent/utils';
 import dayjs from 'dayjs';
 import { sha256 } from 'js-sha256';
 

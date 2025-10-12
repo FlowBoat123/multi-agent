@@ -1,4 +1,4 @@
-import { ChatMessageError, ErrorResponse, ErrorType } from '@lobechat/types';
+import { ChatMessageError, ErrorResponse, ErrorType } from '@agent/types';
 import { t } from 'i18next';
 
 export const getMessageError = async (response: Response) => {

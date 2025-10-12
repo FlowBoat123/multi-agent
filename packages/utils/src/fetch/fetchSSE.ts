@@ -1,5 +1,5 @@
-import { LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID, MESSAGE_CANCEL_FLAT } from '@lobechat/const';
-import { parseToolCalls } from '@lobechat/model-runtime';
+import { LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID, MESSAGE_CANCEL_FLAT } from '@agent/const';
+import { parseToolCalls } from '@agent/model-runtime';
 import {
   ChatErrorType,
   ChatImageChunk,
@@ -13,7 +13,7 @@ import {
   ModelUsage,
   ResponseAnimation,
   ResponseAnimationStyle,
-} from '@lobechat/types';
+} from '@agent/types';
 
 import { fetchEventSource } from '../client/fetchEventSource';
 import { nanoid } from '../uuid';
@@ -400,14 +400,14 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
           error.type
             ? error
             : {
-                body: {
-                  message: error.message,
-                  name: error.name,
-                  stack: error.stack,
-                },
+              body: {
                 message: error.message,
-                type: ChatErrorType.UnknownChatFetchError,
+                name: error.name,
+                stack: error.stack,
               },
+              message: error.message,
+              type: ChatErrorType.UnknownChatFetchError,
+            },
         );
         return;
       }

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { ChatCompletionTool, ChatStreamPayload } from '@lobechat/model-runtime';
+import { ChatCompletionTool, ChatStreamPayload } from '@agent/model-runtime';
 import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as anthropicHelpers from '../../utils/anthropicHelpers';
@@ -12,7 +12,7 @@ const bizErrorType = 'ProviderBizError';
 const invalidErrorType = 'InvalidProviderAPIKey';
 
 // Mock the console.error to avoid polluting test output
-vi.spyOn(console, 'error').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => { });
 
 let instance: LobeAnthropicAI;
 

@@ -1,5 +1,5 @@
-import { LobeChatDatabase } from '@lobechat/database';
-import { ClientSecretPayload } from '@lobechat/types';
+import { LobeChatDatabase } from '@agent/database';
+import { ClientSecretPayload } from '@agent/types';
 
 import { AsyncTaskModel } from '@/database/models/asyncTask';
 import { FileModel } from '@/database/models/file';

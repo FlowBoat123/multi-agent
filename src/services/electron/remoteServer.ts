@@ -1,4 +1,4 @@
-import { DataSyncConfig, dispatch } from '@lobechat/electron-client-ipc';
+import { DataSyncConfig, dispatch } from '@agent/electron-client-ipc';
 
 class RemoteServerService {
   /**

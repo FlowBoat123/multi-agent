@@ -1,4 +1,4 @@
-import { ModelTokensUsage, ModelUsage } from '@lobechat/types';
+import { ModelTokensUsage, ModelUsage } from '@agent/types';
 import debug from 'debug';
 import { Pricing } from 'model-bank';
 import OpenAI from 'openai';

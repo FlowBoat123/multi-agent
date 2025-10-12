@@ -1,5 +1,5 @@
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeErrorType } from '@agent/model-runtime';
+import { ChatErrorType } from '@agent/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createErrorResponse } from './errorResponse';
@@ -99,7 +99,7 @@ describe('createErrorResponse', () => {
     const consoleSpy = vi.spyOn(console, 'error');
     try {
       createErrorResponse(errorType as any);
-    } catch (e) {}
+    } catch (e) { }
     expect(consoleSpy).toHaveBeenCalled();
     consoleSpy.mockRestore();
   });

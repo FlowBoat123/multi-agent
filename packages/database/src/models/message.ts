@@ -12,7 +12,7 @@ import {
   NewMessageQueryParams,
   UpdateMessageParams,
   UpdateMessageRAGParams,
-} from '@lobechat/types';
+} from '@agent/types';
 import type { HeatmapsProps } from '@lobehub/charts';
 import dayjs from 'dayjs';
 import { and, asc, count, desc, eq, gt, inArray, isNotNull, isNull, like, sql } from 'drizzle-orm';
@@ -228,10 +228,10 @@ export class MessageModel {
             translate,
             tts: ttsId
               ? {
-                  contentMd5: ttsContentMd5,
-                  file: ttsFile,
-                  voice: ttsVoice,
-                }
+                contentMd5: ttsContentMd5,
+                file: ttsFile,
+                voice: ttsVoice,
+              }
               : undefined,
           },
           fileList: fileList

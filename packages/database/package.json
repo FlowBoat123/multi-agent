@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/database",
+  "name": "@agent/database",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.17",
-    "@lobechat/const": "workspace:*",
-    "@lobechat/types": "workspace:*",
-    "@lobechat/utils": "workspace:*",
+    "@agent/const": "workspace:*",
+    "@agent/types": "workspace:*",
+    "@agent/utils": "workspace:*",
     "dayjs": "^1.11.18",
     "drizzle-orm": "^0.44.4",
     "nanoid": "^5.1.5",

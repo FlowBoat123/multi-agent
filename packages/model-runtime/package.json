@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/model-runtime",
+  "name": "@agent/model-runtime",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.862.0",
-    "@lobechat/const": "workspace:*",
-    "@lobechat/types": "workspace:*",
-    "@lobechat/utils": "workspace:*",
+    "@agent/const": "workspace:*",
+    "@agent/types": "workspace:*",
+    "@agent/utils": "workspace:*",
     "debug": "^4.4.1",
     "model-bank": "workspace:*",
     "openai": "^4.104.0"

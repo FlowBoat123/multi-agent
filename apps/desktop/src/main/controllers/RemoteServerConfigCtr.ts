@@ -1,4 +1,4 @@
-import { DataSyncConfig } from '@lobechat/electron-client-ipc';
+import { DataSyncConfig } from '@agent/electron-client-ipc';
 import { safeStorage } from 'electron';
 import querystring from 'node:querystring';
 import { URL } from 'node:url';
@@ -312,9 +312,8 @@ export default class RemoteServerConfigCtr extends ControllerModule {
       if (!response.ok) {
         // 尝试解析错误响应
         const errorData = await response.json().catch(() => ({}));
-        const errorMessage = `刷新令牌失败: ${response.status} ${response.statusText} ${
-          errorData.error_description || errorData.error || ''
-        }`.trim();
+        const errorMessage = `刷新令牌失败: ${response.status} ${response.statusText} ${errorData.error_description || errorData.error || ''
+          }`.trim();
         logger.error(errorMessage, errorData);
         return { error: errorMessage, success: false };
       }

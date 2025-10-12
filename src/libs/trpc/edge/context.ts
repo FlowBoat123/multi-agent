@@ -1,4 +1,4 @@
-import { ClientSecretPayload } from '@lobechat/types';
+import { ClientSecretPayload } from '@agent/types';
 import { User } from 'next-auth';
 import { NextRequest } from 'next/server';
 

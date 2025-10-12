@@ -37,7 +37,7 @@ vi.mock('@/utils/fetch', async (importOriginal) => {
 
   return { ...(module as any), getMessageError: vi.fn() };
 });
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@agent/utils', () => ({
   isLocalUrl: vi.fn(),
   imageUrlToBase64: vi.fn(),
   parseDataUri: vi.fn(),
@@ -280,7 +280,7 @@ describe('ChatService', () => {
     describe('should handle content correctly for vision models', () => {
       it('should include image content when with vision model', async () => {
         // Mock utility functions used in processImageList
-        const { parseDataUri, isLocalUrl } = await import('@lobechat/utils');
+        const { parseDataUri, isLocalUrl } = await import('@agent/utils');
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
         vi.mocked(isLocalUrl).mockReturnValue(false); // Not a local URL
 
@@ -357,7 +357,7 @@ describe('ChatService', () => {
 
     describe('local image URL conversion', () => {
       it('should convert local image URLs to base64 and call processImageList', async () => {
-        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@lobechat/utils');
+        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@agent/utils');
 
         // Mock for local URL
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
@@ -428,7 +428,7 @@ describe('ChatService', () => {
       });
 
       it('should not convert remote URLs to base64 and call processImageList', async () => {
-        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@lobechat/utils');
+        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@agent/utils');
 
         // Mock for remote URL
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
@@ -492,7 +492,7 @@ describe('ChatService', () => {
       });
 
       it('should handle mixed local and remote URLs correctly', async () => {
-        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@lobechat/utils');
+        const { imageUrlToBase64, parseDataUri, isLocalUrl } = await import('@agent/utils');
 
         // Mock parseDataUri to always return url type
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });

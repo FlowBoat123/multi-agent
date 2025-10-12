@@ -1,4 +1,4 @@
-import { ChatMessage } from '@lobechat/types';
+import { ChatMessage } from '@agent/types';
 import { Mock, describe, expect, it, vi } from 'vitest';
 
 import { chainSummaryHistory } from '../summaryHistory';

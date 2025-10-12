@@ -1,5 +1,5 @@
-import { LobeChatDatabase } from '@lobechat/database';
-import { ClientSecretPayload } from '@lobechat/types';
+import { LobeChatDatabase } from '@agent/database';
+import { ClientSecretPayload } from '@agent/types';
 import debug from 'debug';
 import { NextRequest } from 'next/server';
 

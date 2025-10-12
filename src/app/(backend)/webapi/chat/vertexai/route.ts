@@ -1,5 +1,5 @@
-import { ModelRuntime } from '@lobechat/model-runtime';
-import { LobeVertexAI } from '@lobechat/model-runtime/vertexai';
+import { ModelRuntime } from '@agent/model-runtime';
+import { LobeVertexAI } from '@agent/model-runtime/vertexai';
 import { ModelProvider } from 'model-bank';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';

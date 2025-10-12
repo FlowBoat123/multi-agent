@@ -1,4 +1,4 @@
-import { ChatVideoItem } from '@lobechat/types';
+import { ChatVideoItem } from '@agent/types';
 
 const videoPrompt = (item: ChatVideoItem, attachUrl: boolean) =>
   attachUrl

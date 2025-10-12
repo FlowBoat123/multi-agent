@@ -1,12 +1,12 @@
-import { LOBE_CHAT_AUTH_HEADER, isDeprecatedEdition } from '@lobechat/const';
+import { LOBE_CHAT_AUTH_HEADER, isDeprecatedEdition } from '@agent/const';
 import {
   AWSBedrockKeyVault,
   AzureOpenAIKeyVault,
   ClientSecretPayload,
   CloudflareKeyVault,
   OpenAICompatibleKeyVault,
-} from '@lobechat/types';
-import { clientApiKeyManager } from '@lobechat/utils/client';
+} from '@agent/types';
+import { clientApiKeyManager } from '@agent/utils/client';
 import { ModelProvider } from 'model-bank';
 
 import { aiProviderSelectors, useAiInfraStore } from '@/store/aiInfra';

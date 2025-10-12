@@ -1,7 +1,7 @@
 /**
  * @see https://github.com/lobehub/lobe-chat/discussions/6563
  */
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@agent/types';
 import OpenAI, { ClientOptions } from 'openai';
 import { Stream } from 'openai/streaming';
 
@@ -60,11 +60,11 @@ type ConstructorOptions<T extends Record<string, any> = any> = ClientOptions & T
 type Routers =
   | RouterInstance[]
   | ((
-      options: ClientOptions & Record<string, any>,
-      runtimeContext: {
-        model?: string;
-      },
-    ) => RouterInstance[] | Promise<RouterInstance[]>);
+    options: ClientOptions & Record<string, any>,
+    runtimeContext: {
+      model?: string;
+    },
+  ) => RouterInstance[] | Promise<RouterInstance[]>);
 
 interface CreateRouterRuntimeOptions<T extends Record<string, any> = any> {
   apiKey?: string;
@@ -108,10 +108,10 @@ interface CreateRouterRuntimeOptions<T extends Record<string, any> = any> {
   };
   id: string;
   models?:
-    | ((params: { client: OpenAI }) => Promise<ChatModelCard[]>)
-    | {
-        transformModel?: (model: OpenAI.Model) => ChatModelCard;
-      };
+  | ((params: { client: OpenAI }) => Promise<ChatModelCard[]>)
+  | {
+    transformModel?: (model: OpenAI.Model) => ChatModelCard;
+  };
   responses?: {
     handlePayload?: (
       payload: ChatStreamPayload,

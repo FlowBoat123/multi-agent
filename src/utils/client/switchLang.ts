@@ -1,4 +1,4 @@
-import { setCookie } from '@lobechat/utils';
+import { setCookie } from '@agent/utils';
 import { changeLanguage } from 'i18next';
 
 import { LOBE_LOCALE_COOKIE } from '@/const/locale';

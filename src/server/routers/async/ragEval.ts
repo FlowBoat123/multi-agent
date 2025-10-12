@@ -1,5 +1,5 @@
-import { chainAnswerWithContext } from '@lobechat/prompts';
-import { EvalEvaluationStatus } from '@lobechat/types';
+import { chainAnswerWithContext } from '@agent/prompts';
+import { EvalEvaluationStatus } from '@agent/types';
 import { TRPCError } from '@trpc/server';
 import { ModelProvider } from 'model-bank';
 import OpenAI from 'openai';
@@ -61,7 +61,6 @@ export const ragEvalRouter = router({
         let questionEmbeddingId = evalRecord.questionEmbeddingId;
         let context = evalRecord.context;
 
-        // 如果不存在 questionEmbeddingId，那么就需要做一次 embedding
         if (!questionEmbeddingId) {
           const embeddings = await agentRuntime.embeddings({
             dimensions: 1024,
@@ -81,7 +80,6 @@ export const ragEvalRouter = router({
           questionEmbeddingId = embeddingId;
         }
 
-        // 如果不存在 context，那么就需要做一次检索
         if (!context || context.length === 0) {
           const datasetRecord = await ctx.datasetRecordModel.findById(evalRecord.datasetRecordId);
 
@@ -97,7 +95,6 @@ export const ragEvalRouter = router({
           await ctx.evalRecordModel.update(evalRecord.id, { context });
         }
 
-        // 做一次生成 LLM 答案生成
         const { messages } = chainAnswerWithContext({ context, knowledge: [], question });
 
         const response = await agentRuntime.chat({

@@ -1,4 +1,4 @@
-import { ChatCompletionTool, OpenAIPluginManifest } from '@lobechat/types';
+import { ChatCompletionTool, OpenAIPluginManifest } from '@agent/types';
 import { LobeChatPluginManifest, pluginManifestSchema } from '@lobehub/chat-plugin-sdk';
 import { uniqBy } from 'lodash-es';
 

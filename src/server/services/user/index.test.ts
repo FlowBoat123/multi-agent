@@ -1,5 +1,5 @@
 import { UserJSON } from '@clerk/backend';
-import { LobeChatDatabase } from '@lobechat/database';
+import { LobeChatDatabase } from '@agent/database';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { UserModel } from '@/database/models/user';

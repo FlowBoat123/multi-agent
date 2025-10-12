@@ -1,6 +1,6 @@
-import { INBOX_SESSION_ID, LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID } from '@lobechat/const';
-import { ChatStreamCallbacks, ChatStreamPayload } from '@lobechat/model-runtime';
-import { TracePayload, TraceTagMap } from '@lobechat/types';
+import { INBOX_SESSION_ID, LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID } from '@agent/const';
+import { ChatStreamCallbacks, ChatStreamPayload } from '@agent/model-runtime';
+import { TracePayload, TraceTagMap } from '@agent/types';
 import { after } from 'next/server';
 
 import { TraceClient } from '@/libs/traces';
@@ -50,7 +50,7 @@ export const createTraceOptions = (
           !!toolsCalling && toolsCalling.length > 0
             ? !!text
               ? // tools calling with thinking and text
-                { text, thinking, toolsCalling }
+              { text, thinking, toolsCalling }
               : toolsCalling
             : !!thinking
               ? { text, thinking }
@@ -62,12 +62,12 @@ export const createTraceOptions = (
           output,
           usage: usage
             ? {
-                completionTokens: usage.outputTextTokens,
-                input: usage.totalInputTokens,
-                output: usage.totalOutputTokens,
-                promptTokens: usage.inputTextTokens,
-                totalTokens: usage.totalTokens,
-              }
+              completionTokens: usage.outputTextTokens,
+              input: usage.totalInputTokens,
+              output: usage.totalOutputTokens,
+              promptTokens: usage.inputTextTokens,
+              totalTokens: usage.totalTokens,
+            }
             : undefined,
         });
 

@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/utils",
+  "name": "@agent/utils",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -12,8 +12,8 @@
     "test:coverage": "vitest --coverage --silent='passed-only'"
   },
   "dependencies": {
-    "@lobechat/const": "workspace:*",
-    "@lobechat/types": "workspace:*",
+    "@agent/const": "workspace:*",
+    "@agent/types": "workspace:*",
     "dayjs": "^1.11.18",
     "dompurify": "^3.2.7"
   },

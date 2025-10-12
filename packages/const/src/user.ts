@@ -1,4 +1,4 @@
-import { TopicDisplayMode, UserPreference } from '@lobechat/types';
+import { TopicDisplayMode, UserPreference } from '@agent/types';
 
 export const DEFAULT_PREFERENCE: UserPreference = {
   guide: {

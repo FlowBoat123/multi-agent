@@ -1,4 +1,4 @@
-import { CrawlErrorResult } from '@lobechat/web-crawler';
+import { CrawlErrorResult } from '@agent/web-crawler';
 import { memo } from 'react';
 import { Flexbox } from 'react-layout-kit';
 

@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix, typescript-sort-keys/interface */
 // Note: To make the code more logic and readable, we just disable the auto sort key eslint rule
 // DON'T REMOVE THE FIRST LINE
-import { chainSummaryTitle } from '@lobechat/prompts';
-import { TraceNameMap } from '@lobechat/types';
+import { chainSummaryTitle } from '@agent/prompts';
+import { TraceNameMap } from '@agent/types';
 import isEqual from 'fast-deep-equal';
 import { t } from 'i18next';
 import useSWR, { SWRResponse, mutate } from 'swr';

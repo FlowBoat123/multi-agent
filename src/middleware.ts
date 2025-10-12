@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { parseDefaultThemeFromCountry } from '@lobechat/utils/server';
+import { parseDefaultThemeFromCountry } from '@agent/utils/server';
 import debug from 'debug';
 import { NextRequest, NextResponse } from 'next/server';
 import { UAParser } from 'ua-parser-js';

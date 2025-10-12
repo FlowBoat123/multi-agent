@@ -1,4 +1,4 @@
-import { LobeChatDatabase } from '@lobechat/database';
+import { LobeChatDatabase } from '@agent/database';
 import { describe, expect, it, vi } from 'vitest';
 
 import { MessageModel } from '@/database/models/message';

@@ -1,7 +1,7 @@
 import {
   DesktopNotificationResult,
   ShowDesktopNotificationParams,
-} from '@lobechat/electron-client-ipc';
+} from '@agent/electron-client-ipc';
 import { Notification, app } from 'electron';
 import { macOS, windows } from 'electron-is';
 

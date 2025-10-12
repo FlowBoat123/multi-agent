@@ -5,7 +5,7 @@ import { ModelProviderCard } from '@/types/llm';
  */
 const Fal: ModelProviderCard = {
   chatModels: [],
-  description: '面向开发者的生成式媒体平台',
+  description: '',
   enabled: true,
   id: 'fal',
   name: 'Fal',

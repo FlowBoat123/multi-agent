@@ -1,7 +1,7 @@
 'use client';
 
 import { ProColumns, ProTable } from '@ant-design/pro-components';
-import { EvalDatasetRecordRefFile } from '@lobechat/types';
+import { EvalDatasetRecordRefFile } from '@agent/types';
 import { ActionIcon, Button, Text } from '@lobehub/ui';
 import { Upload } from 'antd';
 import { createStyles } from 'antd-style';

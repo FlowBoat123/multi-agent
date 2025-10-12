@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/observability-otel",
+  "name": "@agent/observability-otel",
   "version": "1.0.0",
   "private": true,
   "exports": {

@@ -1,5 +1,5 @@
-import { chainSummaryHistory } from '@lobechat/prompts';
-import { TraceNameMap } from '@lobechat/types';
+import { chainSummaryHistory } from '@agent/prompts';
+import { TraceNameMap } from '@agent/types';
 import { StateCreator } from 'zustand/vanilla';
 
 import { chatService } from '@/services/chat';

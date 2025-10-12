@@ -1,5 +1,5 @@
-import { BRANDING_NAME, isDesktop } from '@lobechat/const';
-import { LobeUser } from '@lobechat/types';
+import { BRANDING_NAME, isDesktop } from '@agent/const';
+import { LobeUser } from '@agent/types';
 import { t } from 'i18next';
 
 import { enableAuth, enableClerk, enableNextAuth } from '@/const/auth';

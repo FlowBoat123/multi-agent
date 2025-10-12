@@ -1,4 +1,4 @@
-import { CodeInterpreterFileItem } from '@lobechat/types';
+import { CodeInterpreterFileItem } from '@agent/types';
 import { PreviewGroup } from '@lobehub/ui';
 import { memo } from 'react';
 import { Flexbox } from 'react-layout-kit';

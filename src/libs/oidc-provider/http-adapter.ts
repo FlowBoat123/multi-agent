@@ -8,9 +8,6 @@ import { appEnv } from '@/envs/app';
 
 const log = debug('lobe-oidc:http-adapter');
 
-/**
- * 将 Next.js 请求头转换为标准 Node.js HTTP 头格式
- */
 export const convertHeadersToNodeHeaders = (nextHeaders: Headers): Record<string, string> => {
   const headers: Record<string, string> = {};
   nextHeaders.forEach((value, key) => {
@@ -19,18 +16,11 @@ export const convertHeadersToNodeHeaders = (nextHeaders: Headers): Record<string
   return headers;
 };
 
-/**
- * 创建用于 OIDC Provider 的 Node.js HTTP 请求对象
- * @param req Next.js 请求对象
- */
 export const createNodeRequest = async (req: NextRequest): Promise<IncomingMessage> => {
-  // 构建 URL 对象
   const url = new URL(req.url);
 
-  // 计算相对于前缀的路径
   let providerPath = url.pathname;
 
-  // 确保路径始终以/开头
   if (!providerPath.startsWith('/')) {
     providerPath = '/' + providerPath;
   }
@@ -80,11 +70,10 @@ export const createNodeRequest = async (req: NextRequest): Promise<IncomingMessa
     }
   }
   const nodeRequest = {
-    // 基本属性
     headers: convertHeadersToNodeHeaders(req.headers),
 
     method: req.method,
-    // 模拟可读流行为 (oidc-provider might not rely on this if body is pre-parsed)
+    // oidc-provider might not rely on this if body is pre-parsed
     // eslint-disable-next-line @typescript-eslint/ban-types
     on: (event: string, handler: Function) => {
       if (event === 'end') {
@@ -92,7 +81,6 @@ export const createNodeRequest = async (req: NextRequest): Promise<IncomingMessa
         handler();
       }
     },
-    // 添加 Node.js 服务器所期望的额外属性
     socket: {
       remoteAddress: req.headers.get('x-forwarded-for') || '127.0.0.1',
     },
@@ -107,10 +95,6 @@ export const createNodeRequest = async (req: NextRequest): Promise<IncomingMessa
   // Cast back to IncomingMessage for the function's return signature
   return nodeRequest as unknown as IncomingMessage;
 };
-
-/**
- * 响应收集器接口，用于捕获 OIDC Provider 的响应
- */
 export interface ResponseCollector {
   nodeResponse: ServerResponse;
   readonly responseBody: string | Buffer;
@@ -118,14 +102,9 @@ export interface ResponseCollector {
   readonly responseStatus: number;
 }
 
-/**
- * 创建用于 OIDC Provider 的 Node.js HTTP 响应对象
- * @param resolvePromise 当响应完成时调用的解析函数
- */
 export const createNodeResponse = (resolvePromise: () => void): ResponseCollector => {
   log('Creating Node.js response collector');
 
-  // 存储响应状态的对象
   const state = {
     responseBody: '' as string | Buffer,
     responseHeaders: {} as Record<string, string | string[]>,
@@ -224,10 +203,6 @@ export const createNodeResponse = (resolvePromise: () => void): ResponseCollecto
   };
 };
 
-/**
- * 创建用于调用 provider.interactionDetails 的上下文 (req, res)
- * @param uid 交互 ID
- */
 export const createContextForInteractionDetails = async (
   uid: string,
 ): Promise<{ req: IncomingMessage; res: ServerResponse }> => {
@@ -235,12 +210,10 @@ export const createContextForInteractionDetails = async (
   const baseUrl = appEnv.APP_URL!;
   log('Using base URL: %s', baseUrl);
 
-  // 从baseUrl提取主机名和协议用于headers
   const parsedUrl = new URL(baseUrl);
   const hostName = parsedUrl.host;
   const protocol = parsedUrl.protocol.replace(':', '');
 
-  // 1. 获取真实的 Cookies
   const cookieStore = await cookies();
   const realCookies: Record<string, string> = {};
   cookieStore.getAll().forEach((cookie) => {
@@ -248,7 +221,6 @@ export const createContextForInteractionDetails = async (
   });
   log('Real cookies found: %o', Object.keys(realCookies));
 
-  // 特别检查交互会话cookie
   const interactionCookieName = `_interaction_${uid}`;
   if (realCookies[interactionCookieName]) {
     log('Found interaction session cookie: %s', interactionCookieName);
@@ -256,7 +228,6 @@ export const createContextForInteractionDetails = async (
     log('Warning: Interaction session cookie not found: %s', interactionCookieName);
   }
 
-  // 2. 构建包含真实 Cookie 的 Headers
   const headers = new Headers({
     'host': hostName,
     'x-forwarded-host': hostName,
@@ -272,15 +243,11 @@ export const createContextForInteractionDetails = async (
     log('No cookies found to set in header');
   }
 
-  // 3. 创建模拟的 NextRequest
-  // 注意：这里的 IP, geo, ua 等信息可能是 oidc-provider 某些特性需要的，
-  // 如果遇到相关问题，可能需要从真实请求头中提取 (e.g., 'x-forwarded-for', 'user-agent')
   const interactionUrl = urlJoin(baseUrl, `/oauth/consent/${uid}`);
   log('Creating interaction URL: %s', interactionUrl);
 
   const mockNextRequest = {
     cookies: {
-      // 模拟 NextRequestCookies 接口
       get: (name: string) => cookieStore.get(name)?.value,
       getAll: () => cookieStore.getAll(),
       has: (name: string) => cookieStore.has(name),
@@ -296,14 +263,11 @@ export const createContextForInteractionDetails = async (
   } as unknown as NextRequest;
   log('Mock NextRequest created for url: %s', mockNextRequest.url);
 
-  // 4. 使用 createNodeRequest 创建模拟的 Node.js IncomingMessage
-  // pathPrefix 设置为 '/' 因为我们的 URL 已经是 Provider 期望的路径格式 /interaction/:uid
   const req: IncomingMessage = await createNodeRequest(mockNextRequest);
-  // @ts-ignore - 将解析出的 cookies 附加到模拟的 Node.js 请求上
+  // @ts-ignore
   req.cookies = realCookies;
   log('Node.js IncomingMessage created, attached real cookies');
 
-  // 5. 使用 createNodeResponse 创建模拟的 Node.js ServerResponse
   let resolveFunc: () => void;
   new Promise<void>((resolve) => {
     resolveFunc = resolve;

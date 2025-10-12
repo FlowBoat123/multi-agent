@@ -1,4 +1,4 @@
-import type { TracePayload } from '@lobechat/types';
+import type { TracePayload } from '@agent/types';
 import { ClientOptions } from 'openai';
 
 import { LobeBedrockAIParams } from '../providers/bedrock';
@@ -111,8 +111,8 @@ export class ModelRuntime {
     provider: string,
     params: Partial<
       ClientOptions &
-        LobeBedrockAIParams &
-        LobeCloudflareParams & { apiKey?: string; apiVersion?: string; baseURL?: string }
+      LobeBedrockAIParams &
+      LobeCloudflareParams & { apiKey?: string; apiVersion?: string; baseURL?: string }
     >,
   ) {
     // @ts-expect-error runtime map not include vertex so it will be undefined

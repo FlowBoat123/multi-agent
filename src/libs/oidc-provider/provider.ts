@@ -1,4 +1,4 @@
-import { LobeChatDatabase } from '@lobechat/database';
+import { LobeChatDatabase } from '@agent/database';
 import debug from 'debug';
 import Provider, { Configuration, KoaContextWithOIDC, errors } from 'oidc-provider';
 import urlJoin from 'url-join';
@@ -12,13 +12,10 @@ import { DrizzleAdapter } from './adapter';
 import { defaultClaims, defaultClients, defaultScopes } from './config';
 import { createInteractionPolicy } from './interaction-policy';
 
-const logProvider = debug('lobe-oidc:provider'); // <--- 添加 provider 日志实例
+const logProvider = debug('lobe-oidc:provider');
 
-export const API_AUDIENCE = 'urn:lobehub:chat'; // <-- 把这里换成你自己的 API 标识符
+export const API_AUDIENCE = 'urn:lobehub:chat';
 
-/**
- * 获取 Cookie 密钥，使用 KEY_VAULTS_SECRET
- */
 const getCookieKeys = () => {
   const key = serverDBEnv.KEY_VAULTS_SECRET;
   if (!key) {
@@ -27,11 +24,6 @@ const getCookieKeys = () => {
   return [key];
 };
 
-/**
- * 创建 OIDC Provider 实例
- * @param db - 数据库实例
- * @returns 配置好的 OIDC Provider 实例
- */
 export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider> => {
   // 获取 JWKS
   const jwks = getJWKS();
@@ -39,27 +31,20 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
   const cookieKeys = getCookieKeys();
 
   const configuration: Configuration = {
-    // 11. 数据库适配器
     adapter: DrizzleAdapter.createAdapterFactory(db),
 
-    // 4. Claims 定义
     claims: defaultClaims,
 
-    // 新增：客户端 CORS 控制逻辑
     clientBasedCORS(ctx, origin, client) {
-      // 检查客户端是否允许此来源
-      // 一个常见的策略是允许所有已注册的 redirect_uris 的来源
       if (!client || !client.redirectUris) {
         logProvider('clientBasedCORS: No client or redirectUris found, denying origin: %s', origin);
-        return false; // 如果没有客户端或重定向URI，则拒绝
+        return false;
       }
 
       const allowed = client.redirectUris.some((uri) => {
         try {
-          // 比较来源 (scheme, hostname, port)
           return new URL(uri).origin === origin;
         } catch {
-          // 如果 redirect_uri 不是有效的 URL (例如自定义协议)，则跳过
           return false;
         }
       });
@@ -73,17 +58,14 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       return allowed;
     },
 
-    // 1. 客户端配置
     clients: defaultClients,
 
-    // 7. Cookie 配置
     cookies: {
       keys: cookieKeys,
       long: { path: '/', signed: true },
       short: { path: '/', signed: true },
     },
 
-    // 5. 特性配置
     features: {
       backchannelLogout: { enabled: true },
       clientCredentials: { enabled: false },
@@ -112,19 +94,14 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       rpInitiatedLogout: { enabled: true },
       userinfo: { enabled: true },
     },
-    // 10. 账户查找
     async findAccount(ctx: KoaContextWithOIDC, id: string) {
       logProvider('findAccount called for id: %s', id);
 
-      // 检查是否有预先存储的外部账户 ID
-      // @ts-ignore - 自定义属性
       const externalAccountId = ctx.externalAccountId;
       if (externalAccountId) {
         logProvider('Found externalAccountId in context: %s', externalAccountId);
       }
 
-      // 确定要查找的账户 ID
-      // 优先级: 1. externalAccountId 2. ctx.oidc.session?.accountId 3. 传入的 id
       const accountIdToFind = externalAccountId || ctx.oidc?.session?.accountId || id;
 
       logProvider(
@@ -137,7 +114,6 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
             : 'parameter_id',
       );
 
-      // 如果没有可用的 ID，返回 undefined
       if (!accountIdToFind) {
         logProvider('findAccount: No account ID available, returning undefined.');
         return undefined;
@@ -188,29 +164,23 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       }
     },
 
-    // 9. 交互策略
     interactions: {
       policy: createInteractionPolicy(),
       url(ctx, interaction) {
-        // ---> 添加日志 <---
         logProvider('interactions.url function called');
         logProvider('Interaction details: %O', interaction);
         const interactionUrl = `/oauth/consent/${interaction.uid}`;
         logProvider('Generated interaction URL: %s', interactionUrl);
-        // ---> 添加日志结束 <---
         return interactionUrl;
       },
     },
 
-    // 6. 密钥配置 - 使用 RS256 JWKS
     jwks: jwks as { keys: any[] },
 
-    // 2. PKCE 配置
     pkce: {
       required: () => true,
     },
 
-    // 12. 其他配置
     renderError: async (ctx, out, error) => {
       ctx.type = 'html';
       ctx.body = `
@@ -227,7 +197,6 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       `;
     },
 
-    // 新增：启用 Refresh Token 轮换
     rotateRefreshToken: true,
 
     routes: {
@@ -235,10 +204,8 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       end_session: '/oidc/session/end',
       token: '/oidc/token',
     },
-    // 3. Scopes 定义
     scopes: defaultScopes,
 
-    // 8. 令牌有效期
     ttl: {
       AccessToken: 25 * 3600, // 25 hour
       AuthorizationCode: 600, // 10 minutes
@@ -252,7 +219,6 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
     },
   };
 
-  // 创建提供者实例
   const baseUrl = urlJoin(appEnv.APP_URL!, '/oidc');
 
   const provider = new Provider(baseUrl, configuration);

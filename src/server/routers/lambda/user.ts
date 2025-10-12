@@ -112,7 +112,6 @@ export const userRouter = router({
 
       fullName: state.fullName,
 
-      // 有消息，或者创建过助手，则认为有 conversation
       hasConversation: hasAnyMessages || hasExtraSession,
       // always return true for community version
       isOnboard: state.isOnboarded || true,
@@ -140,42 +139,33 @@ export const userRouter = router({
     await ctx.nextAuthUserService.unlinkAccount({ provider, providerAccountId });
   }),
 
-  // 服务端上传头像
   updateAvatar: userProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-    // 如果是 Base64 数据，需要上传到 S3
     if (input.startsWith('data:image')) {
       try {
-        // 提取 mimeType，例如 "image/png"
         const prefix = 'data:';
         const semicolonIndex = input.indexOf(';');
         const mimeType =
           semicolonIndex !== -1 ? input.slice(prefix.length, semicolonIndex) : 'image/png';
         const fileType = mimeType.split('/')[1];
 
-        // 分割字符串，获取 Base64 部分
         const commaIndex = input.indexOf(',');
         if (commaIndex === -1) {
           throw new Error('Invalid Base64 data');
         }
         const base64Data = input.slice(commaIndex + 1);
 
-        // 创建 S3 客户端
         const s3 = new S3();
 
-        // 使用 UUID 生成唯一文件名，防止缓存问题
-        // 获取旧头像 URL, 后面删除该头像
         const userState = await ctx.userModel.getUserState(KeyVaultsGateKeeper.getUserKeyVaults);
         const oldAvatarUrl = userState.avatar;
 
         const fileName = `${uuidv4()}.${fileType}`;
         const filePath = `user/avatar/${ctx.userId}/${fileName}`;
 
-        // 将 Base64 数据转换为 Buffer 再上传到 S3
         const buffer = Buffer.from(base64Data, 'base64');
 
         await s3.uploadBuffer(filePath, buffer, mimeType);
 
-        // 删除旧头像
         if (oldAvatarUrl && oldAvatarUrl.startsWith('/webapi/')) {
           const oldFilePath = oldAvatarUrl.replace('/webapi/', '');
           await s3.deleteFile(oldFilePath);
@@ -191,7 +181,6 @@ export const userRouter = router({
       }
     }
 
-    // 如果不是 Base64 数据，直接使用 URL 更新用户头像
     return ctx.userModel.updateUser({ avatar: input });
   }),
 

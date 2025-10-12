@@ -71,7 +71,6 @@ export const getImageUrl = async ({
 
   const dataUrl = await screenshotFn(width ? copy : dom, {
     features: {
-      // 不启用移除控制符，否则会导致 safari emoji 报错
       removeControlCharacter: false,
     },
     scale: 2,

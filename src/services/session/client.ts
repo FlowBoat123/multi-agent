@@ -1,4 +1,4 @@
-import { AgentItem, LobeAgentConfig } from '@lobechat/types';
+import { AgentItem, LobeAgentConfig } from '@agent/types';
 
 import { INBOX_SESSION_ID } from '@/const/session';
 import { clientDB } from '@/database/client/db';
