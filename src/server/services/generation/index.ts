@@ -62,10 +62,6 @@ interface ImageForGeneration {
   width: number;
 }
 
-/**
- * 图片生成服务
- * 负责处理AI生成图片的转换、上传和封面创建
- */
 export class GenerationService {
   private fileService: FileService;
 

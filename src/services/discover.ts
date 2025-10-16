@@ -136,9 +136,6 @@ class DiscoverService {
     return lambdaClient.market.registerClientInMarketplace.mutate({});
   };
 
-  /**
-   * 上报 MCP 插件安装结果
-   */
   reportMcpInstallResult = async ({
     success,
     manifest,
@@ -167,9 +164,6 @@ class DiscoverService {
       });
   };
 
-  /**
-   * 上报插件调用结果
-   */
   reportPluginCall = async (reportData: CallReportRequest) => {
     // if user don't allow tracing , just not report calling
     const allow = preferenceSelectors.userAllowTrace(useUserStore.getState());
@@ -283,27 +277,22 @@ class DiscoverService {
   private async injectMPToken() {
     if (typeof localStorage === 'undefined') return;
 
-    // 检查服务端设置的状态标记 cookie
     const tokenStatus = this.getTokenStatusFromCookie();
     if (tokenStatus === 'active') return;
 
     let clientId: string;
     let clientSecret: string;
 
-    // 1. 从 localStorage 获取客户端信息
     const item = localStorage.getItem('_mpc');
     if (!item) {
-      // 2. 如果没有，则注册客户端
       const clientInfo = await this.registerClient();
       clientId = clientInfo.clientId;
       clientSecret = clientInfo.clientSecret;
 
-      // 3. Base64 编码并保存到 localStorage
       const clientData = JSON.stringify({ clientId, clientSecret });
       const encodedData = btoa(clientData);
       localStorage.setItem('_mpc', encodedData);
     } else {
-      // 4. 如果有，则解码获取客户端信息
       try {
         const decodedData = atob(item);
         const clientData = JSON.parse(decodedData);
@@ -311,7 +300,6 @@ class DiscoverService {
         clientSecret = clientData.clientSecret;
       } catch (error) {
         console.error('Failed to decode client data:', error);
-        // 如果解码失败，重新注册
         const clientInfo = await this.registerClient();
         clientId = clientInfo.clientId;
         clientSecret = clientInfo.clientSecret;
@@ -321,24 +309,19 @@ class DiscoverService {
         localStorage.setItem('_mpc', encodedData);
       }
     }
-
-    // 5. 获取访问令牌（服务端会自动设置 HTTP-Only cookie）
     try {
       const result = await lambdaClient.market.registerM2MToken.query({
         clientId,
         clientSecret,
       });
 
-      // 检查服务端返回的结果
       if (!result.success) {
         console.warn(
           'Token registration failed, client credentials may be invalid. Clearing and retrying...',
         );
 
-        // 清空相关的本地存储数据
         localStorage.removeItem('_mpc');
 
-        // 重新执行完整的注册流程（但只重试一次）
         if (!this._isRetrying) {
           this._isRetrying = true;
           try {

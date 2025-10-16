@@ -9,14 +9,12 @@ const config = {
   S3_SET_ACL: true,
 };
 
-// 模拟 fileEnv
 vi.mock('@/envs/file', () => ({
   get fileEnv() {
     return config;
   },
 }));
 
-// 模拟 S3 类
 vi.mock('@/server/modules/S3', () => ({
   S3: vi.fn().mockImplementation(() => ({
     createPreSignedUrlForPreview: vi

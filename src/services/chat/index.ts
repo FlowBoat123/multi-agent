@@ -48,14 +48,7 @@ interface GetChatCompletionPayload extends Partial<Omit<ChatStreamPayload, 'mess
 interface FetchAITaskResultParams extends FetchSSEOptions {
   abortController?: AbortController;
   onError?: (e: Error, rawError?: any) => void;
-  /**
-   * 加载状态变化处理函数
-   * @param loading - 是否处于加载状态
-   */
   onLoadingChange?: (loading: boolean) => void;
-  /**
-   * 请求对象
-   */
   params: Partial<ChatStreamPayload>;
   trace?: TracePayload;
 }

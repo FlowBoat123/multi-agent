@@ -10,9 +10,8 @@ import { SessionStoreState, initialState } from './initialState';
 import { SessionAction, createSessionSlice } from './slices/session/action';
 import { SessionGroupAction, createSessionGroupSlice } from './slices/sessionGroup/action';
 
-//  ===============  聚合 createStoreFn ============ //
 
-export interface SessionStore extends SessionAction, SessionGroupAction, SessionStoreState {}
+export interface SessionStore extends SessionAction, SessionGroupAction, SessionStoreState { }
 
 const createStore: StateCreator<SessionStore, [['zustand/devtools', never]]> = (...parameters) => ({
   ...initialState,

@@ -47,13 +47,13 @@ export const generateMetadata = async (props: DiscoverPageProps) => {
   return {
     authors: [
       { name: author, url: homepage },
-      { name: 'LobeHub', url: 'https://github.com/lobehub' },
-      { name: 'LobeChat', url: 'https://github.com/lobehub/lobe-chat' },
+      { name: 'LobeHub', url: '' },
+      { name: 'LobeChat', url: '' },
     ],
     keywords: tags,
     ...metadataModule.generate({
       alternate: true,
-      canonical: urlJoin('https://lobehub.com/agent', identifier),
+      canonical: "",
       description: description,
       locale,
       tags: tags,

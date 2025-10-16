@@ -38,7 +38,7 @@
   },
   "macOS": {
     "about": "Über {{appName}}",
-    "devTools": "LobeHub Entwicklerwerkzeuge",
+    "devTools": "AI Assistant Entwicklerwerkzeuge",
     "hide": "{{appName}} ausblenden",
     "hideOthers": "Andere ausblenden",
     "preferences": "Einstellungen...",

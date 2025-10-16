@@ -17,7 +17,7 @@ describe('builtinToolSelectors', () => {
       } as ToolStoreState;
       const result = builtinToolSelectors.metaList(false)(state);
       expect(result).toEqual([
-        { author: 'LobeHub', identifier: 'tool-1', meta: { title: 'Tool 1' }, type: 'builtin' },
+        { author: 'AI Assistant', identifier: 'tool-1', meta: { title: 'Tool 1' }, type: 'builtin' },
       ]);
     });
 
@@ -31,9 +31,9 @@ describe('builtinToolSelectors', () => {
       } as ToolStoreState;
       const result = builtinToolSelectors.metaList(true)(state);
       expect(result).toEqual([
-        { author: 'LobeHub', identifier: 'tool-1', meta: { title: 'Tool 1' }, type: 'builtin' },
+        { author: 'AI Assistant', identifier: 'tool-1', meta: { title: 'Tool 1' }, type: 'builtin' },
         {
-          author: 'LobeHub',
+          author: 'AI Assistant',
           identifier: DalleManifest.identifier,
           meta: { title: 'Dalle' },
           type: 'builtin',

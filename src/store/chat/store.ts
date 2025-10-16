@@ -19,19 +19,17 @@ import { ChatThreadAction, chatThreadMessage } from './slices/thread/action';
 
 export interface ChatStoreAction
   extends ChatMessageAction,
-    ChatThreadAction,
-    ChatAIChatAction,
-    ChatTopicAction,
-    ShareAction,
-    ChatTranslateAction,
-    ChatTTSAction,
-    ChatPluginAction,
-    ChatBuiltinToolAction,
-    ChatPortalAction {}
+  ChatThreadAction,
+  ChatAIChatAction,
+  ChatTopicAction,
+  ShareAction,
+  ChatTranslateAction,
+  ChatTTSAction,
+  ChatPluginAction,
+  ChatBuiltinToolAction,
+  ChatPortalAction { }
 
 export type ChatStore = ChatStoreAction & ChatStoreState;
-
-//  ===============  聚合 createStoreFn ============ //
 
 const createStore: StateCreator<ChatStore, [['zustand/devtools', never]]> = (...params) => ({
   ...initialState,
@@ -50,7 +48,6 @@ const createStore: StateCreator<ChatStore, [['zustand/devtools', never]]> = (...
   // cloud
 });
 
-//  ===============  实装 useStore ============ //
 const devtools = createDevtools('chat');
 
 export const useChatStore = createWithEqualityFn<ChatStore>()(

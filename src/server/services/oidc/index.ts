@@ -35,16 +35,13 @@ export class OIDCService {
   }
 
   async findOrCreateGrants(accountId: string, clientId: string, existingGrantId?: string) {
-    // 2. 查找或创建 Grant 对象
     let grant;
     if (existingGrantId) {
-      // 如果之前的交互步骤已经关联了 Grant
       grant = await this.provider.Grant.find(existingGrantId);
       log('Found existing grantId: %s', existingGrantId);
     }
 
     if (!grant) {
-      // 如果没有找到或没有 existingGrantId，则创建新的
       grant = new this.provider.Grant({
         accountId: accountId,
         clientId: clientId,

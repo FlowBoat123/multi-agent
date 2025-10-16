@@ -41,7 +41,6 @@ const mockMessages = [mockMessage];
 beforeEach(async () => {
   await initializeDB();
 
-  // 在每个测试用例之前，清空表
   await clientDB.transaction(async (trx) => {
     await trx.delete(users);
     await trx.insert(users).values([{ id: userId }, { id: '456' }]);
@@ -60,7 +59,6 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  // 在每个测试用例之后，清空表
   await clientDB.delete(users);
 });
 

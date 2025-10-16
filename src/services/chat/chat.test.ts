@@ -50,10 +50,8 @@ afterEach(() => {
 beforeEach(async () => {
   // Reset all mocks
   vi.clearAllMocks();
-  // 清除所有模块的缓存
   vi.resetModules();
 
-  // 默认设置 isServerMode 为 false
   vi.mock('@/const/version', () => ({
     isServerMode: false,
     isDeprecatedEdition: true,
@@ -573,7 +571,7 @@ describe('ChatService', () => {
         const messages = [
           {
             role: 'user',
-            content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n',
+            content: 'https://vercel.com/',
             sessionId: 'inbox',
             createdAt: 1702723964330,
             id: 'vyQvEw6V',
@@ -668,7 +666,7 @@ describe('ChatService', () => {
 </plugins>`,
                 role: 'system',
               },
-              { content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n', role: 'user' },
+              { content: 'https://vercel.com/', role: 'user' },
             ],
           },
           undefined,
@@ -681,7 +679,7 @@ describe('ChatService', () => {
           { role: 'system', content: 'system' },
           {
             role: 'user',
-            content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n',
+            content: 'https://vercel.com/',
           },
         ] as ChatMessage[];
 
@@ -770,7 +768,7 @@ describe('ChatService', () => {
 </plugins>`,
                 role: 'system',
               },
-              { content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n', role: 'user' },
+              { content: 'https://vercel.com/', role: 'user' },
             ],
           },
           undefined,
@@ -783,7 +781,7 @@ describe('ChatService', () => {
           { role: 'system', content: 'system' },
           {
             role: 'user',
-            content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n',
+            content: 'https://vercel.com/',
           },
         ] as ChatMessage[];
 
@@ -803,7 +801,7 @@ describe('ChatService', () => {
                 content: 'system',
                 role: 'system',
               },
-              { content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n', role: 'user' },
+              { content: 'https://vercel.com/', role: 'user' },
             ],
           },
           undefined,
@@ -815,7 +813,7 @@ describe('ChatService', () => {
         const messages = [
           {
             role: 'user',
-            content: 'https://vercel.com/ 请分析 chatGPT 关键词\n\n',
+            content: 'https://vercel.com/',
             sessionId: 'inbox',
             createdAt: 1702723964330,
             id: 'vyQvEw6V',

@@ -21,7 +21,7 @@ export const LobeAiHubMixAI = createRouterRuntime({
     chatCompletion: () => process.env.DEBUG_AIHUBMIX_CHAT_COMPLETION === '1',
   },
   defaultHeaders: {
-    'APP-Code': 'LobeHub',
+    'APP-Code': 'AI Assistant',
   },
   id: ModelProvider.AiHubMix,
   models: async ({ client }) => {

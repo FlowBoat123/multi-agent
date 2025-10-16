@@ -11,7 +11,6 @@ import { type ModelListAction, createModelListSlice } from './slices/modelList/a
 import { type PreferenceAction, createPreferenceSlice } from './slices/preference/action';
 import { type UserSettingsAction, createSettingsSlice } from './slices/settings/action';
 
-//  ===============  聚合 createStoreFn ============ //
 
 export type UserStore = UserState &
   UserSettingsAction &
@@ -29,7 +28,6 @@ const createStore: StateCreator<UserStore, [['zustand/devtools', never]]> = (...
   ...createModelListSlice(...parameters),
 });
 
-//  ===============  实装 useStore ============ //
 
 const devtools = createDevtools('user');
 

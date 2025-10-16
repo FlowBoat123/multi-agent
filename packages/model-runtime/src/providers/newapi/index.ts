@@ -62,7 +62,7 @@ export const LobeNewAPIAI = createRouterRuntime({
     chatCompletion: () => process.env.DEBUG_NEWAPI_CHAT_COMPLETION === '1',
   },
   defaultHeaders: {
-    'X-Client': 'LobeHub',
+    'X-Client': 'AI Assistant',
   },
   id: ModelProvider.NewAPI,
   models: async ({ client: openAIClient }) => {

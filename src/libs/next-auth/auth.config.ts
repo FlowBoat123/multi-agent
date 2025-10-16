@@ -19,12 +19,12 @@ const { NEXT_PUBLIC_ENABLED_SERVER_SERVICE } = getServerDBConfig();
 export const initSSOProviders = () => {
   return NEXT_PUBLIC_ENABLE_NEXT_AUTH
     ? NEXT_AUTH_SSO_PROVIDERS.split(/[,，]/).map((provider) => {
-        const validProvider = ssoProviders.find((item) => item.id === provider.trim());
+      const validProvider = ssoProviders.find((item) => item.id === provider.trim());
 
-        if (validProvider) return validProvider.provider;
+      if (validProvider) return validProvider.provider;
 
-        throw new Error(`[NextAuth] provider ${provider} is not supported`);
-      })
+      throw new Error(`[NextAuth] provider ${provider} is not supported`);
+    })
     : [];
 };
 

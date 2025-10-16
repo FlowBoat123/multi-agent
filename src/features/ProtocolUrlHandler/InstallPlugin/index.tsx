@@ -11,23 +11,17 @@ interface PluginInstallConfirmModalProps {
   onComplete: () => void;
 }
 
-/**
- * 根据安装请求的来源确定插件类型
- */
 const getPluginSource = (request: McpInstallRequest): PluginSource => {
   const { marketId } = request;
 
-  // 官方 LobeHub 插件
   if (marketId === 'lobehub') {
     return PluginSource.OFFICIAL;
   }
 
-  // 第三方市场插件（包括可信和不可信的）
   if (marketId && marketId !== 'lobehub') {
     return PluginSource.MARKETPLACE;
   }
 
-  // 自定义插件（没有 marketId）
   return PluginSource.CUSTOM;
 };
 

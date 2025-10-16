@@ -32,7 +32,6 @@ export enum SitemapType {
 
 export const LAST_MODIFIED = new Date().toISOString();
 
-// 每页条目数量
 const ITEMS_PER_PAGE = 100;
 
 export class Sitemap {
@@ -40,19 +39,16 @@ export class Sitemap {
 
   private discoverService = new DiscoverService();
 
-  // 获取插件总页数
   async getPluginPageCount(): Promise<number> {
     const list = await this.discoverService.getPluginIdentifiers();
     return Math.ceil(list.length / ITEMS_PER_PAGE);
   }
 
-  // 获取助手总页数
   async getAssistantPageCount(): Promise<number> {
     const list = await this.discoverService.getAssistantIdentifiers();
     return Math.ceil(list.length / ITEMS_PER_PAGE);
   }
 
-  // 获取模型总页数
   async getModelPageCount(): Promise<number> {
     const list = await this.discoverService.getModelIdentifiers();
     return Math.ceil(list.length / ITEMS_PER_PAGE);
@@ -164,14 +160,12 @@ export class Sitemap {
       ),
     );
 
-    // 获取需要分页的类型的页数
     const [pluginPages, assistantPages, modelPages] = await Promise.all([
       this.getPluginPageCount(),
       this.getAssistantPageCount(),
       this.getModelPageCount(),
     ]);
 
-    // 生成分页sitemap链接
     const paginatedSitemaps = [
       ...Array.from({ length: pluginPages }, (_, i) =>
         this._generateSitemapLink(
@@ -218,7 +212,6 @@ export class Sitemap {
       return flatten(sitmap);
     }
 
-    // 如果没有指定页数，返回所有（向后兼容）
     const sitmap = list.map((item) =>
       this._genSitemap(urlJoin('/discover/assistant', item.identifier), {
         lastModified: item?.lastModified || LAST_MODIFIED,
@@ -243,7 +236,6 @@ export class Sitemap {
       return flatten(sitmap);
     }
 
-    // 如果没有指定页数，返回所有（向后兼容）
     const sitmap = list.map((item) =>
       this._genSitemap(urlJoin('/discover/plugin', item.identifier), {
         lastModified: item?.lastModified || LAST_MODIFIED,
@@ -268,7 +260,6 @@ export class Sitemap {
       return flatten(sitmap);
     }
 
-    // 如果没有指定页数，返回所有（向后兼容）
     const sitmap = list.map((item) =>
       this._genSitemap(urlJoin('/discover/model', item.identifier), {
         lastModified: item?.lastModified || LAST_MODIFIED,

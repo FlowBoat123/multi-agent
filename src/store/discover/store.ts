@@ -9,7 +9,6 @@ import { ModelAction, createModelSlice } from './slices/model/action';
 import { PluginAction, createPluginSlice } from './slices/plugin/action';
 import { ProviderAction, createProviderSlice } from './slices/provider/action';
 
-//  ===============  聚合 createStoreFn ============ //
 
 export type DiscoverStore = MCPAction &
   AssistantAction &
@@ -27,7 +26,6 @@ const createStore: StateCreator<DiscoverStore, [['zustand/devtools', never]]> = 
   ...createPluginSlice(...parameters),
 });
 
-//  ===============  实装 useStore ============ //
 
 const devtools = createDevtools('discover');
 

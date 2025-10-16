@@ -52,8 +52,7 @@ export const LobeVercelAIGatewayAI = createOpenAICompatibleRuntime({
   },
   constructorOptions: {
     defaultHeaders: {
-      'http-referer': 'https://lobehub.com',
-      'x-title': 'LobeHub',
+      'x-title': 'AI Assistant',
     },
   },
   debug: {

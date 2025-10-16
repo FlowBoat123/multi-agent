@@ -221,7 +221,6 @@ class MCPService {
     } catch (error) {
       console.error(`Failed to initialize MCP client:`, error);
 
-      // 保留完整的错误信息，特别是详细的 stderr 输出
       const errorMessage = error instanceof Error ? error.message : String(error);
 
       if (typeof error === 'object' && !!error && 'data' in error) {
@@ -232,7 +231,6 @@ class MCPService {
         });
       }
 
-      // 记录详细的错误信息用于调试
       log('Detailed initialization error: %O', {
         error: errorMessage,
         params: this.sanitizeForLogging(params),
@@ -242,7 +240,7 @@ class MCPService {
       throw new TRPCError({
         cause: error,
         code: 'INTERNAL_SERVER_ERROR',
-        message: errorMessage, // 直接使用完整的错误信息
+        message: errorMessage,
       });
     }
   }
@@ -278,12 +276,10 @@ class MCPService {
   ): Promise<LobeChatPluginManifest> {
     const mcpParams = { name: identifier, type: 'http' as const, url };
 
-    // 如果有认证信息，添加到参数中
     if (auth) {
       (mcpParams as any).auth = auth;
     }
 
-    // 如果有 headers 信息，添加到参数中
     if (headers) {
       (mcpParams as any).headers = headers;
     }
@@ -329,10 +325,10 @@ class MCPService {
         description:
           metadata?.description ||
           `${identifier} MCP server has ` +
-            Object.entries(manifest)
-              .filter(([key]) => ['tools', 'prompts', 'resources'].includes(key))
-              .map(([key, item]) => `${(item as Array<any>)?.length} ${key}`)
-              .join(','),
+          Object.entries(manifest)
+            .filter(([key]) => ['tools', 'prompts', 'resources'].includes(key))
+            .map(([key, item]) => `${(item as Array<any>)?.length} ${key}`)
+            .join(','),
         title: metadata?.name || identifier,
       },
       ...manifest,
@@ -354,23 +350,18 @@ class MCPService {
       log('Checking MCP plugin installation status: %O', loggableInput);
       const results = [];
 
-      // 检查每个部署选项
       for (const option of input.deploymentOptions) {
-        // 使用系统依赖检查服务检查部署选项
         const result = await mcpSystemDepsCheckService.checkDeployOption(option);
         results.push(result);
       }
 
-      // 找出推荐的或第一个可安装的选项
       const recommendedResult = results.find((r) => r.isRecommended && r.allDependenciesMet);
       const firstInstallableResult = results.find((r) => r.allDependenciesMet);
 
-      // 返回推荐的结果，或第一个可安装的结果，或第一个结果
       const bestResult = recommendedResult || firstInstallableResult || results[0];
 
       log('Check completed, best result: %O', bestResult);
 
-      // 构造返回结果，确保包含配置检查信息
       const checkResult: CheckMcpInstallResult = {
         ...bestResult,
         allOptions: results,
@@ -378,7 +369,6 @@ class MCPService {
         success: true,
       };
 
-      // 如果最佳结果需要配置，确保在顶层设置相关字段
       if (bestResult?.needsConfig) {
         checkResult.needsConfig = true;
         checkResult.configSchema = bestResult.configSchema;

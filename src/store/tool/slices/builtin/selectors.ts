@@ -12,7 +12,7 @@ const metaList =
             !item.hidden && (!showDalle ? item.identifier !== DalleManifest.identifier : true),
         )
         .map((t) => ({
-          author: 'LobeHub',
+          author: 'Agent',
           identifier: t.identifier,
           meta: t.manifest.meta,
           type: 'builtin',

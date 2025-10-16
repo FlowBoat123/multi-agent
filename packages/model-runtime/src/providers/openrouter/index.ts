@@ -47,8 +47,7 @@ export const LobeOpenRouterAI = createOpenAICompatibleRuntime({
   },
   constructorOptions: {
     defaultHeaders: {
-      'HTTP-Referer': 'https://lobehub.com',
-      'X-Title': 'LobeHub',
+      'X-Title': 'AI Assistant',
     },
   },
   debug: {
@@ -68,7 +67,6 @@ export const LobeOpenRouterAI = createOpenAICompatibleRuntime({
       return [];
     }
 
-    // 处理前端获取的模型信息，转换为标准格式
     const formattedModels = modelList.map((model) => {
       const { endpoint } = model;
       const endpointModel = endpoint?.model;

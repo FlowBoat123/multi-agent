@@ -22,7 +22,6 @@ if (!hasAppleCertificate) {
   console.log('⚠️ Apple certificate link not found, macOS artifacts will be unsigned.');
 }
 
-// 根据版本类型确定协议 scheme
 const getProtocolScheme = () => {
   if (isNightly) return 'lobehub-nightly';
   if (isBeta) return 'lobehub-beta';
@@ -83,7 +82,7 @@ const config = {
     extendInfo: {
       CFBundleURLTypes: [
         {
-          CFBundleURLName: 'LobeHub Protocol',
+          CFBundleURLName: 'AI Assistant Protocol',
           CFBundleURLSchemes: [protocolScheme],
         },
       ],
@@ -99,8 +98,6 @@ const config = {
     notarize: hasAppleCertificate,
     ...(hasAppleCertificate ? {} : { identity: null }),
     target:
-      // 降低构建时间，nightly 只打 dmg
-      // 根据当前机器架构只构建对应架构的包
       isNightly
         ? [{ arch: [arch === 'arm64' ? 'arm64' : 'x64'], target: 'dmg' }]
         : [
@@ -122,19 +119,19 @@ const config = {
   },
   protocols: [
     {
-      name: 'LobeHub Protocol',
+      name: 'AI Assistant Protocol',
       schemes: [protocolScheme],
     },
   ],
   publish: [
     {
-      owner: 'lobehub',
+      owner: 'Quan',
       provider: 'github',
-      repo: 'lobe-chat',
+      repo: 'agent',
     },
   ],
   win: {
-    executableName: 'LobeHub',
+    executableName: 'AI Assistant',
   },
 };
 

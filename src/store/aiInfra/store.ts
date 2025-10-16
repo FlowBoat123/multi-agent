@@ -7,8 +7,6 @@ import { AIProviderStoreState, initialState } from './initialState';
 import { AiModelAction, createAiModelSlice } from './slices/aiModel';
 import { AiProviderAction, createAiProviderSlice } from './slices/aiProvider';
 
-//  ===============  聚合 createStoreFn ============ //
-
 export interface AiInfraStore extends AIProviderStoreState, AiProviderAction, AiModelAction {
   /* empty */
 }
@@ -19,7 +17,6 @@ const createStore: StateCreator<AiInfraStore, [['zustand/devtools', never]]> = (
   ...createAiProviderSlice(...parameters),
 });
 
-//  ===============  实装 useStore ============ //
 const devtools = createDevtools('aiInfra');
 
 export const useAiInfraStore = createWithEqualityFn<AiInfraStore>()(devtools(createStore), shallow);

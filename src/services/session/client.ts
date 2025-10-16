@@ -71,9 +71,6 @@ export class ClientService extends BaseClientService implements ISessionService 
     return res.agent as LobeAgentConfig;
   };
 
-  /**
-   * 这个方法要对应移除的
-   */
   // @ts-ignore
   getSessionsByType: ISessionService['getSessionsByType'] = async (type = 'all') => {
     switch (type) {
@@ -110,7 +107,6 @@ export class ClientService extends BaseClientService implements ISessionService 
   };
 
   updateSessionMeta: ISessionService['updateSessionMeta'] = async (activeId, meta) => {
-    // inbox 不允许修改 meta
     if (activeId === INBOX_SESSION_ID) return;
 
     return this.sessionModel.update(activeId, meta);

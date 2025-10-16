@@ -10,7 +10,6 @@ import { PluginMCPStoreAction, createMCPPluginStoreSlice } from './slices/mcpSto
 import { PluginAction, createPluginSlice } from './slices/plugin';
 import { PluginStoreAction, createPluginStoreSlice } from './slices/oldStore';
 
-//  ===============  聚合 createStoreFn ============ //
 
 export type ToolStore = ToolStoreState &
   CustomPluginAction &
@@ -28,7 +27,6 @@ const createStore: StateCreator<ToolStore, [['zustand/devtools', never]]> = (...
   ...createMCPPluginStoreSlice(...parameters),
 });
 
-//  ===============  实装 useStore ============ //
 
 const devtools = createDevtools('tools');
 

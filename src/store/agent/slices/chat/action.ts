@@ -18,9 +18,6 @@ import { merge } from '@/utils/merge';
 import type { AgentStore } from '../../store';
 import { agentSelectors } from './selectors';
 
-/**
- * 助手接口
- */
 export interface AgentChatAction {
   addFilesToAgent: (fileIds: string[], boolean?: boolean) => Promise<void>;
   addKnowledgeBaseToAgent: (knowledgeBaseId: string) => Promise<void>;
@@ -127,12 +124,10 @@ export const createChatSlice: StateCreator<
         const shouldOpen = open !== undefined ? open : index === -1;
 
         if (shouldOpen) {
-          // 如果 open 为 true 或者 id 不存在于 plugins 中，则添加它
           if (index === -1) {
             plugins.push(id);
           }
         } else {
-          // 如果 open 为 false 或者 id 存在于 plugins 中，则移除它
           if (index !== -1) {
             plugins.splice(index, 1);
           }

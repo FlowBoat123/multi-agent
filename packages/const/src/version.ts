@@ -14,4 +14,4 @@ export const isDeprecatedEdition = !isServerMode && !isUsePgliteDB;
 // @ts-ignore
 export const isCustomBranding = BRANDING_NAME !== 'LobeChat';
 // @ts-ignore
-export const isCustomORG = ORG_NAME !== 'LobeHub';
+export const isCustomORG = ORG_NAME !== 'AI Assistant';

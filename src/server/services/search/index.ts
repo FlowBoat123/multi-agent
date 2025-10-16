@@ -7,7 +7,6 @@ import { SearchParams } from '@/types/tool/search';
 import { SearchImplType, SearchServiceImpl, createSearchServiceImpl } from './impls';
 
 const parseImplEnv = (envString: string = '') => {
-  // 处理全角逗号和多余空格
   const envValue = envString.replaceAll('，', ',').trim();
   return envValue.split(',').filter(Boolean);
 };

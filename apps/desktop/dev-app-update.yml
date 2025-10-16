@@ -1,6 +1,6 @@
 provider: github
-owner: lobehub
-repo: lobe-chat
+owner: Quan
+repo: agent
 updaterCacheDirName: electron-app-updater
 allowPrerelease: true
 channel: nightly

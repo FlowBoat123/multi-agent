@@ -3,7 +3,7 @@ import { produce } from 'immer';
 export const preventLeavingFn = (e: BeforeUnloadEvent) => {
   // set returnValue to trigger alert modal
   // Note: No matter what value is set, the browser will display the standard text
-  e.returnValue = '你有正在生成中的请求，确定要离开吗？';
+  e.returnValue = 'Bạn có một yêu cầu đang được xử lý, bạn có chắc chắn muốn rời đi không?';
 };
 
 export const toggleBooleanList = (ids: string[], id: string, loading: boolean) => {

@@ -274,7 +274,7 @@ describe('contextEngineering', () => {
     expect(systemMessage).toBeDefined();
     // Check for characteristic content of the actual INBOX_GUIDE_SYSTEMROLE
     expect(systemMessage!.content).toContain('LobeChat Support Assistant');
-    expect(systemMessage!.content).toContain('LobeHub');
+    expect(systemMessage!.content).toContain('AI Assistant');
     expect(Object.keys(systemMessage!).length).toEqual(2);
   });
 

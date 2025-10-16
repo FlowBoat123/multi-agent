@@ -277,7 +277,7 @@ export default {
         title: '安装方式',
       },
       githubBadge: {
-        desc: 'LobeHub 定期对代码库和文档进行扫描，以便于：\n\n- 确认 MCP 服务器正常运行。\n- 提取服务器特性，例如工具、资源、提示信息以及所需参数。\n- 我们的 Badge 帮助用户快速评估 MCP 服务器的安全性、功能特性以及安装指南。\n\n请将以下代码复制到你的 `README.md` 文件中：',
+        desc: 'AI Assistant 定期对代码库和文档进行扫描，以便于：\n\n- 确认 MCP 服务器正常运行。\n- 提取服务器特性，例如工具、资源、提示信息以及所需参数。\n- 我们的 Badge 帮助用户快速评估 MCP 服务器的安全性、功能特性以及安装指南。\n\n请将以下代码复制到你的 `README.md` 文件中：',
       },
       nav: {
         needHelp: '需要帮助？',
@@ -558,7 +558,7 @@ export default {
       latencyTooltip: '服务商发送第一个 Token 的平均响应时间',
       maxOutput: '最大输出长度',
       maxOutputTooltip: '此端点可以生成的最大 Token 数',
-      officialTooltip: 'LobeHub 官方服务',
+      officialTooltip: 'AI Assistant 官方服务',
       output: '输出价格',
       outputTooltip: '每百万个 Token 的成本',
       streamCancellationTooltip: '此服务商支持流取消功能。',

@@ -74,7 +74,7 @@ const Page = async (props: DiscoverPageProps) => {
 
   const ld = ldModule.generate({
     article: {
-      author: [author?.name || 'LobeHub'],
+      author: [author?.name || 'Agent'],
       enable: true,
       identifier,
       tags: tags,

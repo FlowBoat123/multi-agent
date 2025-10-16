@@ -17,8 +17,7 @@ export interface HigressModelCard {
 export const LobeHigressAI = createOpenAICompatibleRuntime({
   constructorOptions: {
     defaultHeaders: {
-      'HTTP-Referer': 'https://lobehub.com',
-      'X-Title': 'LobeHub',
+      'X-Title': 'AI Assistant',
       'x-Request-Id': uniqueId('lobe-chat-'),
     },
   },

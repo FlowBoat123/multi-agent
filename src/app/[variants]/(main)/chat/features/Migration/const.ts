@@ -7,7 +7,7 @@ export enum UpgradeStatus {
 }
 
 export const V1DB_NAME = 'LobeHub';
-export const V1DB_TABLE_NAME = 'LOBE_CHAT';
+export const V1DB_TABLE_NAME = 'Agent';
 
 export interface MigrationError {
   message: string;

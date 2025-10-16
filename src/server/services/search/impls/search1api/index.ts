@@ -42,7 +42,7 @@ export class Search1APIImpl implements SearchServiceImpl {
     const { searchEngines } = params;
 
     const defaultQueryParams: Search1APIQueryParams = {
-      crawl_results: 0, // 默认不做抓取
+      crawl_results: 0,
       image: false,
       max_results: 15, // Default max results
       query,

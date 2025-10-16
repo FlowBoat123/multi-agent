@@ -8,13 +8,12 @@ import { KnowledgeBaseContentAction, createContentSlice } from './slices/content
 import { KnowledgeBaseCrudAction, createCrudSlice } from './slices/crud';
 import { RAGEvalAction, createRagEvalSlice } from './slices/ragEval';
 
-//  ===============  聚合 createStoreFn ============ //
 
 export interface KnowledgeBaseStore
   extends KnowledgeBaseStoreState,
-    KnowledgeBaseCrudAction,
-    KnowledgeBaseContentAction,
-    RAGEvalAction {
+  KnowledgeBaseCrudAction,
+  KnowledgeBaseContentAction,
+  RAGEvalAction {
   // empty
 }
 
@@ -27,7 +26,6 @@ const createStore: StateCreator<KnowledgeBaseStore, [['zustand/devtools', never]
   ...createRagEvalSlice(...parameters),
 });
 
-//  ===============  实装 useStore ============ //
 const devtools = createDevtools('knowledgeBase');
 
 export const useKnowledgeBaseStore = createWithEqualityFn<KnowledgeBaseStore>()(

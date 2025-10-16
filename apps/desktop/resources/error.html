@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LobeHub - 连接错误</title>
+    <title>AI Assistant</title>
     <style>
       body {
         -webkit-app-region: drag;
@@ -19,7 +19,6 @@
         overflow: hidden;
       }
 
-      /* 添加暗色模式支持 */
       @media (prefers-color-scheme: dark) {
         body {
           color: #f5f5f5;
@@ -101,25 +100,20 @@
     </div>
 
     <script>
-      // 当按钮被点击时，通知主进程重试连接
       const retryButton = document.getElementById('retry-button');
       const errorMessage = document.querySelector('.error-message');
 
       if (retryButton) {
         retryButton.addEventListener('click', () => {
-          // 更新UI状态
           retryButton.disabled = true;
           retryButton.textContent = 'Retrying...';
           errorMessage.textContent = 'Attempting to reconnect to the next server, please wait...';
 
-          // 调用主进程的重试逻辑
           if (window.electron && window.electron.ipcRenderer) {
             window.electron.ipcRenderer.invoke('retry-connection')
               .then((result) => {
                 if (result && result.success) {
-                  // 连接成功，无需额外操作，页面会自动导航
                 } else {
-                  // 连接失败，重置按钮状态
                   setTimeout(() => {
                     retryButton.disabled = false;
                     retryButton.textContent = 'Retry';

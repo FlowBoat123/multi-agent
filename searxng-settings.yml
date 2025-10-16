@@ -1,0 +1,61 @@
+use_default_settings: true
+
+general:
+  instance_name: "SearXNG"
+  
+server:
+  bind_address: "0.0.0.0:8080"
+  secret_key: "0d8ca4d2e16343f76a1a3c3f5cdfdac6"
+  limiter: false  # Tắt rate limiter
+  image_proxy: true
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "en"
+  formats:
+    - html
+    - json
+
+# Tắt bot detection để tránh lỗi X-Forwarded-For
+outgoing:
+  request_timeout: 5.0
+  max_request_timeout: 15.0
+  
+# Cấu hình engines - loại bỏ các engines bị lỗi
+engines:
+  # Loại bỏ các engines gây warning
+  - name: yacy images
+    disabled: true
+  - name: ahmia
+    disabled: true
+  - name: torch
+    disabled: true
+  
+  # Giữ lại các engines phổ biến
+  - name: google
+    engine: google
+    shortcut: go
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+  - name: bing
+    engine: bing
+    shortcut: bi
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+  - name: github
+    engine: github
+    shortcut: gh
+
+enabled_plugins:
+  - 'Hash plugin'
+  - 'Self Information'
+  - 'Tracker URL remover'
+  - 'Ahmia blacklist'
+
+doi_resolvers:
+  - 'doi.org'
+
+default_doi_resolver: 'doi.org'

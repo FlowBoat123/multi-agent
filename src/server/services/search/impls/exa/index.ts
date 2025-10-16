@@ -37,19 +37,18 @@ export class ExaImpl implements SearchServiceImpl {
       ...defaultQueryParams,
       ...(params?.searchTimeRange && params.searchTimeRange !== 'anytime'
         ? (() => {
-            const now = Date.now();
-            const days = { day: 1, month: 30, week: 7, year: 365 }[params.searchTimeRange!];
+          const now = Date.now();
+          const days = { day: 1, month: 30, week: 7, year: 365 }[params.searchTimeRange!];
 
-            if (days === undefined) return {};
+          if (days === undefined) return {};
 
-            return {
-              endPublishedDate: new Date(now).toISOString(),
-              startPublishedDate: new Date(now - days * 86_400 * 1000).toISOString(),
-            };
-          })()
+          return {
+            endPublishedDate: new Date(now).toISOString(),
+            startPublishedDate: new Date(now - days * 86_400 * 1000).toISOString(),
+          };
+        })()
         : {}),
       category:
-        // Exa 只支持 news 类型
         params?.searchCategories?.filter(cat => ['news'].includes(cat))?.[0],
     };
 

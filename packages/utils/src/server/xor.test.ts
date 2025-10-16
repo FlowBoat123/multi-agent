@@ -106,7 +106,7 @@ describe('getXorPayload', () => {
     // 创建一个能正确base64解码但不是有效JSON的token
     const invalidJsonString = 'this is not json';
     const invalidJsonBytes = new TextEncoder().encode(invalidJsonString);
-    const keyBytes = new TextEncoder().encode('LobeHub · LobeHub');
+    const keyBytes = new TextEncoder().encode('AI Assistant · AI Assistant');
 
     // 进行XOR处理
     const result = new Uint8Array(invalidJsonBytes.length);

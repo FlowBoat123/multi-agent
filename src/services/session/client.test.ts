@@ -27,7 +27,6 @@ const mockAgentId = 'agent-id';
 beforeEach(async () => {
   await initializeDB();
 
-  // 在每个测试用例之前，清空表
   await clientDB.transaction(async (trx) => {
     await trx.insert(users).values([{ id: userId }, { id: '456' }]);
     await trx.insert(sessions).values([{ id: mockSessionId, userId }]);
@@ -44,7 +43,6 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  // 在每个测试用例之后，清空表
   await clientDB.delete(users);
 });
 
@@ -185,7 +183,6 @@ describe('SessionService', () => {
       const result = await sessionService.searchSessions(keyword);
 
       // Assert
-      // TODO: 后续需要把这个搜索的标题和描述都加上，现在这个 client 搜索会有问题
       expect(result).toMatchObject([{ id: mockSessionId }]);
     });
   });

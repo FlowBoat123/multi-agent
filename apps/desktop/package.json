@@ -1,14 +1,14 @@
 {
-  "name": "lobehub-desktop-dev",
+  "name": "agent-desktop",
   "version": "0.0.0",
   "private": true,
-  "description": "LobeHub Desktop Application",
-  "homepage": "https://lobehub.com",
+  "description": "AI Assistant Desktop Application",
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lobehub/lobe-chat.git"
+    "url": ""
   },
-  "author": "LobeHub",
+  "author": "",
   "main": "./dist/main/index.js",
   "scripts": {
     "build": "npm run typecheck && electron-vite build",

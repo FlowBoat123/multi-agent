@@ -57,6 +57,7 @@ export function LobeNextAuthDbAdapter(): Adapter {
     if (!data.success) {
       log('LobeNextAuthDbAdapter: Error in postProcessor:');
       log(data);
+      console.log(data)
       throw new Error(`LobeNextAuthDbAdapter: ${data.error}`);
     }
     if (data?.data) {

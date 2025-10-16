@@ -112,8 +112,6 @@ export class ClientService implements ISessionService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _?: AbortSignal,
   ) {
-    // TODO: 需要删除这部分处理逻辑
-    // 后续直接给用户创建一个 inbox 的 session
     if (activeId === INBOX_SESSION_ID) {
       return useUserStore.getState().updateDefaultAgent({ config });
     }
@@ -127,7 +125,6 @@ export class ClientService implements ISessionService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _?: AbortSignal,
   ) {
-    // inbox 不允许修改 meta
     if (activeId === INBOX_SESSION_ID) return;
 
     return SessionModel.update(activeId, { meta });

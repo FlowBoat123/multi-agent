@@ -6,7 +6,7 @@ dotenv.config();
 
 const isDev = process.env.NODE_ENV === 'development';
 const updateChannel = process.env.UPDATE_CHANNEL;
-console.log(`[electron-vite.config.ts] Detected UPDATE_CHANNEL: ${updateChannel}`); // 添加日志确认
+console.log(`[electron-vite.config.ts] Detected UPDATE_CHANNEL: ${updateChannel}`);
 
 export default defineConfig({
   main: {
@@ -15,7 +15,6 @@ export default defineConfig({
       outDir: 'dist/main',
       sourcemap: isDev ? 'inline' : false,
     },
-    // 这里是关键：在构建时进行文本替换
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.OFFICIAL_CLOUD_SERVER': JSON.stringify(process.env.OFFICIAL_CLOUD_SERVER),
