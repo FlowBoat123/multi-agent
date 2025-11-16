@@ -1,0 +1,11 @@
+grpcio>=1.62.0
+httpx
+langgraph
+langchain-core
+langchain-openai
+langchain
+python-dotenv
+underthesea
+pika
+sentence-transformers
+weaviate-client

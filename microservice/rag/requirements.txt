@@ -1,0 +1,14 @@
+sentence_transformers
+weaviate-client
+python-dotenv
+semantic-chunkers
+underthesea
+semantic-router
+elasticsearch==8.13.0
+python-json-logger
+minio
+pika
+asyncio
+langchain
+langchain-community
+aiohttp
