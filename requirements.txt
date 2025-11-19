@@ -1,0 +1,9 @@
+grpcio>=1.62.0
+langgraph
+langchain-core
+langchain-openai
+langchain
+python-dotenv
+underthesea
+sentence-transformers
+weaviate-client

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "qa_1",
+    "level": 1,
+    "question": "Luật Chứng khoán điều chỉnh những hoạt động nào?",
+    "expected_answer": "Luật này quy định các hoạt động về chứng khoán và thị trường chứng khoán; quyền và nghĩa vụ của tổ chức, cá nhân trong lĩnh vực chứng khoán; tổ chức thị trường chứng khoán; quản lý nhà nước về chứng khoán và thị trường chứng khoán.",
+    "actual_answer": "Dựa trên thông tin hiện có, tôi chưa thể cung cấp một tổng hợp đầy đủ về các hoạt động được Luật Chứng khoán điều chỉnh. Thông tin từ kết quả tìm kiếm chủ yếu đề cập đến các quy định cụ thể liên quan đến công ty đại chúng, niêm yết, và quản lý tài chính, nhưng thiếu một cái nhìn tổng quan toàn diện về phạm vi điều chỉnh của Luật Chứng khoán. Bạn nên tham khảo trực tiếp văn bản Luật Chứng khoán hoặc các nguồn chính thống để có thông tin chính xác và đầy đủ.",
+    "validation_confidence": 0.2,
+    "retrieved_chunks": [
+      {
+        "text": "Công_ty đại_chúng thực_hiện chào_bán chứng_khoán riêng_lẻ , chào_bán chứng_khoán ra công_chúng , phát_hành chứng_khoán , niêm_yết , đăng_ký giao_dịch thực_hiện nghĩa_vụ công_bố thông_tin về hoạt_động chào_bán , phát_hành , niêm_yết , đăng_ký giao_dịch và báo_cáo sử_dụng vốn theo quy_định pháp_luật về chào_bán , phát_hành chứng_khoán , niêm_yết , đăng_ký giao_dịch chứng_khoán . 2 . Công_bố thông_tin về tỷ_lệ sở_hữu nước_ngoài",
+        "score": 0.718048095703125,
+        "file_name": "96-2020-TT-BTC.docx",
+        "page_number": 0,
+        "chunk_index": 54
+      },
+      {
+        "text": "với báo_cáo tài_chính năm trong 03 năm liên_tiếp ; i ) Tổ_chức niêm_yết vi_phạm chậm nộp báo_cáo tài_chính năm trong 3 năm liên_tiếp ; k ) Ủy_ban Chứng_khoán Nhà_nước , Sở giao_dịch chứng_khoán phát_hiện tổ_chức niêm_yết giả_mạo hồ_sơ niêm_yết ; l ) Tổ_chức niêm_yết bị xử_lý vi_phạm về các hành_vi bị nghiêm_cấm quy_định tại các khoản 1 , 2 , 3 , 7 Điều 12 Luật Chứng_khoán ; m ) Tổ_chức niêm_yết bị đình_chỉ hoạt_động hoặc cấm hoạt_động đối_với ngành_nghề hoặc hoạt_động kinh_doanh chính ; n ) Không đáp_ứng điều_kiện niêm_yết do sáp_nhập , tách doanh_nghiệp và",
+        "score": 0.5,
+        "file_name": "155-2020-NĐ-CP.doc",
+        "page_number": 0,
+        "chunk_index": 422
+      },
+      {
+        "text": "quả hoạt_động đối_với công_ty con của Sở Giao_dịch Chứng_khoán Việt_Nam 1 . Căn_cứ quy_định tại Nghị_định này , quy_định của pháp_luật về quản_lý tài_chính và đánh_giá hiệu_quả hoạt_động của doanh_nghiệp nhà_nước và các quy_định pháp_luật có liên_quan , Sở Giao_dịch Chứng_khoán Việt_Nam ban_hành Quy_chế quản_lý tài_chính và Quy_chế giám_sát và đánh_giá hiệu_quả hoạt_động của công_ty con . 2 . Quy_chế quản_lý tài_chính của công_ty con bao_gồm các nội_dung cơ_bản sau : a ) Vốn_điều_lệ , huy_động vốn và đầu_tư vốn ra bên ngoài ;",
+        "score": 0.5,
+        "file_name": "59-2021-NĐ-CP.doc",
+        "page_number": 0,
+        "chunk_index": 18
+      },
+      {
+        "text": "ty lưu_ký và bù_trừ chứng_khoán Việt_Nam 1 . Tuân_thủ quy_định về cơ_chế quản_lý tài_chính và đánh_giá hiệu_quả hoạt_động theo quy_định tại Luật Quản_lý , sử_dụng vốn nhà_nước đầu_tư vào sản_xuất , kinh_doanh tại doanh_nghiệp , Nghị_định này , các văn_bản hướng_dẫn , sửa_đổi , bổ_sung , thay_thế ( nếu có ) . 2 . Chịu sự thanh_tra , kiểm_tra , giám_sát của cơ_quan nhà_nước có thẩm_quyền đối_với công_tác tài_chính của Sở Giao_dịch Chứng_khoán Việt_Nam và Tổng_công_ty Lưu_ký và Bù_trừ chứng_khoán Việt_Nam . 3 . Sở Giao_dịch Chứng_khoán Việt_Nam có trách_nhiệm ban_hành Quy_chế",
+        "score": 0.42935481667518616,
+        "file_name": "59-2021-NĐ-CP.doc",
+        "page_number": 0,
+        "chunk_index": 22
+      },
+      {
+        "text": "thống đăng_ký , lưu_ký , thanh_toán , bù_trừ chứng_khoán . Ngân_hàng thanh_toán thực_hiện hoạt_động ứng_phó , khắc_phục sự_cố , sự_kiện , biến_động ảnh_hưởng đến hoạt_động thanh_toán giao_dịch chứng_khoán . 5 . Công_ty chứng_khoán , công_ty quản_lý quỹ đầu_tư chứng_khoán có trách_nhiệm thực_hiện hoạt_động ứng_phó , khắc_phục sự_cố , sự_kiện , biến_động ảnh_hưởng đến an_toàn , ổn_định và tính toàn_vẹn của thị_trường_chứng_khoán trong phạm_vi liên_quan đến hoạt_động của đơn_vị mình . 6 . Sở giao_dịch chứng_khoán , Tổng_công_ty lưu_ký và bù_trừ chứng_khoán",
+        "score": 0.4265037477016449,
+        "file_name": "155-2020-NĐ-CP.doc",
+        "page_number": 0,
+        "chunk_index": 987
+      }
+    ],
+    "status": "success",
+    "evaluation_metrics": {
+      "keyword_overlap": 0.4642857142857143,
+      "containment": 0.6170212765957447,
+      "faithfulness": 0.8,
+      "answer_relevancy": 0.3,
+      "context_precision": 0.3,
+      "context_recall": 0.2,
+      "contextual_relevancy": 0.6,
+      "avg_score": 0.46875814155449413
+    }
+  },
+  {
+    "id": "qa_2",
+    "level": 1,
+    "question": "Đối tượng nào áp dụng Luật Chứng khoán?",
+    "expected_answer": "Luật Chứng khoán áp dụng cho tổ chức, cá nhân Việt Nam và tổ chức, cá nhân nước ngoài tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam.",
+    "actual_answer": "Theo Luật Chứng khoán, đối tượng áp dụng bao gồm: 1. Tổ chức, cá nhân Việt Nam và tổ chức, cá nhân nước ngoài tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam. Luật này điều chỉnh các hoạt động về chứng khoán và thị trường chứng khoán, quyền và nghĩa vụ của tổ chức, cá nhân trong lĩnh vực chứng khoán, tổ chức thị trường chứng khoán, và quản lý nhà nước về chứng khoán.",
+    "validation_confidence": 0.9,
+    "retrieved_chunks": [
+      {
+        "text": "Bộ_trưởng Bộ Tài_chính ban_hành Thông_tư hướng_dẫn nghĩa_vụ của tổ_chức , cá_nhân trong hoạt_động đầu_tư nước_ngoài trên thị_trường_chứng_khoán Việt_Nam . Điều 1 . Phạm_vi điều_chỉnh , đối_tượng áp_dụng 1 .",
+        "score": 0.5,
+        "file_name": "51-2021-TT-BTC.docx",
+        "page_number": 0,
+        "chunk_index": 1
+      },
+      {
+        "text": "Biện_pháp khắc_phục hậu_quả :",
+        "score": 0.5,
+        "file_name": "156-2020-NĐ-CP.docx",
+        "page_number": 0,
+        "chunk_index": 49
+      },
+      {
+        "text": "LUẬT ĐẦU_TƯ Căn_cứ Hiến_pháp nước Cộng_hòa xã_hội_chủ_nghĩa_Việt_Nam ; Quốc_hội ban_hành Luật Đầu_tư . Chương I NHỮNG QUY_ĐỊNH CHUNG_Điều 1 . Phạm_vi điều_chỉnh Luật này quy_định về hoạt_động đầu_tư kinh_doanh tại Việt_Nam và hoạt_động đầu_tư kinh_doanh từ Việt_Nam ra nước_ngoài . Điều 2 . Đối_tượng áp_dụng Luật này áp_dụng đối_với nhà_đầu_tư và cơ_quan , tổ_chức , cá_nhân liên_quan đến hoạt_động đầu_tư kinh_doanh . Điều 3 . Giải_thích từ_ngữ Trong Luật này , các từ_ngữ dưới đây được hiểu như sau : 1 .",
+        "score": 0.4971127510070801,
+        "file_name": "61-2020-QH14.docx",
+        "page_number": 0,
+        "chunk_index": 0
+      },
+      {
+        "text": "LUẬT CHỨNG_KHOÁN Căn_cứ Hiến_pháp nước Cộng_hòa xã_hội_chủ_nghĩa_Việt_Nam ; Quốc_hội ban_hành Luật Chứng_khoán . Chương I NHỮNG QUY_ĐỊNH CHUNG_Điều 1 . Phạm_vi điều_chỉnh Luật này quy_định các hoạt_động về chứng_khoán và thị_trường_chứng_khoán ; quyền và nghĩa_vụ của tổ_chức , cá_nhân trong lĩnh_vực chứng_khoán ; tổ_chức thị_trường_chứng_khoán ; quản_lý_nhà_nước về chứng_khoán và thị_trường_chứng_khoán . Điều 2 . Đối_tượng áp_dụng 1 . Tổ_chức , cá_nhân Việt_Nam và tổ_chức , cá_nhân nước_ngoài tham_gia đầu_tư chứng_khoán và hoạt_động trên thị_trường_chứng_khoán Việt_Nam . 2 .",
+        "score": 0.47241976857185364,
+        "file_name": "54-2019-QH14.docx",
+        "page_number": 0,
+        "chunk_index": 0
+      },
+      {
+        "text": "Căn_cứ Nghị_định số 87/2017 / NĐ-CP ngày 26 tháng 7 năm 2017 của Chính_phủ quy_định chức_năng , nhiệm_vụ , quyền_hạn và cơ_cấu tổ_chức của Bộ Tài_chính ; Theo đề_nghị của Chủ_tịch Ủy_ban Chứng_khoán Nhà_nước ; Bộ_trưởng Bộ Tài_chính ban_hành Thông_tư quy_định về hoạt_động của công_ty chứng_khoán . Chương I QUY_ĐỊNH CHUNG_Điều 1 . Phạm_vi điều_chỉnh và đối_tượng áp_dụng 1 . Phạm_vi điều_chỉnh Thông_tư này quy_định về hoạt_động của công_ty chứng_khoán tại Việt_Nam gồm : a ) Hoạt_động quản_trị , điều_hành công_ty chứng_khoán ; b ) Hoạt_động nghiệp_vụ của công_ty chứng_khoán ;",
+        "score": 0.39023730158805847,
+        "file_name": "121-2020-TT-BTC.doc",
+        "page_number": 0,
+        "chunk_index": 1
+      }
+    ],
+    "status": "success",
+    "evaluation_metrics": {
+      "keyword_overlap": 0.9583333333333334,
+      "containment": 0.9714285714285714,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.8,
+      "context_recall": 1.0,
+      "contextual_relevancy": 0.8,
+      "avg_score": 0.9328231292517006
+    }
+  }
+]
