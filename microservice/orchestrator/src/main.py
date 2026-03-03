@@ -1,5 +1,7 @@
-from src.consumer import start_consumer, close_connection
 from dotenv import load_dotenv
+load_dotenv()
+
+from src.consumer import start_consumer, close_connection
 import signal
 import sys
 import logging
@@ -18,8 +20,6 @@ def main():
     """
     Main function with proper signal handling
     """
-    load_dotenv()
-    
     # Register signal handlers
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)

@@ -5,7 +5,8 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
-        const allowedTypes = ['application/pdf', 'text/plain'];
+        const allowedTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+            'application/msword'];
 
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true);

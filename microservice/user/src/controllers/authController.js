@@ -55,7 +55,9 @@ const login = async (req, res) => {
             avatar: user.avatar,
             role: user.role,
             birthday: user.birthday,
-            gender: user.gender
+            gender: user.gender,
+            accessToken,
+            refreshToken
         });
     } catch (error) {
         logger.error(`Error during login: ${error.message}`);

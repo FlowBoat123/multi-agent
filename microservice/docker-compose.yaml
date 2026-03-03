@@ -120,6 +120,7 @@ services:
     image: semitechnologies/weaviate:latest
     ports:
       - "8080:8080"
+      - "50051:50051"
     volumes:
       - vector_db_data:/var/lib/weaviate
     environment:

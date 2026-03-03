@@ -3,7 +3,7 @@ const logger = require('./logger');
 
 const findOneUser = async (accessToken, refreshToken) => {
     try {
-        const response = await axios.get('http://user:3004/api/v1/user/', {
+        const response = await axios.get(`http://${process.env.USER_SERVICE_HOST || 'localhost'}:3004/api/v1/user/`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`,
@@ -21,7 +21,7 @@ const findOneUser = async (accessToken, refreshToken) => {
 
 const findAllDocument = async (accessToken, refreshToken) => {
     try {
-        const response = await axiosClient.get('http://document:3001/api/v1/document/', {
+        const response = await axios.get(`http://${process.env.DOCUMENT_SERVICE_HOST || 'localhost'}:3001/api/v1/document/`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`,

@@ -1,327 +1,365 @@
 # Multi-Agent RAG System
 
-Hệ thống hỏi đáp tài liệu dựa trên kiến trúc **Multi-Agent** kết hợp **RAG (Retrieval-Augmented Generation)**, sử dụng microservices và LangGraph.
+Một hệ thống hỏi đáp tài liệu (chủ yếu lĩnh vực tài chính, cổ phiếu) sử dụng kiến trúc **multi-agent** kết hợp **RAG** (Retrieval-Augmented Generation). Hệ thống được chia thành nhiều microservice, phối hợp với nhau qua RabbitMQ, và dùng LangGraph để điều phối pipeline xử lý câu hỏi.
+
+Nói đơn giản: bạn upload tài liệu lên, hệ thống sẽ tự cắt nhỏ, nhúng (embedding) và lưu vào vector database. Khi bạn đặt câu hỏi, một "đội ngũ" các agent AI sẽ lần lượt phân tích câu hỏi, tìm kiếm thông tin liên quan, kiểm tra chất lượng, rồi tổng hợp thành câu trả lời hoàn chỉnh.
 
 ## Kiến trúc tổng quan
 
 ```
-┌──────────┐
-│  Nginx   │  ← API Gateway (port 80)
-└────┬─────┘
-     │
-     ├──────────────────┬──────────────────┐
-     ▼                  ▼                  ▼
-┌──────────┐     ┌──────────┐      ┌──────────┐
-│   User   │     │ Document │      │   Chat   │
-│  Service │     │  Service │      │  Service │
-│ (Node.js)│     │ (Node.js)│      │ (Node.js)│
-│ :3004    │     │ :3001    │      │ :3003    │
-└────┬─────┘     └────┬─────┘      └────┬─────┘
-     │                │                  │
-     │          ┌─────▼──────┐     ┌─────▼──────────┐
-     │          │  Document  │     │  Orchestrator   │
-     │          │ Processor  │     │  (LangGraph)    │
-     │          │ (Python)   │     │  (Python)       │
-     │          └─────┬──────┘     └─────┬───────────┘
-     │                │                  │
-     ▼                ▼                  ▼
-┌─────────┐   ┌───────────┐      ┌───────────┐
-│ MongoDB │   │ Weaviate  │      │ RabbitMQ  │
-│ :27017  │   │  (VectorDB│      │ :5672     │
-└─────────┘   │  :8080)   │      └───────────┘
-              └───────────┘
+┌───────────┐
+│   Nginx   │  ← API Gateway (port 80, dùng khi chạy Docker)
+└─────┬─────┘
+      │
+      ├────────────────────┬────────────────────┐
+      ▼                    ▼                    ▼
+┌───────────┐       ┌───────────┐        ┌───────────┐
+│   User    │       │ Document  │        │   Chat    │
+│  Service  │       │  Service  │        │  Service  │
+│ (Node.js) │       │ (Node.js) │        │ (Node.js) │
+│  :3004    │       │  :3001    │        │  :3003    │
+└─────┬─────┘       └─────┬─────┘        └─────┬─────┘
+      │                   │                    │
+      │            ┌──────▼───────┐      ┌─────▼──────────┐
+      │            │  Document    │      │  Orchestrator   │
+      │            │  Processor   │      │  (LangGraph)    │
+      │            │  (Python)    │      │  (Python)       │
+      │            └──────┬───────┘      └─────┬───────────┘
+      │                   │                    │
+      ▼                   ▼                    ▼
+┌──────────┐       ┌───────────┐        ┌───────────┐
+│ MongoDB  │       │ Weaviate  │        │ RabbitMQ  │
+│  :27017  │       │ (VectorDB)│        │  :5672    │
+└──────────┘       │  :8080    │        └───────────┘
+                   └───────────┘
 ```
 
-### Các service chính
+### Các service
 
-| Service | Công nghệ | Mô tả |
-|---------|-----------|-------|
-| **Nginx** | Nginx | API Gateway, reverse proxy, WebSocket proxy |
-| **User** | Node.js / Express 5 | Xác thực (JWT, Google OAuth), quản lý người dùng |
-| **Document** | Node.js / Express 5 | CRUD tài liệu, upload file qua MinIO |
-| **Document Processor** | Python | Xử lý tài liệu (chunking, embedding), lưu vào Weaviate |
-| **Chat** | Node.js / Express 5 + Socket.IO | Quản lý conversation, message, real-time chat |
-| **Orchestrator** | Python / LangGraph | Điều phối multi-agent pipeline xử lý câu hỏi |
+| Service | Công nghệ | Làm gì? |
+|---------|-----------|---------|
+| **User** | Node.js / Express 5 | Đăng ký, đăng nhập, xác thực JWT, Google OAuth |
+| **Document** | Node.js / Express 5 | Upload / quản lý tài liệu, lưu file lên MinIO |
+| **Document Processor** | Python | Nhận file từ queue, cắt chunk, tạo embedding, đẩy vào Weaviate |
+| **Chat** | Node.js / Express 5 + Socket.IO | Quản lý conversation & message, gửi/nhận tin nhắn real-time |
+| **Orchestrator** | Python / LangGraph | Điều phối pipeline multi-agent xử lý câu hỏi |
+| **Nginx** | Nginx | Reverse proxy, chỉ dùng khi chạy full Docker |
 
-### Multi-Agent Pipeline (Orchestrator)
+### Multi-Agent Pipeline
 
-Hệ thống sử dụng LangGraph với các agent:
+Khi bạn gửi câu hỏi, hệ thống sẽ chạy qua pipeline này:
 
-```
-START → Receptionist → Analyst → Searcher → Validator → Synthesizer → Summarizer → END
-```
+![Pipeline multi-agent](image.png)
 
-- **Receptionist**: Tiếp nhận và phân loại câu hỏi
-- **Analyst**: Phân tích câu hỏi, xác định các truy vấn cần tìm kiếm
-- **Searcher**: Tìm kiếm tài liệu liên quan từ Weaviate (vector search)
-- **Validator**: Kiểm tra chất lượng kết quả tìm kiếm, yêu cầu tìm lại nếu chưa đủ
-- **Synthesizer**: Tổng hợp câu trả lời từ context
-- **Summarizer**: Tóm tắt/rút gọn câu trả lời
+- **Receptionist** — Tiếp nhận câu hỏi, quyết định cần tra cứu tài liệu hay trả lời luôn
+- **Analyst** — Phân tích câu hỏi, tách ra các truy vấn tìm kiếm cụ thể
+- **Searcher** — Tìm kiếm trong Weaviate (vector search), VNStock, web
+- **Validator** — Kiểm tra kết quả tìm được có đủ tốt chưa, nếu chưa thì yêu cầu tìm lại
+- **Synthesizer** — Gom kết quả tìm kiếm + context, viết ra câu trả lời hoàn chỉnh
+- **Summarizer** — Rút gọn/tóm tắt câu trả lời/câu hỏi/ngữ cảnh
 
 ### Infrastructure
 
-| Service | Image | Port |
-|---------|-------|------|
-| MongoDB | `mongo:latest` | 27017 |
-| Weaviate | `semitechnologies/weaviate:latest` | 8080, 50051 |
-| RabbitMQ | `rabbitmq:3-management` | 5672, 15672 (management UI) |
-| Redis | `redis:alpine` | 6380 |
-| MinIO | `minio/minio` | 9000 (API), 9001 (Console) |
+Các service hạ tầng chạy trong Docker:
+
+| Service | Port | Ghi chú |
+|---------|------|---------|
+| MongoDB | 27017 | Lưu user, conversation, message, document metadata |
+| Weaviate | 8080, 50051 | Vector database lưu embedding các chunk tài liệu |
+| RabbitMQ | 5672, 15672 | Message broker giữa các service. UI quản lý ở port 15672 |
+| Redis | 6380 | Cache |
+| MinIO | 9000, 9001 | Object storage lưu file gốc. Console ở port 9001 |
 
 ---
 
-## Yêu cầu hệ thống
+## Yêu cầu
 
-- **Docker** >= 20.10 & **Docker Compose** >= 2.0
-- **RAM** >= 8GB (khuyến nghị 16GB do Weaviate + embedding models)
+Trước khi bắt đầu, đảm bảo máy bạn có:
+
+- **Docker Desktop** — để chạy infrastructure (MongoDB, RabbitMQ, Weaviate, Redis, MinIO)
+- **Node.js** >= 21 kèm npm
+- **Python** >= 3.10
+- **RAM** >= 8GB (16GB nếu muốn chạy mượt, vì embedding model tốn RAM)
 - **Disk** >= 10GB trống
-- **DEEPSEEK_API_KEY** — API key từ [DeepSeek](https://platform.deepseek.com/) (bắt buộc cho LLM)
+- **DEEPSEEK_API_KEY** — lấy ở [DeepSeek Platform](https://platform.deepseek.com/). Đây là key cho LLM, bắt buộc phải có
 
 ---
 
 ## Cài đặt
 
-### 1. Clone repository
+### 1. Clone về
 
 ```bash
 git clone <repository-url>
 cd multi-agent
 ```
 
-### 2. Tạo file environment
-
-Tạo các file `.env.docker` cho từng service. Các file này **không có sẵn** trong repo, cần tạo thủ công.
-
-#### `microservice/chat/.env.docker`
-
-```env
-PORT=3003
-SESSION_SECRET=your_session_secret
-MONGO_URI=mongodb://admin:Phamquan2004@mongo:27017/chats?authSource=admin
-RABBITMQ_URL=amqp://root:Phamquan2004%40@rabbitmq:5672
-
-# MinIO
-MINIO_ENDPOINT=minio
-MINIO_PORT=9000
-MINIO_USE_SSL=false
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET=chat
-```
-
-#### `microservice/user/.env.docker`
-
-```env
-PORT=3004
-SESSION_SECRET=your_session_secret
-MONGO_URI=mongodb://admin:Phamquan2004@mongo:27017/users?authSource=admin
-RABBITMQ_URL=amqp://root:Phamquan2004%40@rabbitmq:5672
-
-# JWT
-JWT_SECRET_ACCESS_TOKEN=your_access_token_secret
-JWT_ACCESS_TOKEN_EXPIRE=1d
-JWT_SECRET_REFRESH_TOKEN=your_refresh_token_secret
-JWT_REFRESH_TOKEN_EXPIRE=7d
-
-# Google OAuth (tuỳ chọn)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REDIRECT_URI=http://localhost/api/v1/auth/google/callback
-
-# Email (tuỳ chọn - dùng cho OTP)
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-```
-
-#### `microservice/document/node-api/.env.docker`
-
-```env
-PORT=3001
-SESSION_SECRET=your_session_secret
-MONGO_URI=mongodb://admin:Phamquan2004@mongo:27017/documents?authSource=admin
-RABBITMQ_URL=amqp://root:Phamquan2004%40@rabbitmq:5672
-
-# MinIO
-MINIO_ENDPOINT=minio
-MINIO_PORT=9000
-MINIO_USE_SSL=false
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET=document
-```
-
-#### `microservice/document/python-processor/.env.docker`
-
-```env
-RABBITMQ_HOST=rabbitmq
-RABBITMQ_PORT=5672
-RABBITMQ_USER=root
-RABBITMQ_PASSWORD=Phamquan2004@
-
-VECTOR_DB_HOST=vector-db
-VECTOR_DB_PORT=8080
-
-# MinIO
-MINIO_ENDPOINT=minio
-MINIO_PORT=9000
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET=document
-
-REGEX_SEMANTIC_COLLECTION=Regex_semantic
-```
-
-#### `microservice/orchestrator/.env.docker`
-
-```env
-RABBITMQ_HOST=rabbitmq
-RABBITMQ_PORT=5672
-RABBITMQ_USER=root
-RABBITMQ_PASSWORD=Phamquan2004@
-
-VECTOR_DB_HOST=vector-db
-VECTOR_DB_PORT=8080
-
-# LLM - BẮT BUỘC
-DEEPSEEK_API_KEY=your_deepseek_api_key
-
-REGEX_SEMANTIC_COLLECTION=Regex_semantic
-```
-
-### 3. Khởi chạy hệ thống
+### 2. Bật infrastructure lên
 
 ```bash
 cd microservice
-docker-compose up --build -d
+docker-compose -f docker-compose.local.yaml up -d
 ```
 
-Lần chạy đầu tiên sẽ mất thời gian build image và tải model embedding.
-
-### 4. Kiểm tra trạng thái
+Đợi khoảng 30 giây cho RabbitMQ healthcheck xong:
 
 ```bash
-# Xem tất cả container
-docker-compose ps
-
-# Xem log của service cụ thể
-docker-compose logs -f orchestrator
-docker-compose logs -f chat
-docker-compose logs -f document-processor
+docker-compose -f docker-compose.local.yaml ps   # kiểm tra tất cả đã "healthy" chưa
 ```
 
-### 5. Truy cập các giao diện quản trị
+Các service hạ tầng sau khi bật:
 
 | Service | URL |
 |---------|-----|
-| API Gateway | http://localhost |
-| RabbitMQ Management | http://localhost:15672 (root / Phamquan2004@) |
-| MinIO Console | http://localhost:9001 (minioadmin / minioadmin) |
+| MongoDB | `localhost:27017` |
+| Weaviate | `localhost:8080` |
+| RabbitMQ | `localhost:5672` — Giao diện quản lý: http://localhost:15672 (user: `root`, pass: `Phamquan2004@`) |
+| Redis | `localhost:6380` |
+| MinIO | `localhost:9000` — Console: http://localhost:9001 (user: `minioadmin`, pass: `minioadmin`) |
+
+### 3. Cài dependencies
+
+#### Node.js services
+
+```bash
+cd microservice/user && npm install
+cd ../document/node-api && npm install
+cd ../../chat && npm install
+```
+
+#### Python services
+
+```bash
+# Document Processor
+cd microservice/document/python-processor
+pip install numpy
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+
+# Tải trước model embedding (~250MB, chỉ cần 1 lần)
+python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('distiluse-base-multilingual-cased-v2')"
+
+# Orchestrator
+cd ../../orchestrator
+pip install protobuf==5.29.0 googleapis-common-protos
+pip install -r requirements.txt
+```
+
+### 4. Cấu hình
+
+Các file `.env` đã được tạo sẵn trong từng thư mục service, trỏ về `localhost`. Việc duy nhất bạn cần làm là **điền DEEPSEEK_API_KEY** vào 2 file:
+
+```
+microservice/orchestrator/.env
+microservice/rag/.env
+```
+
+Mở ra, tìm dòng `DEEPSEEK_API_KEY=` rồi paste key thật vào.
+
+Danh sách các file `.env`:
+
+| File | Để làm gì |
+|------|-----------|
+| `microservice/user/.env` | User Service (port 3004) |
+| `microservice/chat/.env` | Chat Service (port 3003) |
+| `microservice/document/node-api/.env` | Document API (port 3001) |
+| `microservice/document/python-processor/.env` | Document Processor |
+| `microservice/orchestrator/.env` | Orchestrator — **cần DEEPSEEK_API_KEY** |
+| `microservice/rag/.env` | RAG Service — **cần DEEPSEEK_API_KEY** |
+
+### 5. Chạy
+
+Mỗi service cần một terminal riêng:
+
+```bash
+# Terminal 1 — User Service
+cd microservice/user
+npm start
+
+# Terminal 2 — Document API
+cd microservice/document/node-api
+npm start
+
+# Terminal 3 — Chat Service
+cd microservice/chat
+npm start
+
+# Terminal 4 — Document Processor
+cd microservice/document/python-processor
+python main.py
+
+# Terminal 5 — Orchestrator
+cd microservice/orchestrator
+python -m src.main
+```
+
+**Hoặc dùng script cho nhanh:**
+
+```powershell
+# PowerShell
+.\start-local.ps1              # chạy hết
+.\start-local.ps1 infra        # chỉ infrastructure
+.\start-local.ps1 services     # chỉ app services
+.\start-local.ps1 stop         # dừng hết
+```
+
+```cmd
+:: CMD
+scripts\start-all.bat
+```
+
+### 6. Kiểm tra
+
+Mở trình duyệt hoặc gọi API thử:
+
+| Service | URL |
+|---------|-----|
+| User Service | http://localhost:3004/api/v1 |
+| Document API | http://localhost:3001/api/v1 |
+| Chat Service | http://localhost:3003/api/v1 |
+| RabbitMQ Management | http://localhost:15672 |
+| MinIO Console | http://localhost:9001 |
 | Weaviate | http://localhost:8080 |
 
 ---
 
 ## Sử dụng
 
-### API Endpoints (qua Nginx - port 80)
+### Giao diện Web
 
-#### Authentication
+Cách nhanh nhất để test là dùng giao diện web đi kèm:
 
-```
-POST /api/v1/auth/register        # Đăng ký
-POST /api/v1/auth/login            # Đăng nhập
-POST /api/v1/auth/refresh-token    # Làm mới token
-```
-
-#### User
-
-```
-GET  /api/v1/user/profile          # Thông tin người dùng
+```bash
+npm install -g http-server      # cài 1 lần
+cd frontend
+http-server -p 8888 --cors -c-1
 ```
 
-#### Document
+Mở http://localhost:8888 — giao diện hỗ trợ:
+- Đăng ký / Đăng nhập
+- Upload tài liệu (kéo thả hoặc chọn file — hỗ trợ PDF, TXT, DOCX, DOC)
+- Quản lý cuộc hội thoại (tạo, xoá)
+- Chat với AI, nhận phản hồi real-time qua Socket.IO
 
-```
-POST /api/v1/document/upload       # Upload tài liệu (PDF, DOCX, ...)
-GET  /api/v1/document              # Danh sách tài liệu
-DELETE /api/v1/document/:id        # Xoá tài liệu
-```
+### Quy trình cơ bản
 
-#### Chat / Conversation
+1. **Đăng ký / Đăng nhập** — tạo tài khoản rồi đăng nhập
+2. **Upload tài liệu** — chọn file, hệ thống sẽ tự cắt chunk, tạo embedding, đẩy vào Weaviate (mất khoảng 1-5 phút tuỳ kích thước file)
+3. **Tạo cuộc hội thoại** — bấm "+ Cuộc hội thoại mới"
+4. **Đặt câu hỏi** — gõ câu hỏi rồi Enter. Hệ thống multi-agent sẽ tự động phân tích, tìm kiếm, kiểm tra, tổng hợp câu trả lời. Kết quả trả về real-time qua WebSocket
 
-```
-POST /api/v1/conversation          # Tạo cuộc hội thoại mới
-GET  /api/v1/conversation          # Danh sách cuộc hội thoại
-GET  /api/v1/message/:conversationId  # Lấy tin nhắn trong cuộc hội thoại
-```
+### API Endpoints
 
-#### WebSocket (Socket.IO)
+Nếu muốn gọi API trực tiếp (Postman, curl, ...), đây là danh sách đầy đủ:
 
-Kết nối real-time qua Socket.IO tại `ws://localhost/socket.io/`.
+#### Auth — User Service (port 3004)
 
-### Quy trình sử dụng
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| POST | `/api/v1/auth/register` | Đăng ký tài khoản |
+| POST | `/api/v1/auth/login` | Đăng nhập, trả về JWT token |
+| DELETE | `/api/v1/auth/logout` | Đăng xuất |
+| PUT | `/api/v1/auth/refresh-token` | Làm mới access token |
+| POST | `/api/v1/auth/sendOtp` | Gửi mã OTP |
+| POST | `/api/v1/auth/verifyOtp` | Xác nhận mã OTP |
+| GET | `/api/v1/auth/google` | Đăng nhập bằng Google |
 
-1. **Đăng ký / Đăng nhập** → Lấy JWT access token
-2. **Upload tài liệu** → Hệ thống tự động chunking, embedding và lưu vào Weaviate
-3. **Tạo cuộc hội thoại** → Bắt đầu chat
-4. **Gửi câu hỏi** → Hệ thống Multi-Agent tự động:
-   - Phân tích câu hỏi
-   - Tìm kiếm tài liệu liên quan (vector search)
-   - Kiểm tra chất lượng kết quả
-   - Tổng hợp câu trả lời
-   - Trả kết quả qua WebSocket
+#### User — User Service (port 3004)
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| GET | `/api/v1/user/` | Lấy thông tin user hiện tại |
+| PATCH | `/api/v1/user/update` | Cập nhật thông tin cá nhân |
+| PATCH | `/api/v1/user/changePassword` | Đổi mật khẩu |
+| DELETE | `/api/v1/user/delete` | Xoá tài khoản |
+
+#### Document — Document Service (port 3001)
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| POST | `/api/v1/document` | Upload tài liệu (multipart/form-data, field name: `file`) |
+| GET | `/api/v1/document` | Danh sách tài liệu của user |
+| GET | `/api/v1/document/:documentId` | Chi tiết một tài liệu |
+| DELETE | `/api/v1/document/:documentId` | Xoá tài liệu |
+
+#### Conversation — Chat Service (port 3003)
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| POST | `/api/v1/conversation` | Tạo cuộc hội thoại mới |
+| GET | `/api/v1/conversation` | Danh sách cuộc hội thoại |
+| PATCH | `/api/v1/conversation/:conversationId` | Đổi tên cuộc hội thoại |
+| DELETE | `/api/v1/conversation/:conversationId` | Xoá cuộc hội thoại |
+
+#### Message — Chat Service (port 3003)
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| POST | `/api/v1/message` | Gửi tin nhắn (body: `{conversationId, message}`) |
+| GET | `/api/v1/message?conversationId=<id>` | Lấy tin nhắn trong cuộc hội thoại |
+| PATCH | `/api/v1/message/:messageId` | Sửa tin nhắn |
+| DELETE | `/api/v1/message/:messageId` | Xoá tin nhắn |
+
+#### WebSocket (Socket.IO — port 3003)
+
+Kết nối real-time tại `http://localhost:3003` qua Socket.IO.
+
+| Event | Hướng | Mô tả |
+|-------|-------|-------|
+| `join` | Client → Server | Tham gia room conversation (gửi `conversationId`) |
+| `newMessage` | Server → Client | Bot trả lời xong, nhận `{messageId, message, role}` |
+| `analysis` | Server → Client | Agent đang phân tích câu hỏi (`started` / `completed`) |
+| `retrieving` | Server → Client | Agent đang tìm kiếm thông tin (`started` / `completed`) |
+| `summarizing` | Server → Client | Agent đang tổng hợp câu trả lời (`started` / `completed`) |
+
+> **Xác thực**: Tất cả API (trừ login/register) đều cần gửi token qua header `Authorization: Bearer <token>`. Token lấy được khi đăng nhập.
 
 ---
 
-## Evaluation (Đánh giá hệ thống)
+## Evaluation
 
-Dự án bao gồm bộ công cụ đánh giá chất lượng RAG.
+Dự án có sẵn bộ công cụ để đánh giá chất lượng câu trả lời của hệ thống RAG.
 
-### Cài đặt dependencies đánh giá
+### Cài đặt
 
 ```bash
-# Tại thư mục gốc (multi-agent/)
+# Trong thư mục gốc multi-agent/
 pip install -r requirements.txt
 ```
 
-Dependencies: `langgraph`, `langchain-openai`, `weaviate-client`, `sentence-transformers`, `python-dotenv`, `httpx`, ...
-
-### Tạo file `.env` tại thư mục gốc
+Tạo file `.env` ở thư mục gốc:
 
 ```env
-DEEPSEEK_API_KEY=your_deepseek_api_key
+DEEPSEEK_API_KEY=your_key_here
 ```
 
-### Chạy test evaluation
+### Chạy test
 
 ```bash
-# Chạy test với bộ câu hỏi (mặc định 2 mẫu)
 python run_test_evaluation.py
 ```
 
-Script sẽ:
-- Đọc câu hỏi từ `test_set_ver1.json`
-- Gửi từng câu hỏi vào hệ thống RAG
-- Lưu kết quả vào `results/evaluation_results_<timestamp>.json`
+Script sẽ đọc câu hỏi từ `test_set_ver1.json`, gửi vào hệ thống, và lưu kết quả vào thư mục `results/`.
 
-### Đánh giá kết quả
+### Đánh giá
 
 ```bash
 python evaluate_results.py results/evaluation_results_<timestamp>.json
 ```
 
-Các metric đánh giá:
+Các metric được tính:
 
-| Metric | Mô tả |
-|--------|-------|
-| **Keyword Overlap** | Tỷ lệ từ khoá trùng khớp giữa expected và actual |
-| **Containment** | Kiểm tra expected có nằm trong actual không |
-| **Faithfulness** | Câu trả lời có trung thực với context không (LLM-based) |
-| **Answer Relevancy** | Câu trả lời có liên quan đến câu hỏi không (LLM-based) |
-| **Context Precision** | Chất lượng các đoạn context được retrieve (LLM-based) |
-| **Context Recall** | Context có bao phủ đủ thông tin cần thiết không (LLM-based) |
-| **Contextual Relevancy** | Mức độ liên quan tổng thể của context (LLM-based) |
+| Metric | Đo cái gì |
+|--------|-----------|
+| Keyword Overlap | Từ khoá chung giữa câu trả lời thực tế và kỳ vọng |
+| Containment | Câu trả lời kỳ vọng có nằm trong câu trả lời thực tế không |
+| Faithfulness | Câu trả lời có trung thực với context được tìm thấy không |
+| Answer Relevancy | Câu trả lời có liên quan đến câu hỏi không |
+| Context Precision | Các đoạn context được retrieve có chất lượng không |
+| Context Recall | Context đã bao phủ đủ thông tin chưa |
+| Contextual Relevancy | Mức độ liên quan tổng thể của context |
 
-Kết quả đánh giá được lưu vào `results/evaluation_results_<timestamp>_evaluated.json`.
+Kết quả lưu tại `results/evaluation_results_<timestamp>_evaluated.json`.
 
 ---
 
@@ -329,94 +367,91 @@ Kết quả đánh giá được lưu vào `results/evaluation_results_<timestam
 
 ```
 multi-agent/
-├── evaluate_results.py          # Script đánh giá kết quả
-├── run_test_evaluation.py       # Script chạy test evaluation
-├── test_set_ver1.json           # Bộ test (câu hỏi - đáp án mong đợi)
-├── requirements.txt             # Python dependencies cho evaluation
-├── results/                     # Kết quả evaluation
+├── frontend/                        # Giao diện web test
+│   └── index.html
+├── evaluate_results.py              # Script đánh giá
+├── run_test_evaluation.py           # Script chạy test
+├── test_set_ver1.json               # Bộ test (câu hỏi + đáp án kỳ vọng)
+├── requirements.txt                 # Dependencies cho evaluation
+├── start-local.ps1                  # Script chạy local (PowerShell)
+├── scripts/                         # Batch scripts
+├── results/                         # Kết quả evaluation
 │
 └── microservice/
-    ├── docker-compose.yaml      # Docker Compose - toàn bộ hệ thống
-    ├── cors.json                # Cấu hình CORS cho MinIO
+    ├── docker-compose.yaml          # Docker full (production)
+    ├── docker-compose.local.yaml    # Docker chỉ infrastructure
+    ├── cors.json                    # Cấu hình CORS cho MinIO
+    ├── nginx/                       # Reverse proxy (chỉ dùng Docker mode)
     │
-    ├── nginx/                   # API Gateway
-    │   ├── Dockerfile
-    │   └── nginx.conf
-    │
-    ├── user/                    # User Service (Node.js)
-    │   ├── Dockerfile
-    │   ├── package.json
+    ├── user/                        # User Service
+    │   ├── .env
     │   └── src/
-    │       ├── controllers/     # Route handlers
-    │       ├── models/          # Mongoose models
-    │       ├── routes/          # Express routes
-    │       ├── services/        # Business logic
-    │       └── utils/           # DB, JWT, mail, ...
+    │       ├── controllers/         # authController, userController
+    │       ├── models/              # userModel
+    │       ├── routes/              # authRoutes, userRoutes
+    │       └── middlewares/         # JWT auth middleware
     │
     ├── document/
-    │   ├── node-api/            # Document API (Node.js)
-    │   │   ├── Dockerfile
-    │   │   ├── package.json
+    │   ├── node-api/                # Document API
+    │   │   ├── .env
     │   │   └── src/
-    │   │
-    │   └── python-processor/    # Document Processor (Python)
-    │       ├── Dockerfile
-    │       ├── requirements.txt
-    │       ├── handler/         # create/delete document handlers
-    │       ├── services/        # Document & search services
-    │       └── utils/           # Chunking, vector DB, MinIO, ...
+    │   └── python-processor/        # Document Processor
+    │       ├── .env
+    │       ├── handler/             # create, delete handlers
+    │       ├── services/            # documentService, searchService
+    │       └── utils/               # chunking, embedding
     │
-    ├── chat/                    # Chat Service (Node.js + Socket.IO)
-    │   ├── Dockerfile
-    │   ├── package.json
+    ├── chat/                        # Chat Service
+    │   ├── .env
     │   └── src/
-    │       ├── controllers/
-    │       ├── models/
-    │       ├── workers/         # RabbitMQ publisher/consumer
-    │       └── utils/
+    │       ├── controllers/         # conversationController, messageController
+    │       ├── config/socket.js     # Socket.IO setup
+    │       └── workers/             # messagePublisher, responseConsumer
     │
-    ├── orchestrator/            # Multi-Agent Orchestrator (Python/LangGraph)
-    │   ├── Dockerfile
-    │   ├── requirements.txt
+    ├── orchestrator/                # Multi-Agent Orchestrator
+    │   ├── .env
     │   └── src/
-    │       ├── graph.py         # LangGraph workflow definition
-    │       ├── agents/          # Các agent: receptionist, analyst, searcher, ...
-    │       ├── router.py        # Conditional routing logic
-    │       └── utils/           # RabbitMQ, vector DB connections
+    │       ├── graph.py             # LangGraph workflow
+    │       ├── agents/              # receptionist, analyst, searcher, validator, synthesizer, summarizer
+    │       └── utils/               # RabbitMQ, vector DB helpers
     │
-    └── rag/                     # RAG Service (Python) - standalone
-        ├── Dockerfile
-        ├── requirements.txt
-        ├── handler/             # RAG processing
-        └── utils/               # Model, vector DB
+    └── rag/                         # RAG Service (standalone)
+        ├── .env
+        └── handler/
 ```
 
 ---
 
-## Dừng / Xoá hệ thống
+## Dừng hệ thống
 
 ```bash
+# Dừng infrastructure
 cd microservice
+docker-compose -f docker-compose.local.yaml down
 
-# Dừng tất cả container
-docker-compose down
+# Muốn xoá sạch data luôn thì thêm -v
+docker-compose -f docker-compose.local.yaml down -v
+```
 
-# Dừng và xoá volumes (xoá toàn bộ dữ liệu)
-docker-compose down -v
+Các app service: `Ctrl+C` trong terminal tương ứng, hoặc:
 
-# Xoá images đã build
-docker-compose down --rmi local
+```powershell
+.\start-local.ps1 stop
 ```
 
 ---
 
-## Troubleshooting
+## Gặp lỗi?
 
-| Vấn đề | Giải pháp |
-|--------|-----------|
-| RabbitMQ chưa sẵn sàng | Đợi healthcheck hoàn tất (~30s), kiểm tra `docker-compose logs rabbitmq` |
-| Orchestrator lỗi DEEPSEEK_API_KEY | Đảm bảo đã set `DEEPSEEK_API_KEY` trong `orchestrator/.env.docker` |
-| Document processor crash | Kiểm tra RAM (cần đủ cho embedding model), xem log `docker-compose logs document-processor` |
-| Không kết nối được MongoDB | Kiểm tra `MONGO_URI` có `authSource=admin` và mật khẩu đúng |
-| MinIO upload lỗi | Kiểm tra bucket đã được tạo trong MinIO Console (http://localhost:9001) |
-| Weaviate timeout | Đợi Weaviate khởi động xong, kiểm tra `http://localhost:8080/v1/.well-known/ready` |
+| Lỗi | Cách xử lý |
+|-----|-------------|
+| RabbitMQ chưa sẵn sàng | Đợi ~30 giây cho healthcheck xong. Kiểm tra: `docker-compose -f docker-compose.local.yaml logs rabbitmq` |
+| `DEEPSEEK_API_KEY` lỗi | Kiểm tra đã paste key thật vào `orchestrator/.env` chưa |
+| Document Processor crash | RAM không đủ cho embedding model. Cần tối thiểu ~2GB RAM trống |
+| Không kết nối được MongoDB | Kiểm tra Docker container `mongo` đang chạy, và `MONGO_URI` trong `.env` có `authSource=admin` |
+| Upload tài liệu lỗi | Vào MinIO Console (http://localhost:9001) kiểm tra bucket đã tạo chưa |
+| Weaviate timeout | Đợi Weaviate khởi động xong, test thử `http://localhost:8080/v1/.well-known/ready` |
+| `npm start` báo module not found | Chạy `npm install` trong thư mục service đó |
+| Python ImportError | Chạy `pip install -r requirements.txt` trong thư mục service đó |
+| Port bị chiếm | Kiểm tra `netstat -ano \| findstr :<port>` rồi tắt process đang dùng |
+| Frontend không gửi được tin nhắn | Mở DevTools (F12) → Console, kiểm tra lỗi. Đảm bảo tất cả service đều đang chạy |

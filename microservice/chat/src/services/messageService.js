@@ -121,8 +121,9 @@ const findOlderMessage = async (conversationId, limit) => {
     }).sort({ createdAt: -1 }).limit(limit).lean();
 
     const response = []
+    const count = Math.min(limit, userMessage.length, botMessage.length);
 
-    for (let i = 0; i < limit; i++) {
+    for (let i = 0; i < count; i++) {
         response.push({
             "user": userMessage[i].message,
             "bot": botMessage[i].message,

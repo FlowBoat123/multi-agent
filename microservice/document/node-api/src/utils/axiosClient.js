@@ -4,7 +4,7 @@ const logger = require('./logger');
 // Function to call `findOne` API of user service
 const findOneUser = async (accessToken, refreshToken) => {
   try {
-    const response = await axios.get('http://user:3004/api/v1/user/', {
+    const response = await axios.get(`http://${process.env.USER_SERVICE_HOST || 'localhost'}:3004/api/v1/user/`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
