@@ -1,0 +1,34 @@
+/* eslint-disable import/newline-after-import,import/first */
+import '@testing-library/jest-dom';
+import { theme } from 'antd';
+// mock indexedDB to test with dexie
+// refs: https://github.com/dumbmatter/fakeIndexedDB#dexie-and-other-indexeddb-api-wrappers
+import 'fake-indexeddb/auto';
+import React from 'react';
+import { vi } from 'vitest';
+
+// Global mock for @lobehub/analytics/react to avoid AnalyticsProvider dependency
+// This prevents tests from failing when components use useAnalytics hook
+vi.mock('@lobehub/analytics/react', () => ({
+  useAnalytics: () => ({
+    analytics: {
+      track: vi.fn(),
+    },
+  }),
+}));
+
+// node runtime
+if (typeof window === 'undefined') {
+  // test with polyfill crypto
+  const { Crypto } = await import('@peculiar/webcrypto');
+
+  Object.defineProperty(global, 'crypto', {
+    value: new Crypto(),
+    writable: true,
+  });
+}
+
+// remove antd hash on test
+theme.defaultConfig.hashed = false;
+
+(global as any).React = React;

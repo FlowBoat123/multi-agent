@@ -1,0 +1,156 @@
+import { ModelProviderCard } from '@/types/llm';
+
+const PPIO: ModelProviderCard = {
+  chatModels: [
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek: DeepSeek R1 (community)',
+      enabled: true,
+      id: 'deepseek/deepseek-r1/community',
+    },
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek: DeepSeek V3 (community)',
+      enabled: true,
+      id: 'deepseek/deepseek-v3/community',
+    },
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek R1',
+      enabled: true,
+      id: 'deepseek/deepseek-r1',
+    },
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek V3',
+      enabled: true,
+      id: 'deepseek/deepseek-v3',
+    },
+    {
+      contextWindowTokens: 32_000,
+      description: '',
+      displayName: 'DeepSeek R1 Distill Llama 70B',
+      enabled: true,
+      id: 'deepseek/deepseek-r1-distill-llama-70b',
+    },
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek: DeepSeek R1 Distill Qwen 32B',
+      enabled: true,
+      id: 'deepseek/deepseek-r1-distill-qwen-32b',
+    },
+    {
+      contextWindowTokens: 64_000,
+      description: '',
+      displayName: 'DeepSeek: DeepSeek R1 Distill Qwen 14B',
+      enabled: true,
+      id: 'deepseek/deepseek-r1-distill-qwen-14b',
+    },
+    {
+      contextWindowTokens: 32_000,
+      description: '',
+      displayName: 'DeepSeek: DeepSeek R1 Distill Llama 8B',
+      enabled: true,
+      id: 'deepseek/deepseek-r1-distill-llama-8b',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'qwen/qwen-2.5-72b-instruct',
+      enabled: true,
+      id: 'qwen/qwen-2.5-72b-instruct',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'qwen/qwen-2-vl-72b-instruct',
+      enabled: true,
+      id: 'qwen/qwen-2-vl-72b-instruct',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'meta-llama/llama-3.2-3b-instruct',
+      enabled: true,
+      id: 'meta-llama/llama-3.2-3b-instruct',
+    },
+    {
+      contextWindowTokens: 32_000,
+      description: '',
+      displayName: 'qwen/qwen2.5-32b-instruct',
+      enabled: true,
+      id: 'qwen/qwen2.5-32b-instruct',
+    },
+    {
+      contextWindowTokens: 14_336,
+      description: '',
+      displayName: 'baichuan/baichuan2-13b-chat',
+      enabled: true,
+      id: 'baichuan/baichuan2-13b-chat',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'meta-llama/llama-3.1-70b-instruct',
+      enabled: true,
+      id: 'meta-llama/llama-3.1-70b-instruct',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'meta-llama/llama-3.1-8b-instruct',
+      enabled: true,
+      id: 'meta-llama/llama-3.1-8b-instruct',
+    },
+    {
+      contextWindowTokens: 16_384,
+      description: '',
+      displayName: '01-ai/yi-1.5-34b-chat',
+      enabled: true,
+      id: '01-ai/yi-1.5-34b-chat',
+    },
+    {
+      contextWindowTokens: 16_384,
+      description: '',
+      displayName: '01-ai/yi-1.5-9b-chat',
+      enabled: true,
+      id: '01-ai/yi-1.5-9b-chat',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'thudm/glm-4-9b-chat',
+      enabled: true,
+      id: 'thudm/glm-4-9b-chat',
+    },
+    {
+      contextWindowTokens: 32_768,
+      description: '',
+      displayName: 'qwen/qwen-2-7b-instruct',
+      enabled: true,
+      id: 'qwen/qwen-2-7b-instruct',
+    },
+  ], // Will be updated with model list
+  checkModel: 'deepseek/deepseek-r1-distill-qwen-32b',
+  description:
+    'PPIO 派欧云提供稳定、高性价比的开源模型 API 服务，支持 DeepSeek 全系列、Llama、Qwen 等行业领先大模型。',
+  disableBrowserRequest: true,
+  id: 'ppio',
+  modelList: { showModelFetcher: true },
+  modelsUrl:
+    'https://ppinfra.com/llm-api?utm_source=github_lobe-chat&utm_medium=github_readme&utm_campaign=link',
+  name: 'PPIO',
+  settings: {
+    disableBrowserRequest: true,
+    sdkType: 'openai',
+    showModelFetcher: true,
+  },
+  url: 'https://ppinfra.com/user/register?invited_by=RQIMOC&utm_source=github_lobechat',
+};
+
+export default PPIO;

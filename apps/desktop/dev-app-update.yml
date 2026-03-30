@@ -1,0 +1,6 @@
+provider: github
+owner: Quan
+repo: agent
+updaterCacheDirName: electron-app-updater
+allowPrerelease: true
+channel: nightly
