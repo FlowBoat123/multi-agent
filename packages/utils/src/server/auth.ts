@@ -1,4 +1,4 @@
-import { enableClerk, enableNextAuth } from '@/const/auth';
+import { enableAuth, enableClerk, enableNextAuth } from '@/const/auth';
 import { DESKTOP_USER_ID } from '@/const/desktop';
 import { isDesktop } from '@/const/version';
 
@@ -22,6 +22,10 @@ export const getUserAuth = async () => {
   }
 
   if (isDesktop) {
+    return { userId: DESKTOP_USER_ID };
+  }
+
+  if (!enableAuth) {
     return { userId: DESKTOP_USER_ID };
   }
 

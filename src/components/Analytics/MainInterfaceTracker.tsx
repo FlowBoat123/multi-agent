@@ -31,7 +31,7 @@ const MainInterfaceTracker = memo(() => {
   useEffect(() => {
     if (!analytics) return;
 
-    const timer = setTimeout(() => {
+    const track = () => {
       analytics.track({
         name: 'main_page_view',
         properties: {
@@ -39,9 +39,15 @@ const MainInterfaceTracker = memo(() => {
           spm: 'main_page.interface.view',
         },
       });
-    }, 1000);
+    };
 
-    return () => clearTimeout(timer);
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(track, { timeout: 500 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timer = window.setTimeout(track, 0);
+    return () => window.clearTimeout(timer);
   }, [analytics, getMainInterfaceAnalyticsData]);
 
   return null;

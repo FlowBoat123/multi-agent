@@ -9,12 +9,15 @@ import useSWR, { SWRResponse, mutate } from 'swr';
 import { StateCreator } from 'zustand/vanilla';
 
 import { message } from '@/components/AntdStaticMethods';
+import { DEFAULT_SYSTEM_AGENT_ITEM } from '@/const/settings';
 import { LOADING_FLAT } from '@/const/message';
 import { useClientDataSWR } from '@/libs/swr';
 import { chatService } from '@/services/chat';
 import { messageService } from '@/services/message';
 import { topicService } from '@/services/topic';
 import { CreateTopicParams } from '@/services/topic/type';
+import { useAgentStore } from '@/store/agent';
+import { agentSelectors } from '@/store/agent/selectors';
 import type { ChatStore } from '@/store/chat';
 import { globalHelpers } from '@/store/global/helpers';
 import { useUserStore } from '@/store/user';
@@ -147,6 +150,20 @@ export const chatTopic: StateCreator<
 
     // Get current agent for topic
     const topicConfig = systemAgentSelectors.topic(useUserStore.getState());
+    const { model: currentModel, provider: currentProvider } = agentSelectors.currentAgentConfig(
+      useAgentStore.getState(),
+    );
+    const shouldFollowCurrentProvider =
+      !!currentModel &&
+      !!currentProvider &&
+      (currentModel.includes('multi-agent') ||
+        (topicConfig.model === DEFAULT_SYSTEM_AGENT_ITEM.model &&
+          topicConfig.provider === DEFAULT_SYSTEM_AGENT_ITEM.provider &&
+          currentProvider !== DEFAULT_SYSTEM_AGENT_ITEM.provider));
+    const taskConfig =
+      shouldFollowCurrentProvider
+        ? { ...topicConfig, model: currentModel, provider: currentProvider }
+        : topicConfig;
 
     // Automatically summarize the topic title
     await chatService.fetchPresetTaskResult({
@@ -168,7 +185,7 @@ export const chatTopic: StateCreator<
 
         internal_updateTopicTitleInSummary(topicId, output);
       },
-      params: merge(topicConfig, chainSummaryTitle(messages, globalHelpers.getCurrentLanguage())),
+      params: merge(taskConfig, chainSummaryTitle(messages, globalHelpers.getCurrentLanguage())),
       trace: get().getCurrentTracePayload({ traceName: TraceNameMap.SummaryTopicTitle, topicId }),
     });
   },

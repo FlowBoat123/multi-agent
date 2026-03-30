@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { AsyncTaskModel } from '@/database/models/asyncTask';
@@ -33,8 +34,8 @@ function validateNoUrlsInConfig(obj: any, path: string = ''): void {
     if (obj.startsWith('http://') || obj.startsWith('https://')) {
       throw new Error(
         `Invalid configuration: Found full URL instead of key at ${path || 'root'}. ` +
-          `URL: "${obj.slice(0, 100)}${obj.length > 100 ? '...' : ''}". ` +
-          `All URLs must be converted to storage keys before database insertion.`,
+        `URL: "${obj.slice(0, 100)}${obj.length > 100 ? '...' : ''}". ` +
+        `All URLs must be converted to storage keys before database insertion.`,
       );
     }
   } else if (Array.isArray(obj)) {
@@ -91,6 +92,11 @@ export type CreateImageServicePayload = z.infer<typeof createImageInputSchema>;
 
 export const imageRouter = router({
   createImage: imageProcedure.input(createImageInputSchema).mutation(async ({ input, ctx }) => {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'AI image generation is disabled by configuration.',
+    });
+
     const { userId, serverDB, asyncTaskModel, fileService } = ctx;
     const { generationTopicId, provider, model, imageNum, params } = input;
 

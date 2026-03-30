@@ -1,0 +1,219 @@
+services:
+  # API Gateway
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - document
+      - chat
+      - user
+    networks:
+      - app-network
+    restart: always
+
+  # Document Service
+  document:
+    build: ./document/node-api
+    env_file:
+      - ./document/node-api/.env.docker
+    ports:
+      - "3001:3001"
+    # volumes:
+    #   - ./document/node-api:/app
+    #   - ./document/node-api/node_modules:/app/node_modules
+    depends_on:
+      - mongo
+      - document-processor
+      - rabbitmq
+      # - elasticsearch
+      - minio
+    networks:
+      - app-network
+
+  document-processor:
+    build: ./document/python-processor
+    env_file:
+      - ./document/python-processor/.env.docker
+    # volumes:
+    #   - ./document/python-processor:/app
+    #   - ./document/python-processor/__pycache__:/app/__pycache__
+    #   - document_models:/app/models
+    depends_on:
+      - vector-db
+      - rabbitmq
+      # - elasticsearch
+      - minio
+    networks:
+      - app-network
+
+  # Chat Service
+  chat:
+    build: ./chat
+    env_file:
+      - ./chat/.env.docker
+    ports:
+      - "3003:3003"
+    # volumes:
+    #   - ./chat/node-server:/app
+    #   - ./chat/node-server/node_modules:/app/node_modules
+    depends_on:
+      - mongo
+      - rabbitmq
+      - orchestrator
+      # - elasticsearch
+      - minio
+    networks:
+      - app-network
+
+  orchestrator:
+    build: ./orchestrator
+    env_file:
+      - ./orchestrator/.env.docker
+    # volumes:
+    #   - ./chat/python-rag:/app
+    #   - ./chat/python-rag/__pycache__:/app/__pycache__
+    #   - chat_models:/app/models
+    depends_on:
+      - vector-db
+      - rabbitmq
+      # - elasticsearch
+      # - minio
+    networks:
+      - app-network
+
+  # User Service
+  user:
+    build: ./user
+    env_file:
+      - ./user/.env.docker
+    ports:
+      - "3004:3004"
+    # volumes:
+    #   - ./user:/app
+    #   - ./user/node_modules:/app/node_modules
+    depends_on:
+      - mongo
+      - redis
+      - rabbitmq
+      # - elasticsearch
+      - minio
+    networks:
+      - app-network
+
+  # Databases
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: Phamquan2004
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+    restart: always
+
+  vector-db:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    volumes:
+      - vector_db_data:/var/lib/weaviate
+    environment:
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - DEFAULT_VECTORIZER_MODULE=none
+      - CLUSTER_HOSTNAME=node1
+    networks:
+      - app-network
+    restart: always
+
+  # Service Dependencies
+  redis:
+    image: redis:alpine
+    ports:
+      - "6380:6380"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: Phamquan2004@
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+  #   environment:
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=false
+  #     - ES_JAVA_OPTS=-Xms2g -Xmx2g
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - es_data:/usr/share/elasticsearch/data
+
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.13.0
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+  #   ports:
+  #     - "5601:5601"
+  #   depends_on:
+  #     - elasticsearch
+  #   networks:
+  #     - app-network
+
+  minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    restart: always
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_SERVER_URL=http://host.docker.internal:9000
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  vector_db_data:
+  redis_data:
+  rabbitmq_data:
+  document_models:
+  chat_models:
+  es_data:
+  minio_data:

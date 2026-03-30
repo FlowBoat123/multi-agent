@@ -7,6 +7,12 @@ import { ChatErrorType } from '@agent/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { createTraceOptions, initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';
+import {
+  isMultiAgentEnabled,
+  isMultiAgentModel,
+  isMultiAgentRequest,
+  requestMultiAgent,
+} from '@/server/modules/MultiAgent';
 import { ChatStreamPayload } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
 import { getTracePayload } from '@/utils/trace';
@@ -17,6 +23,21 @@ export const POST = checkAuth(async (req: Request, { params, jwtPayload, createR
   const { provider } = await params;
 
   try {
+    const data = (await req.json()) as ChatStreamPayload;
+
+    if (isMultiAgentModel(data) && !isMultiAgentEnabled()) {
+      return createErrorResponse(ChatErrorType.ServiceUnavailable, {
+        message:
+          'Multi-agent model is selected but integration is disabled. Set MULTI_AGENT_ENABLED=1 and MULTI_AGENT_ENDPOINT in server env.',
+        provider,
+      });
+    }
+
+    // Route selected model ids to external multi-agent orchestrator.
+    if (isMultiAgentRequest(data)) {
+      return await requestMultiAgent(data, jwtPayload.userId);
+    }
+
     // ============  1. init chat model   ============ //
     let modelRuntime: ModelRuntime;
     if (createRuntime) {
@@ -26,8 +47,6 @@ export const POST = checkAuth(async (req: Request, { params, jwtPayload, createR
     }
 
     // ============  2. create chat completion   ============ //
-
-    const data = (await req.json()) as ChatStreamPayload;
 
     const tracePayload = getTracePayload(req);
 

@@ -4,7 +4,7 @@ import type { ItemType } from 'antd/es/menu/interface';
 import { LucideArrowRight, LucideBolt } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { type ReactNode, memo, useMemo } from 'react';
+import { type ReactNode, memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flexbox } from 'react-layout-kit';
 
@@ -59,6 +59,39 @@ const ModelSwitchPanel = memo<IProps>(({ children, onOpenChange, open }) => {
   const router = useRouter();
   const enabledList = useEnabledChatModels();
 
+  const prefetchRoute = useCallback(
+    (href: string) => {
+      void router.prefetch(href);
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const run = () => {
+      prefetchRoute(isDeprecatedEdition ? '/settings?active=llm' : '/settings?active=provider');
+    };
+
+    if ('requestIdleCallback' in window) {
+      const idleId = (window as any).requestIdleCallback(run, { timeout: 1000 });
+      return () => {
+        (window as any).cancelIdleCallback?.(idleId);
+      };
+    }
+
+    const timer = window.setTimeout(run, 300);
+    return () => window.clearTimeout(timer);
+  }, [prefetchRoute]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    for (const provider of enabledList.slice(0, 4)) {
+      prefetchRoute(`/settings?active=provider&provider=${provider.id}`);
+    }
+  }, [enabledList, open, prefetchRoute]);
+
   const items = useMemo<ItemType[]>(() => {
     const getModelItems = (provider: EnabledProviderWithModels) => {
       const items = provider.children.map((model) => ({
@@ -81,6 +114,11 @@ const ModelSwitchPanel = memo<IProps>(({ children, onOpenChange, open }) => {
               </Flexbox>
             ),
             onClick: () => {
+              prefetchRoute(
+                isDeprecatedEdition
+                  ? '/settings?active=llm'
+                  : `/settings?active=provider&provider=${provider.id}`,
+              );
               router.push(
                 isDeprecatedEdition
                   ? '/settings?active=llm'
@@ -104,43 +142,49 @@ const ModelSwitchPanel = memo<IProps>(({ children, onOpenChange, open }) => {
             </Flexbox>
           ),
           onClick: () => {
+            prefetchRoute(isDeprecatedEdition ? '/settings?active=llm' : '/settings?active=provider');
             router.push(isDeprecatedEdition ? '/settings?active=llm' : `/settings?active=provider`);
           },
         },
       ];
 
     // otherwise show with provider group
-    return enabledList.map((provider) => ({
-      children: getModelItems(provider),
-      key: provider.id,
-      label: (
-        <Flexbox horizontal justify="space-between">
-          <ProviderItemRender
-            logo={provider.logo}
-            name={provider.name}
-            provider={provider.id}
-            source={provider.source}
-          />
-          {showLLM && (
-            <Link
-              href={
-                isDeprecatedEdition
-                  ? '/settings?active=llm'
-                  : `/settings?active=provider&provider=${provider.id}`
-              }
-            >
-              <ActionIcon
-                icon={LucideBolt}
-                size={'small'}
-                title={t('ModelSwitchPanel.goToSettings')}
-              />
-            </Link>
-          )}
-        </Flexbox>
-      ),
-      type: 'group',
-    }));
-  }, [enabledList]);
+    return enabledList.map((provider) => {
+      const settingsHref = isDeprecatedEdition
+        ? '/settings?active=llm'
+        : `/settings?active=provider&provider=${provider.id}`;
+
+      return {
+        children: getModelItems(provider),
+        key: provider.id,
+        label: (
+          <Flexbox horizontal justify="space-between">
+            <ProviderItemRender
+              logo={provider.logo}
+              name={provider.name}
+              provider={provider.id}
+              source={provider.source}
+            />
+            {showLLM && (
+              <Link
+                href={settingsHref}
+                onFocus={() => prefetchRoute(settingsHref)}
+                onMouseEnter={() => prefetchRoute(settingsHref)}
+                onPointerDown={() => prefetchRoute(settingsHref)}
+              >
+                <ActionIcon
+                  icon={LucideBolt}
+                  size={'small'}
+                  title={t('ModelSwitchPanel.goToSettings')}
+                />
+              </Link>
+            )}
+          </Flexbox>
+        ),
+        type: 'group' as const,
+      };
+    });
+  }, [enabledList, prefetchRoute, showLLM, t, theme.colorTextTertiary, updateAgentConfig]);
 
   const icon = <div className={styles.tag}>{children}</div>;
 

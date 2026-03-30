@@ -3,7 +3,7 @@ import { MenuProps, Tooltip } from '@lobehub/ui';
 import { Upload } from 'antd';
 import { css, cx } from 'antd-style';
 import { FileUp, FolderUp, ImageUp, Paperclip } from 'lucide-react';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { message } from '@/components/AntdStaticMethods';
@@ -13,6 +13,7 @@ import { agentSelectors } from '@/store/agent/selectors';
 import { useFileStore } from '@/store/file';
 
 import Action from '../components/Action';
+import UploadModal from './UploadModal';
 
 const hotArea = css`
   &::before {
@@ -25,6 +26,7 @@ const hotArea = css`
 
 const FileUpload = memo(() => {
   const { t } = useTranslation('chat');
+  const [openUploadModal, setOpenUploadModal] = useState(false);
 
   const upload = useFileStore((s) => s.uploadChatFiles);
 
@@ -60,33 +62,8 @@ const FileUpload = memo(() => {
     {
       icon: FileUp,
       key: 'upload-file',
-      label: (
-        <Upload
-          beforeUpload={async (file) => {
-            if (!canUploadImage && (file.type.startsWith('image') || file.type.startsWith('video')))
-              return false;
-
-            // Validate video file size
-            const validation = validateVideoFileSize(file);
-            if (!validation.isValid) {
-              message.error(
-                t('upload.validation.videoSizeExceeded', {
-                  actualSize: validation.actualSize,
-                }),
-              );
-              return false;
-            }
-
-            await upload([file]);
-
-            return false;
-          }}
-          multiple
-          showUploadList={false}
-        >
-          <div className={cx(hotArea)}>{t('upload.action.fileUpload')}</div>
-        </Upload>
-      ),
+      label: <div className={cx(hotArea)}>{t('upload.action.fileUpload')}</div>,
+      onClick: () => setOpenUploadModal(true),
     },
     {
       icon: FolderUp,
@@ -123,14 +100,22 @@ const FileUpload = memo(() => {
   ];
 
   return (
-    <Action
-      dropdown={{
-        menu: { items },
-      }}
-      icon={Paperclip}
-      showTooltip={false}
-      title={t('upload.action.tooltip')}
-    />
+    <>
+      <Action
+        dropdown={{
+          menu: { items },
+        }}
+        icon={Paperclip}
+        showTooltip={false}
+        title={t('upload.action.tooltip')}
+      />
+      <UploadModal
+        canUploadImage={canUploadImage}
+        canUploadNonImageFiles={true}
+        onClose={() => setOpenUploadModal(false)}
+        open={openUploadModal}
+      />
+    </>
   );
 });
 

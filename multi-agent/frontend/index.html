@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent RAG Chat</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f0f23; color: #e0e0e0; height: 100vh; display: flex; }
+
+        /* Sidebar */
+        .sidebar { width: 280px; background: #1a1a2e; border-right: 1px solid #2a2a4a; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-header { padding: 16px; border-bottom: 1px solid #2a2a4a; }
+        .sidebar-header h2 { font-size: 16px; color: #7c83ff; margin-bottom: 12px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .btn-primary { background: #5865f2; color: white; }
+        .btn-primary:hover { background: #4752c4; }
+        .sidebar .btn-primary { width: 100%; }
+        .btn-danger { background: #ed4245; color: white; }
+        .btn-danger:hover { background: #c03537; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .conversation-list { flex: 1; overflow-y: auto; padding: 8px; }
+        .conv-item { padding: 10px 12px; border-radius: 6px; cursor: pointer; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; transition: background 0.15s; }
+        .conv-item:hover { background: #2a2a4a; }
+        .conv-item.active { background: #2a2a4a; border-left: 3px solid #5865f2; }
+        .conv-item span { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+        .conv-item .del-btn { opacity: 0; background: none; border: none; color: #ed4245; cursor: pointer; font-size: 14px; padding: 2px 6px; }
+        .conv-item:hover .del-btn { opacity: 1; }
+
+        /* Auth section */
+        .auth-section { padding: 12px; border-top: 1px solid #2a2a4a; }
+        .auth-section .user-info { font-size: 12px; color: #888; margin-bottom: 6px; word-break: break-all; }
+
+        /* Documents section */
+        .doc-section { padding: 12px; border-top: 1px solid #2a2a4a; max-height: 220px; overflow-y: auto; }
+        .doc-section h3 { font-size: 13px; color: #888; margin-bottom: 8px; }
+        .doc-item { font-size: 12px; padding: 6px 8px; background: #16213e; border-radius: 4px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .doc-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+        .doc-item .del-btn { background: none; border: none; color: #ed4245; cursor: pointer; font-size: 12px; padding: 2px 4px; flex-shrink: 0; }
+        .upload-area { border: 2px dashed #2a2a4a; border-radius: 6px; padding: 12px; text-align: center; cursor: pointer; margin-bottom: 8px; transition: border-color 0.2s; font-size: 12px; color: #888; }
+        .upload-area:hover { border-color: #5865f2; }
+        .upload-area.dragover { border-color: #5865f2; background: rgba(88,101,242,0.1); }
+        .upload-area.uploading { border-color: #faa61a; color: #faa61a; cursor: wait; }
+
+        /* Main */
+        .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+        /* Auth form (overlay) */
+        .auth-overlay { position: fixed; inset: 0; background: #0f0f23; display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .auth-overlay.hidden { display: none; }
+        .auth-form { background: #1a1a2e; padding: 32px; border-radius: 12px; width: 380px; }
+        .auth-form h2 { margin-bottom: 20px; color: #7c83ff; }
+        .auth-form input { width: 100%; padding: 10px 12px; margin-bottom: 12px; border: 1px solid #2a2a4a; border-radius: 6px; background: #16213e; color: #e0e0e0; font-size: 14px; outline: none; }
+        .auth-form input:focus { border-color: #5865f2; }
+        .auth-form .btn { margin-top: 8px; padding: 10px; font-size: 14px; }
+        .auth-form .toggle { margin-top: 16px; font-size: 13px; color: #888; text-align: center; }
+        .auth-form .toggle a { color: #5865f2; cursor: pointer; text-decoration: none; }
+        .auth-form .error-msg { color: #ed4245; font-size: 13px; margin-bottom: 10px; min-height: 18px; }
+
+        /* Chat area */
+        .chat-header { padding: 14px 20px; border-bottom: 1px solid #2a2a4a; background: #1a1a2e; display: flex; align-items: center; justify-content: space-between; min-height: 50px; }
+        .chat-header h3 { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .status-indicator { font-size: 12px; color: #888; flex-shrink: 0; margin-left: 12px; }
+        .status-indicator.active { color: #faa61a; }
+
+        .messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; }
+        .message { margin-bottom: 16px; max-width: 80%; }
+        .message.user { align-self: flex-end; }
+        .message.bot { align-self: flex-start; }
+        .message .role { font-size: 11px; color: #888; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .message .bubble { padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
+        .message.user .bubble { background: #5865f2; color: white; border-bottom-right-radius: 4px; }
+        .message.bot .bubble { background: #2a2a4a; color: #e0e0e0; border-bottom-left-radius: 4px; }
+        .message.bot .bubble strong { color: #7c83ff; }
+
+        .typing-indicator { padding: 8px 20px; display: none; }
+        .typing-indicator.show { display: block; }
+        .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
+        .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: #faa61a; animation: bounce 1.4s infinite ease-in-out; }
+        .typing-dots span:nth-child(1) { animation-delay: 0s; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Empty state */
+        .empty-state { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #555; }
+        .empty-state.hidden { display: none; }
+        .empty-state h2 { font-size: 20px; margin-bottom: 8px; color: #7c83ff; }
+        .empty-state p { font-size: 14px; }
+
+        /* Input area */
+        .input-area { padding: 16px 20px; border-top: 1px solid #2a2a4a; background: #1a1a2e; display: flex; gap: 10px; align-items: flex-end; }
+        .input-area textarea { flex: 1; padding: 10px 14px; border: 1px solid #2a2a4a; border-radius: 8px; background: #16213e; color: #e0e0e0; font-size: 14px; resize: none; height: 44px; min-height: 44px; max-height: 120px; font-family: inherit; outline: none; overflow-y: auto; }
+        .input-area textarea:focus { border-color: #5865f2; }
+        .input-area .btn { height: 44px; padding: 0 20px; flex-shrink: 0; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 3px; }
+
+        /* Toast */
+        .toast-container { position: fixed; top: 16px; right: 16px; z-index: 300; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 12px 20px; border-radius: 8px; font-size: 13px; animation: toastIn 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .toast.success { background: #3ba55d; color: white; }
+        .toast.error { background: #ed4245; color: white; }
+        .toast.info { background: #5865f2; color: white; }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Auth overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <!-- Login -->
+        <div class="auth-form" id="loginForm">
+            <h2>Đăng nhập</h2>
+            <div class="error-msg" id="loginError"></div>
+            <input type="email" id="loginEmail" placeholder="Email" />
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" />
+            <button class="btn btn-primary" id="loginBtn" onclick="doLogin()">Đăng nhập</button>
+            <div class="toggle">Chưa có tài khoản? <a onclick="toggleAuth('register')">Đăng ký</a></div>
+        </div>
+        <!-- Register -->
+        <div class="auth-form" id="registerForm" style="display:none">
+            <h2>Đăng ký tài khoản</h2>
+            <div class="error-msg" id="registerError"></div>
+            <input type="text" id="regUsername" placeholder="Tên người dùng" />
+            <input type="email" id="regEmail" placeholder="Email" />
+            <input type="password" id="regPassword" placeholder="Mật khẩu (tối thiểu 6 ký tự)" />
+            <input type="date" id="regBirthday" />
+            <button class="btn btn-primary" id="regBtn" onclick="doRegister()">Đăng ký</button>
+            <div class="toggle">Đã có tài khoản? <a onclick="toggleAuth('login')">Đăng nhập</a></div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar" style="display:none">
+        <div class="sidebar-header">
+            <h2>Multi-Agent RAG</h2>
+            <button class="btn btn-primary" onclick="doCreateConversation()">+ Cuộc hội thoại mới</button>
+        </div>
+        <div class="conversation-list" id="convList"></div>
+
+        <!-- Documents -->
+        <div class="doc-section">
+            <h3>Tài liệu đã upload</h3>
+            <div class="upload-area" id="uploadArea">
+                Kéo thả hoặc nhấn để upload<br>PDF / TXT / DOCX / DOC
+            </div>
+            <input type="file" id="fileInput" accept=".pdf,.txt,.docx,.doc" style="display:none" />
+            <div id="docList"></div>
+        </div>
+
+        <!-- User -->
+        <div class="auth-section">
+            <div class="user-info" id="userInfo"></div>
+            <button class="btn btn-danger btn-sm" onclick="doLogout()" style="width:100%;margin-top:6px">Đăng xuất</button>
+        </div>
+    </div>
+
+    <!-- Main chat -->
+    <div class="main" id="mainArea" style="display:none">
+        <div class="chat-header">
+            <h3 id="chatTitle">Chọn hoặc tạo cuộc hội thoại</h3>
+            <span class="status-indicator" id="statusText"></span>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <h2>Chào mừng!</h2>
+            <p>Upload tài liệu và bắt đầu đặt câu hỏi.</p>
+        </div>
+
+        <div class="messages" id="msgContainer" style="display:none"></div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="input-area">
+            <textarea id="msgInput" placeholder="Nhập câu hỏi... (Enter để gửi, Shift+Enter xuống dòng)" onkeydown="onInputKey(event)" oninput="autoResize(this)"></textarea>
+            <button class="btn btn-primary" id="sendBtn" onclick="doSendMessage()">Gửi</button>
+        </div>
+    </div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+const API_USER = 'http://localhost:3004/api/v1';
+const API_DOC  = 'http://localhost:3001/api/v1';
+const API_CHAT = 'http://localhost:3003/api/v1';
+const SOCKET_URL = 'http://localhost:3003';
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let accessToken = localStorage.getItem('accessToken') || '';
+let refreshToken = localStorage.getItem('refreshToken') || '';
+let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+let currentConvId = null;
+let socket = null;
+let isSending = false;
+
+// ══════════════════════════════════════════════════════════════
+// API HELPER  –  sends tokens via Authorization header
+// ══════════════════════════════════════════════════════════════
+async function api(url, opts = {}) {
+    const headers = { ...(opts.headers || {}) };
+
+    if (accessToken) {
+        headers['Authorization'] = 'Bearer ' + accessToken;
+    }
+    if (refreshToken) {
+        headers['x-refresh-token'] = 'Bearer ' + refreshToken;
+    }
+
+    // Don't set Content-Type for FormData (browser auto-adds boundary)
+    if (opts.body instanceof FormData) {
+        delete headers['Content-Type'];
+    }
+
+    const res = await fetch(url, {
+        ...opts,
+        headers,
+        credentials: 'include'          // keep cookies as fallback
+    });
+
+    // 401 → session expired
+    if (res.status === 401) {
+        toast('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại', 'error');
+        doLogout();
+        throw new Error('Unauthorized');
+    }
+
+    return res;
+}
+
+// ══════════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════════
+function toggleAuth(mode) {
+    document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = mode === 'register' ? 'block' : 'none';
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('registerError').textContent = '';
+}
+
+async function doLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+
+    if (!email || !password) { errEl.textContent = 'Vui lòng nhập email và mật khẩu'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Đang đăng nhập...';
+    errEl.textContent = '';
+
+    try {
+        const res = await fetch(API_USER + '/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
+        });
+        const data = await res.json();
+        console.log('[Login] response:', res.status, data);
+
+        if (!res.ok) {
+            errEl.textContent = data.message || ('Lỗi ' + res.status);
+            return;
+        }
+
+        // Tokens returned in response body by the modified authController
+        accessToken  = data.data.accessToken  || '';
+        refreshToken = data.data.refreshToken || '';
+        currentUser  = {
+            id:       data.data.id,
+            username: data.data.username,
+            email:    data.data.email,
+            avatar:   data.data.avatar
+        };
+
+        localStorage.setItem('accessToken',  accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('currentUser',  JSON.stringify(currentUser));
+
+        toast('Đăng nhập thành công!', 'success');
+        enterApp();
+    } catch (e) {
+        errEl.textContent = 'Không thể kết nối đến server. Kiểm tra backend đã chạy chưa.';
+        console.error('Login error:', e);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng nhập';
+    }
+}
+
+async function doRegister() {
+    const username = document.getElementById('regUsername').value.trim();
+    const email    = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const birthday = document.getElementById('regBirthday').value;
+    const errEl    = document.getElementById('registerError');
+    const btn      = document.getElementById('regBtn');
+
+    if (!username || !email || !password) { errEl.textContent = 'Vui lòng điền đầy đủ thông tin'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Đang đăng ký...';
+    errEl.textContent = '';
+
+    try {
+        const res = await fetch(API_USER + '/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password, birthday: birthday || '2000-01-01' })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            errEl.textContent = data.message || ('Lỗi ' + res.status);
+            return;
+        }
+
+        toast('Đăng ký thành công! Hãy đăng nhập.', 'success');
+        toggleAuth('login');
+        document.getElementById('loginEmail').value = email;
+        document.getElementById('loginPassword').value = password;
+    } catch (e) {
+        errEl.textContent = 'Không thể kết nối đến server';
+        console.error('Register error:', e);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Đăng ký';
+    }
+}
+
+function doLogout() {
+    accessToken = '';
+    refreshToken = '';
+    currentUser = null;
+    currentConvId = null;
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('currentUser');
+    if (socket) { socket.disconnect(); socket = null; }
+
+    document.getElementById('authOverlay').classList.remove('hidden');
+    document.getElementById('sidebar').style.display = 'none';
+    document.getElementById('mainArea').style.display = 'none';
+    document.getElementById('convList').innerHTML = '';
+    document.getElementById('docList').innerHTML = '';
+}
+
+function enterApp() {
+    document.getElementById('authOverlay').classList.add('hidden');
+    document.getElementById('sidebar').style.display = 'flex';
+    document.getElementById('mainArea').style.display = 'flex';
+    document.getElementById('userInfo').textContent = currentUser.username + ' (' + currentUser.email + ')';
+
+    connectSocket();
+    loadConversations();
+    loadDocuments();
+}
+
+// ══════════════════════════════════════════════════════════════
+// SOCKET.IO
+// ══════════════════════════════════════════════════════════════
+function connectSocket() {
+    if (socket) socket.disconnect();
+
+    socket = io(SOCKET_URL, {
+        transports: ['websocket', 'polling'],
+        withCredentials: true
+    });
+
+    socket.on('connect', function () {
+        console.log('[Socket] Connected:', socket.id);
+        if (currentConvId) socket.emit('join', currentConvId);
+    });
+
+    socket.on('newMessage', function (data) {
+        console.log('[Socket] newMessage:', data);
+        if (data.role === 'bot') {
+            setTyping(false);
+            setStatus('');
+            appendMsg(data.message, 'bot');
+            isSending = false;
+        }
+    });
+
+    socket.on('analysis', function (status) {
+        if (status === 'started')   setStatus('Đang phân tích câu hỏi...');
+        if (status === 'completed') setStatus('Phân tích xong');
+    });
+    socket.on('retrieving', function (status) {
+        if (status === 'started')   setStatus('Đang tìm kiếm thông tin...');
+        if (status === 'completed') setStatus('Tìm kiếm xong');
+    });
+    socket.on('summarizing', function (status) {
+        if (status === 'started')   setStatus('Đang tổng hợp câu trả lời...');
+        if (status === 'completed') { setStatus(''); setTyping(false); }
+    });
+
+    socket.on('disconnect', function () { console.log('[Socket] Disconnected'); });
+    socket.on('connect_error', function (err) { console.error('[Socket] Error:', err.message); });
+}
+
+// ══════════════════════════════════════════════════════════════
+// CONVERSATIONS
+// ══════════════════════════════════════════════════════════════
+async function loadConversations() {
+    try {
+        var res = await api(API_CHAT + '/conversation');
+        if (!res.ok) { console.error('loadConv failed:', res.status, await res.text()); return; }
+
+        var data = await res.json();
+        var list = document.getElementById('convList');
+        list.innerHTML = '';
+
+        var convs = data.data || [];
+        if (convs.length === 0) {
+            list.innerHTML = '<div style="padding:12px;text-align:center;color:#555;font-size:12px">Chưa có cuộc hội thoại</div>';
+            return;
+        }
+
+        convs.forEach(function (c) {
+            var id   = c._id || c.id;
+            var name = c.name || 'Chat';
+            var div  = document.createElement('div');
+            div.className  = 'conv-item' + (id === currentConvId ? ' active' : '');
+            div.setAttribute('data-id', id);
+
+            var span = document.createElement('span');
+            span.title = name;
+            span.textContent = name;
+            div.appendChild(span);
+
+            var delBtn = document.createElement('button');
+            delBtn.className = 'del-btn';
+            delBtn.title = 'Xoá';
+            delBtn.textContent = '✕';
+            delBtn.onclick = function (e) { e.stopPropagation(); doDeleteConv(id); };
+            div.appendChild(delBtn);
+
+            div.onclick = function () { doSelectConv(id, name); };
+            list.appendChild(div);
+        });
+    } catch (e) {
+        console.error('loadConversations error:', e);
+    }
+}
+
+async function doCreateConversation() {
+    var name = prompt('Tên cuộc hội thoại:', 'Chat mới');
+    if (!name || !name.trim()) return;
+
+    try {
+        var res = await api(API_CHAT + '/conversation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name.trim() })
+        });
+
+        if (!res.ok) {
+            var err = await res.json().catch(function () { return {}; });
+            toast(err.message || ('Lỗi tạo hội thoại (' + res.status + ')'), 'error');
+            console.error('createConv failed:', res.status, err);
+            return;
+        }
+
+        var data = await res.json();
+        console.log('[createConv] response:', data);
+        var convId = data.data.conversationId || data.data._id || data.data.id;
+        toast('Tạo cuộc hội thoại thành công', 'success');
+        await doSelectConv(convId, name.trim());
+        loadConversations();
+    } catch (e) {
+        toast('Lỗi tạo cuộc hội thoại', 'error');
+        console.error('createConversation error:', e);
+    }
+}
+
+async function doDeleteConv(id) {
+    if (!confirm('Xoá cuộc hội thoại này?')) return;
+    try {
+        await api(API_CHAT + '/conversation/' + id, { method: 'DELETE' });
+        if (currentConvId === id) { currentConvId = null; showEmptyState(); }
+        loadConversations();
+        toast('Đã xoá cuộc hội thoại', 'success');
+    } catch (e) {
+        toast('Lỗi xoá', 'error');
+    }
+}
+
+async function doSelectConv(id, name) {
+    currentConvId = id;
+    document.getElementById('chatTitle').textContent = name || 'Chat';
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('msgContainer').style.display = 'flex';
+
+    if (socket && socket.connected) socket.emit('join', id);
+
+    // Highlight active conversation
+    document.querySelectorAll('.conv-item').forEach(function (el) {
+        el.classList.toggle('active', el.getAttribute('data-id') === id);
+    });
+
+    // Load messages
+    try {
+        var res = await api(API_CHAT + '/message?conversationId=' + id);
+        if (!res.ok) { console.error('loadMsg failed:', res.status, await res.text()); return; }
+
+        var data = await res.json();
+        var container = document.getElementById('msgContainer');
+        container.innerHTML = '';
+
+        var msgs = data.data || [];
+        // API returns newest first – reverse for chronological order
+        msgs.reverse().forEach(function (m) { appendMsg(m.message, m.role); });
+        container.scrollTop = container.scrollHeight;
+    } catch (e) {
+        console.error('loadMessages error:', e);
+    }
+}
+
+function showEmptyState() {
+    document.getElementById('emptyState').style.display = 'flex';
+    document.getElementById('msgContainer').style.display = 'none';
+    document.getElementById('chatTitle').textContent = 'Chọn hoặc tạo cuộc hội thoại';
+}
+
+// ══════════════════════════════════════════════════════════════
+// MESSAGES
+// ══════════════════════════════════════════════════════════════
+function appendMsg(text, role) {
+    var container = document.getElementById('msgContainer');
+    var div = document.createElement('div');
+    div.className = 'message ' + role;
+
+    // Simple markdown rendering
+    var html = text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>');
+
+    div.innerHTML = '<div class="role">' + (role === 'user' ? 'Bạn' : 'AI Assistant') + '</div>'
+        + '<div class="bubble">' + html + '</div>';
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+async function doSendMessage() {
+    var input = document.getElementById('msgInput');
+    var text  = input.value.trim();
+
+    if (!text) return;
+    if (!currentConvId) { toast('Hãy chọn hoặc tạo cuộc hội thoại trước', 'error'); return; }
+    if (isSending)      { toast('Đang xử lý tin nhắn trước đó...', 'info'); return; }
+
+    isSending = true;
+    input.value = '';
+    input.style.height = '44px';
+    input.focus();
+    appendMsg(text, 'user');
+    setTyping(true);
+    setStatus('Đang gửi...');
+
+    try {
+        var res = await api(API_CHAT + '/message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ conversationId: currentConvId, message: text })
+        });
+
+        if (!res.ok) {
+            var err = await res.json().catch(function () { return {}; });
+            toast(err.message || ('Lỗi gửi tin nhắn (' + res.status + ')'), 'error');
+            console.error('sendMessage failed:', res.status, err);
+            setTyping(false);
+            setStatus('');
+            isSending = false;
+            return;
+        }
+
+        console.log('[sendMessage] success, waiting for Socket response...');
+        setStatus('Đang chờ AI trả lời...');
+
+        // Fallback timeout 120s
+        setTimeout(function () {
+            if (isSending) {
+                isSending = false;
+                setTyping(false);
+                setStatus('');
+                toast('Timeout – không nhận được phản hồi từ AI', 'error');
+            }
+        }, 120000);
+    } catch (e) {
+        toast('Không thể gửi tin nhắn', 'error');
+        setTyping(false);
+        setStatus('');
+        isSending = false;
+        console.error('sendMessage error:', e);
+    }
+}
+
+function onInputKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        doSendMessage();
+    }
+}
+
+function autoResize(el) {
+    el.style.height = '44px';
+    if (el.scrollHeight > 44) el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function setTyping(show) {
+    document.getElementById('typingIndicator').classList.toggle('show', show);
+    if (show) {
+        var c = document.getElementById('msgContainer');
+        if (c) c.scrollTop = c.scrollHeight;
+    }
+}
+
+function setStatus(text) {
+    var el = document.getElementById('statusText');
+    el.textContent = text;
+    el.classList.toggle('active', !!text);
+}
+
+// ══════════════════════════════════════════════════════════════
+// DOCUMENTS
+// ══════════════════════════════════════════════════════════════
+async function loadDocuments() {
+    try {
+        var res = await api(API_DOC + '/document');
+        if (!res.ok) { console.error('loadDocs failed:', res.status, await res.text()); return; }
+
+        var data = await res.json();
+        var list = document.getElementById('docList');
+        list.innerHTML = '';
+
+        var docs = data.data || [];
+        if (docs.length === 0) {
+            list.innerHTML = '<div style="font-size:11px;color:#555;padding:4px">Chưa có tài liệu</div>';
+            return;
+        }
+
+        docs.forEach(function (d) {
+            var id  = d._id || d.id;
+            var div = document.createElement('div');
+            div.className = 'doc-item';
+
+            var span = document.createElement('span');
+            span.title = d.name;
+            span.textContent = '📄 ' + d.name;
+            div.appendChild(span);
+
+            var delBtn = document.createElement('button');
+            delBtn.className = 'del-btn';
+            delBtn.title = 'Xoá';
+            delBtn.textContent = '✕';
+            delBtn.onclick = function () { doDeleteDoc(id); };
+            div.appendChild(delBtn);
+
+            list.appendChild(div);
+        });
+    } catch (e) {
+        console.error('loadDocuments error:', e);
+    }
+}
+
+async function doDeleteDoc(id) {
+    if (!confirm('Xoá tài liệu này?')) return;
+    try {
+        await api(API_DOC + '/document/' + id, { method: 'DELETE' });
+        toast('Đã xoá tài liệu', 'success');
+        loadDocuments();
+    } catch (e) {
+        toast('Lỗi xoá tài liệu', 'error');
+    }
+}
+
+async function doUploadFile(file) {
+    var allowed = ['pdf', 'txt', 'docx', 'doc'];
+    var ext = file.name.split('.').pop().toLowerCase();
+    if (allowed.indexOf(ext) < 0) {
+        toast('Chỉ hỗ trợ file PDF, TXT, DOCX, DOC', 'error');
+        return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+        toast('File quá lớn (tối đa 50MB)', 'error');
+        return;
+    }
+
+    var area = document.getElementById('uploadArea');
+    area.classList.add('uploading');
+    area.textContent = 'Đang upload ' + file.name + '...';
+
+    try {
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var res = await api(API_DOC + '/document', {
+            method: 'POST',
+            body: formData
+        });
+        var data = await res.json();
+
+        if (res.ok) {
+            toast('Upload thành công! Tài liệu đang được xử lý (~1-5 phút)', 'success');
+            loadDocuments();
+        } else {
+            toast(data.message || 'Upload thất bại', 'error');
+            console.error('upload failed:', res.status, data);
+        }
+    } catch (e) {
+        toast('Lỗi upload file', 'error');
+        console.error('Upload error:', e);
+    } finally {
+        area.classList.remove('uploading');
+        area.innerHTML = 'Kéo thả hoặc nhấn để upload<br>PDF / TXT / DOCX / DOC';
+    }
+}
+
+// File-input & drag-drop wiring
+document.getElementById('uploadArea').addEventListener('click', function () { document.getElementById('fileInput').click(); });
+document.getElementById('uploadArea').addEventListener('dragover', function (e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); });
+document.getElementById('uploadArea').addEventListener('dragleave', function (e) { e.currentTarget.classList.remove('dragover'); });
+document.getElementById('uploadArea').addEventListener('drop', function (e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('dragover');
+    if (e.dataTransfer.files.length) doUploadFile(e.dataTransfer.files[0]);
+});
+document.getElementById('fileInput').addEventListener('change', function (e) {
+    if (e.target.files.length) doUploadFile(e.target.files[0]);
+    e.target.value = '';
+});
+
+// ══════════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════════
+function toast(msg, type) {
+    type = type || 'info';
+    var container = document.getElementById('toastContainer');
+    var div = document.createElement('div');
+    div.className = 'toast ' + type;
+    div.textContent = msg;
+    container.appendChild(div);
+    setTimeout(function () { div.style.opacity = '0'; setTimeout(function () { div.remove(); }, 300); }, 4000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT – auto-login if tokens exist
+// ══════════════════════════════════════════════════════════════
+(function init() {
+    if (accessToken && currentUser) {
+        enterApp();
+    }
+})();
+</script>
+</body>
+</html>

@@ -4,7 +4,11 @@ import { StateCreator } from 'zustand/vanilla';
 import { useClientDataSWR } from '@/libs/swr';
 import { knowledgeBaseService } from '@/services/knowledgeBase';
 import { KnowledgeBaseStore } from '@/store/knowledgeBase/store';
-import { CreateKnowledgeBaseParams, KnowledgeBaseItem } from '@/types/knowledgeBase';
+import {
+  CreateKnowledgeBaseParams,
+  KnowledgeBaseItem,
+  UpdateKnowledgeBaseParams,
+} from '@/types/knowledgeBase';
 
 const FETCH_KNOWLEDGE_BASE_LIST_KEY = 'FETCH_KNOWLEDGE_BASE';
 const FETCH_KNOWLEDGE_BASE_ITEM_KEY = 'FETCH_KNOWLEDGE_BASE_ITEM';
@@ -15,7 +19,7 @@ export interface KnowledgeBaseCrudAction {
   refreshKnowledgeBaseList: () => Promise<void>;
 
   removeKnowledgeBase: (id: string) => Promise<void>;
-  updateKnowledgeBase: (id: string, value: CreateKnowledgeBaseParams) => Promise<void>;
+  updateKnowledgeBase: (id: string, value: UpdateKnowledgeBaseParams) => Promise<void>;
 
   useFetchKnowledgeBaseItem: (id: string) => SWRResponse<KnowledgeBaseItem | undefined>;
   useFetchKnowledgeBaseList: (params?: { suspense?: boolean }) => SWRResponse<KnowledgeBaseItem[]>;
@@ -55,6 +59,7 @@ export const createCrudSlice: StateCreator<
   updateKnowledgeBase: async (id, value) => {
     get().internal_toggleKnowledgeBaseLoading(id, true);
     await knowledgeBaseService.updateKnowledgeBaseList(id, value);
+    await mutate([FETCH_KNOWLEDGE_BASE_ITEM_KEY, id]);
     await get().refreshKnowledgeBaseList();
 
     get().internal_toggleKnowledgeBaseLoading(id, false);

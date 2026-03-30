@@ -6,10 +6,13 @@ import { SWRResponse, mutate } from 'swr';
 import { StateCreator } from 'zustand/vanilla';
 
 import { LOADING_FLAT, THREAD_DRAFT_ID } from '@/const/message';
+import { DEFAULT_SYSTEM_AGENT_ITEM } from '@/const/settings';
 import { isDeprecatedEdition } from '@/const/version';
 import { useClientDataSWR } from '@/libs/swr';
 import { chatService } from '@/services/chat';
 import { threadService } from '@/services/thread';
+import { useAgentStore } from '@/store/agent';
+import { agentSelectors } from '@/store/agent/selectors';
 import { threadSelectors } from '@/store/chat/selectors';
 import { ChatStore } from '@/store/chat/store';
 import { globalHelpers } from '@/store/global/helpers';
@@ -261,6 +264,20 @@ export const chatThreadMessage: StateCreator<
 
     let output = '';
     const threadConfig = systemAgentSelectors.thread(useUserStore.getState());
+    const { model: currentModel, provider: currentProvider } = agentSelectors.currentAgentConfig(
+      useAgentStore.getState(),
+    );
+    const shouldFollowCurrentProvider =
+      !!currentModel &&
+      !!currentProvider &&
+      (currentModel.includes('multi-agent') ||
+        (threadConfig.model === DEFAULT_SYSTEM_AGENT_ITEM.model &&
+          threadConfig.provider === DEFAULT_SYSTEM_AGENT_ITEM.provider &&
+          currentProvider !== DEFAULT_SYSTEM_AGENT_ITEM.provider));
+    const taskConfig =
+      shouldFollowCurrentProvider
+        ? { ...threadConfig, model: currentModel, provider: currentProvider }
+        : threadConfig;
 
     await chatService.fetchPresetTaskResult({
       onError: () => {
@@ -281,7 +298,7 @@ export const chatThreadMessage: StateCreator<
 
         internal_updateThreadTitleInSummary(threadId, output);
       },
-      params: merge(threadConfig, chainSummaryTitle(messages, globalHelpers.getCurrentLanguage())),
+      params: merge(taskConfig, chainSummaryTitle(messages, globalHelpers.getCurrentLanguage())),
     });
   },
 

@@ -129,19 +129,48 @@ export class MessageModel {
 
     if (messageIds.length === 0) return [];
 
-    // 2. get relative files
-    const rawRelatedFileList = await this.db
-      .select({
-        fileType: files.fileType,
-        id: messagesFiles.fileId,
-        messageId: messagesFiles.messageId,
-        name: files.name,
-        size: files.size,
-        url: files.url,
-      })
-      .from(messagesFiles)
-      .leftJoin(files, eq(files.id, messagesFiles.fileId))
-      .where(inArray(messagesFiles.messageId, messageIds));
+    const [rawRelatedFileList, chunksList, messageQueriesList] = await Promise.all([
+      // 2. get relative files
+      this.db
+        .select({
+          fileType: files.fileType,
+          id: messagesFiles.fileId,
+          messageId: messagesFiles.messageId,
+          name: files.name,
+          size: files.size,
+          url: files.url,
+        })
+        .from(messagesFiles)
+        .leftJoin(files, eq(files.id, messagesFiles.fileId))
+        .where(inArray(messagesFiles.messageId, messageIds)),
+      // 3. get relative file chunks
+      this.db
+        .select({
+          fileId: files.id,
+          fileType: files.fileType,
+          fileUrl: files.url,
+          filename: files.name,
+          id: chunks.id,
+          messageId: messageQueryChunks.messageId,
+          similarity: messageQueryChunks.similarity,
+          text: chunks.text,
+        })
+        .from(messageQueryChunks)
+        .leftJoin(chunks, eq(chunks.id, messageQueryChunks.chunkId))
+        .leftJoin(fileChunks, eq(fileChunks.chunkId, chunks.id))
+        .innerJoin(files, eq(fileChunks.fileId, files.id))
+        .where(inArray(messageQueryChunks.messageId, messageIds)),
+      // 4. get relative message query
+      this.db
+        .select({
+          id: messageQueries.id,
+          messageId: messageQueries.messageId,
+          rewriteQuery: messageQueries.rewriteQuery,
+          userQuery: messageQueries.userQuery,
+        })
+        .from(messageQueries)
+        .where(inArray(messageQueries.messageId, messageIds)),
+    ]);
 
     const relatedFileList = await Promise.all(
       rawRelatedFileList.map(async (file) => ({
@@ -175,52 +204,50 @@ export class MessageModel {
       );
     }
 
-    const imageList = relatedFileList.filter((i) => (i.fileType || '').startsWith('image'));
-    const videoList = relatedFileList.filter((i) => (i.fileType || '').startsWith('video'));
-    const fileList = relatedFileList.filter(
-      (i) => !(i.fileType || '').startsWith('image') && !(i.fileType || '').startsWith('video'),
+    const messageQueryByMessageId = new Map(
+      messageQueriesList.map((relation) => [relation.messageId, relation]),
     );
 
-    // 3. get relative file chunks
-    const chunksList = await this.db
-      .select({
-        fileId: files.id,
-        fileType: files.fileType,
-        fileUrl: files.url,
-        filename: files.name,
-        id: chunks.id,
-        messageId: messageQueryChunks.messageId,
-        similarity: messageQueryChunks.similarity,
-        text: chunks.text,
-      })
-      .from(messageQueryChunks)
-      .leftJoin(chunks, eq(chunks.id, messageQueryChunks.chunkId))
-      .leftJoin(fileChunks, eq(fileChunks.chunkId, chunks.id))
-      .innerJoin(files, eq(fileChunks.fileId, files.id))
-      .where(inArray(messageQueryChunks.messageId, messageIds));
+    const filesByMessageId = relatedFileList.reduce<Record<string, (typeof relatedFileList)[number][]>>(
+      (acc, relation) => {
+        const key = relation.messageId;
+        if (!key) return acc;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(relation);
+        return acc;
+      },
+      {},
+    );
 
-    // 3. get relative message query
-    const messageQueriesList = await this.db
-      .select({
-        id: messageQueries.id,
-        messageId: messageQueries.messageId,
-        rewriteQuery: messageQueries.rewriteQuery,
-        userQuery: messageQueries.userQuery,
-      })
-      .from(messageQueries)
-      .where(inArray(messageQueries.messageId, messageIds));
+    const chunksByMessageId = chunksList.reduce<Record<string, (typeof chunksList)[number][]>>(
+      (acc, relation) => {
+        const key = relation.messageId;
+        if (!key) return acc;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(relation);
+        return acc;
+      },
+      {},
+    );
 
     return result.map(
       ({ model, provider, translate, ttsId, ttsFile, ttsContentMd5, ttsVoice, ...item }) => {
-        const messageQuery = messageQueriesList.find((relation) => relation.messageId === item.id);
+        const relatedFiles = filesByMessageId[item.id] || [];
+        const relatedChunks = chunksByMessageId[item.id] || [];
+        const messageQuery = messageQueryByMessageId.get(item.id);
+
+        const relatedImageList = relatedFiles.filter((i) => (i.fileType || '').startsWith('image'));
+        const relatedVideoList = relatedFiles.filter((i) => (i.fileType || '').startsWith('video'));
+        const relatedNormalFileList = relatedFiles.filter(
+          (i) => !(i.fileType || '').startsWith('image') && !(i.fileType || '').startsWith('video'),
+        );
+
         return {
           ...item,
-          chunksList: chunksList
-            .filter((relation) => relation.messageId === item.id)
-            .map((c) => ({
-              ...c,
-              similarity: Number(c.similarity) ?? undefined,
-            })),
+          chunksList: relatedChunks.map((c) => ({
+            ...c,
+            similarity: Number(c.similarity) ?? undefined,
+          })),
 
           extra: {
             fromModel: model,
@@ -234,8 +261,7 @@ export class MessageModel {
               }
               : undefined,
           },
-          fileList: fileList
-            .filter((relation) => relation.messageId === item.id)
+          fileList: relatedNormalFileList
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .map<ChatFileItem>(({ id, url, size, fileType, name }) => ({
               content: documentsMap[id],
@@ -246,8 +272,7 @@ export class MessageModel {
               url,
             })),
 
-          imageList: imageList
-            .filter((relation) => relation.messageId === item.id)
+          imageList: relatedImageList
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .map<ChatImageItem>(({ id, url, name }) => ({ alt: name!, id, url })),
 
@@ -255,8 +280,7 @@ export class MessageModel {
           ragQuery: messageQuery?.rewriteQuery,
           ragQueryId: messageQuery?.id,
           ragRawQuery: messageQuery?.userQuery,
-          videoList: videoList
-            .filter((relation) => relation.messageId === item.id)
+          videoList: relatedVideoList
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .map<ChatVideoItem>(({ id, url, name }) => ({ alt: name!, id, url })),
         } as unknown as ChatMessage;

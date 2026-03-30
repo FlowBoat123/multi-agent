@@ -38,6 +38,14 @@ export const createAuthSlice: StateCreator<
     }
   },
   openLogin: async () => {
+    if (!enableAuth) return;
+
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      // Prevent login loops when already on auth routes.
+      if (path.startsWith('/next-auth/signin') || path.startsWith('/login')) return;
+    }
+
     if (enableClerk) {
       const redirectUrl = location.toString();
       get().clerkSignIn?.({
@@ -58,6 +66,12 @@ export const createAuthSlice: StateCreator<
         return;
       }
       signIn();
+      return;
+    }
+
+    // Fallback to avoid silent no-op when auth providers are not configured yet.
+    if (typeof window !== 'undefined') {
+      window.location.assign('/next-auth/signin');
     }
   },
 });

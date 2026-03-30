@@ -1,5 +1,5 @@
 import { lambdaClient } from '@/libs/trpc/client';
-import { CreateKnowledgeBaseParams } from '@/types/knowledgeBase';
+import { CreateKnowledgeBaseParams, UpdateKnowledgeBaseParams } from '@/types/knowledgeBase';
 
 class KnowledgeBaseService {
   createKnowledgeBase = async (params: CreateKnowledgeBaseParams) => {
@@ -14,7 +14,7 @@ class KnowledgeBaseService {
     return lambdaClient.knowledgeBase.getKnowledgeBaseById.query({ id });
   };
 
-  updateKnowledgeBaseList = async (id: string, value: any) => {
+  updateKnowledgeBaseList = async (id: string, value: UpdateKnowledgeBaseParams) => {
     return lambdaClient.knowledgeBase.updateKnowledgeBase.mutate({ id, value });
   };
 

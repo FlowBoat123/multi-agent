@@ -2,6 +2,8 @@ import { getUserAuth } from '@agent/utils/server';
 import { notFound } from 'next/navigation';
 import { Flexbox } from 'react-layout-kit';
 
+import { enableAuth } from '@/const/auth';
+import { DESKTOP_USER_ID } from '@/const/desktop';
 import FileViewer from '@/features/FileViewer';
 import { createCallerFactory } from '@/libs/trpc/lambda';
 import { lambdaRouter } from '@/server/routers/lambda';
@@ -15,7 +17,20 @@ const createCaller = createCallerFactory(lambdaRouter);
 const FilePage = async (props: PagePropsWithId) => {
   const params = await props.params;
 
-  const { userId } = await getUserAuth();
+  let userId: string | undefined;
+
+  try {
+    const auth = await getUserAuth();
+    userId = auth.userId;
+  } catch (error) {
+    if (!enableAuth) {
+      userId = DESKTOP_USER_ID;
+    } else {
+      throw error;
+    }
+  }
+
+  if (!userId) return notFound();
 
   const caller = createCaller({ userId });
 

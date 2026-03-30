@@ -31,6 +31,13 @@ export interface CreateKnowledgeBaseParams {
   name: string;
 }
 
+export interface UpdateKnowledgeBaseParams {
+  avatar?: string;
+  description?: string;
+  name?: string;
+  settings?: Record<string, any>;
+}
+
 export enum KnowledgeType {
   File = 'file',
   KnowledgeBase = 'knowledgeBase',

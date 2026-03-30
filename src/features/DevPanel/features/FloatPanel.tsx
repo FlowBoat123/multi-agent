@@ -83,6 +83,7 @@ interface CollapsibleFloatPanelProps {
 const CollapsibleFloatPanel = memo<CollapsibleFloatPanelProps>(({ items }) => {
   const { styles, theme } = useStyles();
   const [tab, setTab] = useState<string>(items[0].key);
+  const [mounted, setMounted] = useState(false);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [position, setPosition] = useState({ x: 100, y: 100 });
@@ -90,6 +91,8 @@ const CollapsibleFloatPanel = memo<CollapsibleFloatPanelProps>(({ items }) => {
 
   const pathname = usePathname();
   useEffect(() => {
+    setMounted(true);
+
     try {
       const localStoragePosition = localStorage.getItem('debug-panel-position');
       if (localStoragePosition && JSON.parse(localStoragePosition)) {
@@ -108,6 +111,9 @@ const CollapsibleFloatPanel = memo<CollapsibleFloatPanelProps>(({ items }) => {
       /* empty */
     }
   }, []);
+
+  // Render only after client mount to avoid dev-only hydration mismatch from FloatButton styles.
+  if (!mounted) return null;
 
   return (
     <>

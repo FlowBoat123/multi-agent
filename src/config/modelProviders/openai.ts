@@ -5,6 +5,14 @@ const OpenAI: ModelProviderCard = {
   apiKeyUrl: 'https://platform.openai.com/api-keys',
   chatModels: [
     {
+      contextWindowTokens: 128_000,
+      description: 'Route request to the external multi-agent orchestrator when MULTI_AGENT_ENABLED=1.',
+      displayName: 'Multi-Agent v1',
+      enabled: true,
+      id: 'multi-agent-v1',
+      maxOutput: 16_384,
+    },
+    {
       contextWindowTokens: 400_000,
       description: '',
       displayName: 'GPT-5 mini',

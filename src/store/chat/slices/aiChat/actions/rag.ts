@@ -1,6 +1,7 @@
 import { chainRewriteQuery } from '@agent/prompts';
 import { StateCreator } from 'zustand/vanilla';
 
+import { DEFAULT_QUERY_REWRITE_SYSTEM_AGENT_ITEM } from '@/const/settings';
 import { chatService } from '@/services/chat';
 import { ragService } from '@/services/rag';
 import { useAgentStore } from '@/store/agent';
@@ -98,9 +99,23 @@ export const chatRag: StateCreator<ChatStore, [['zustand/devtools', never]], [],
     const queryRewriteConfig = systemAgentSelectors.queryRewrite(useUserStore.getState());
     if (!queryRewriteConfig.enabled) return content;
 
+    const { model: currentModel } = agentSelectors.currentAgentConfig(useAgentStore.getState());
+    const { provider: currentProvider } = agentSelectors.currentAgentConfig(useAgentStore.getState());
+    const isCurrentModelMultiAgent = currentModel?.includes('multi-agent');
+
+    // Skip hidden rewrite task for multi-agent models to avoid fallback to default OpenAI preset model.
+    if (isCurrentModelMultiAgent) return content;
+
+    const shouldFollowCurrentProvider =
+      !!currentModel &&
+      !!currentProvider &&
+      queryRewriteConfig.model === DEFAULT_QUERY_REWRITE_SYSTEM_AGENT_ITEM.model &&
+      queryRewriteConfig.provider === DEFAULT_QUERY_REWRITE_SYSTEM_AGENT_ITEM.provider &&
+      currentProvider !== DEFAULT_QUERY_REWRITE_SYSTEM_AGENT_ITEM.provider;
+
     const rewriteQueryParams = {
-      model: queryRewriteConfig.model,
-      provider: queryRewriteConfig.provider,
+      model: shouldFollowCurrentProvider ? currentModel : queryRewriteConfig.model,
+      provider: shouldFollowCurrentProvider ? currentProvider : queryRewriteConfig.provider,
       ...chainRewriteQuery(
         content,
         messages,

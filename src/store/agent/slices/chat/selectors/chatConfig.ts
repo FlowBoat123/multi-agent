@@ -14,8 +14,27 @@ const isAgentEnableSearch = (s: AgentStoreState) => agentSearchMode(s) !== 'off'
 const useModelBuiltinSearch = (s: AgentStoreState) =>
   currentAgentChatConfig(s).useModelBuiltinSearch;
 
-const searchFCModel = (s: AgentStoreState) =>
-  currentAgentChatConfig(s).searchFCModel || DEFAULT_AGENT_SEARCH_FC_MODEL;
+const searchFCModel = (s: AgentStoreState) => {
+  const config = currentAgentChatConfig(s).searchFCModel;
+  const current = currentAgentConfig(s);
+
+  // If unset, follow the current conversation model/provider to avoid hidden provider switches.
+  if (!config) {
+    return { model: current.model, provider: current.provider };
+  }
+
+  // If the config still equals the legacy default (OpenAI), but current chat is using
+  // another provider (e.g. Ollama), follow current provider to prevent InvalidProviderAPIKey.
+  if (
+    config.model === DEFAULT_AGENT_SEARCH_FC_MODEL.model &&
+    config.provider === DEFAULT_AGENT_SEARCH_FC_MODEL.provider &&
+    current.provider !== DEFAULT_AGENT_SEARCH_FC_MODEL.provider
+  ) {
+    return { model: current.model, provider: current.provider };
+  }
+
+  return config;
+};
 
 const enableHistoryCount = (s: AgentStoreState) => {
   const config = currentAgentConfig(s);

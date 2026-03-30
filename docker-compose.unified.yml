@@ -1,0 +1,139 @@
+name: ${COMPOSE_PROJECT_NAME:-agent}
+
+services:
+  # Web infra
+  postgresql:
+    image: pgvector/pgvector:${PGVECTOR_TAG:-pg17}
+    container_name: ${PG_CONTAINER_NAME:-postgres-db}
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-agent}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env.docker}
+    volumes:
+      - ${PG_DATA_VOLUME:-db-data}:/var/lib/postgresql/data
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}' ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  minio:
+    image: minio/minio:${MINIO_TAG:-latest}
+    container_name: ${MINIO_CONTAINER_NAME:-minio-storage}
+    command: server /data --console-address ":${MINIO_CONSOLE_PORT:-9001}"
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?set in .env.docker}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?set in .env.docker}
+      MINIO_API_CORS_ALLOW_ORIGIN: ${MINIO_CORS:-*}
+    volumes:
+      - ${MINIO_DATA_VOLUME:-s3-data}:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  searxng:
+    image: searxng/searxng:${SEARXNG_TAG:-latest}
+    container_name: ${SEARXNG_CONTAINER_NAME:-searxng-search}
+    ports:
+      - "${SEARXNG_PORT:-8080}:8080"
+    volumes:
+      - "./searxng-settings.yml:/etc/searxng/settings.yml"
+    environment:
+      SEARXNG_SETTINGS_FILE: /etc/searxng/settings.yml
+      SEARXNG_BASE_URL: ${SEARXNG_BASE_URL:-http://localhost:${SEARXNG_PORT:-8080}/}
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Multi-agent infra
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: Phamquan2004
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+    restart: always
+
+  vector-db:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "${VECTOR_DB_PORT:-8088}:8080"
+      - "50051:50051"
+    volumes:
+      - vector_db_data:/var/lib/weaviate
+    environment:
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: /var/lib/weaviate
+      DEFAULT_VECTORIZER_MODULE: none
+      CLUSTER_HOSTNAME: node1
+    networks:
+      - app-network
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "${REDIS_PORT:-6380}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: Phamquan2004@
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  s3-data:
+  mongo_data:
+  vector_db_data:
+  redis_data:
+  rabbitmq_data:
+
+
+networks:
+  app-network:
+    driver: bridge

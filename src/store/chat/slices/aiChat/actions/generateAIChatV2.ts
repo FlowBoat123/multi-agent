@@ -386,8 +386,9 @@ export const generateAIChatV2: StateCreator<
     const useModelSearch =
       (isProviderHasBuiltinSearch || isModelHasBuiltinSearch) && useModelBuiltinSearch;
     const isAgentEnableSearch = agentChatConfigSelectors.isAgentEnableSearch(agentStoreState);
+    const isCurrentModelMultiAgent = model?.includes('multi-agent');
 
-    if (isAgentEnableSearch && !useModelSearch && !isModelSupportToolUse) {
+    if (isAgentEnableSearch && !useModelSearch && !isModelSupportToolUse && !isCurrentModelMultiAgent) {
       const { model, provider } = agentChatConfigSelectors.searchFCModel(agentStoreState);
 
       let isToolsCalling = false;

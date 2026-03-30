@@ -13,11 +13,14 @@ export const useTokenCount = (input: string = '') => {
         .catch(() => {
           setNum(text.length);
         });
-    }, 300),
+    }, 120),
     [],
   );
 
   useEffect(() => {
+    // Update immediately to avoid UI lag while async tokenizer is running.
+    setNum((input || '').length);
+
     startTransition(() => {
       debouncedEncode(input || '');
     });

@@ -8,6 +8,7 @@
  * @link https://trpc.io/docs/v11/procedures
  */
 import { DESKTOP_USER_ID } from '@/const/desktop';
+import { enableAuth } from '@/const/auth';
 import { isDesktop } from '@/const/version';
 
 import { userAuth } from '../middleware/userAuth';
@@ -25,8 +26,10 @@ export const router = trpc.router;
  * @link https://trpc.io/docs/v11/procedures
  **/
 export const publicProcedure = trpc.procedure.use(({ next, ctx }) => {
+  const fallbackUserId = isDesktop || !enableAuth ? DESKTOP_USER_ID : ctx.userId;
+
   return next({
-    ctx: { ...ctx, userId: isDesktop ? DESKTOP_USER_ID : ctx.userId },
+    ctx: { ...ctx, userId: fallbackUserId },
   });
 });
 

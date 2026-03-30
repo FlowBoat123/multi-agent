@@ -21,6 +21,18 @@ export const openaiChatModels: AIChatModelCard[] = [
   {
     abilities: {
       functionCall: true,
+    },
+    contextWindowTokens: 128_000,
+    description: 'Route request to the external multi-agent orchestrator when MULTI_AGENT_ENABLED=1.',
+    displayName: 'Multi-Agent v1',
+    enabled: true,
+    id: 'multi-agent-v1',
+    maxOutput: 16_384,
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
       reasoning: true,
       search: true,
       vision: true,

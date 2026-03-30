@@ -3,9 +3,12 @@ import { TraceNameMap, TracePayload } from '@agent/types';
 import { produce } from 'immer';
 import { StateCreator } from 'zustand/vanilla';
 
+import { DEFAULT_SYSTEM_AGENT_ITEM } from '@/const/settings';
 import { supportLocales } from '@/locales/resources';
 import { chatService } from '@/services/chat';
 import { messageService } from '@/services/message';
+import { useAgentStore } from '@/store/agent';
+import { agentSelectors } from '@/store/agent/selectors';
 import { chatSelectors } from '@/store/chat/selectors';
 import { ChatStore } from '@/store/chat/store';
 import { useUserStore } from '@/store/user';
@@ -49,6 +52,20 @@ export const chatTranslate: StateCreator<
 
     // Get current agent for translation
     const translationSetting = systemAgentSelectors.translation(useUserStore.getState());
+    const { model: currentModel, provider: currentProvider } = agentSelectors.currentAgentConfig(
+      useAgentStore.getState(),
+    );
+    const shouldFollowCurrentProvider =
+      !!currentModel &&
+      !!currentProvider &&
+      (currentModel.includes('multi-agent') ||
+        (translationSetting.model === DEFAULT_SYSTEM_AGENT_ITEM.model &&
+          translationSetting.provider === DEFAULT_SYSTEM_AGENT_ITEM.provider &&
+          currentProvider !== DEFAULT_SYSTEM_AGENT_ITEM.provider));
+    const taskConfig =
+      shouldFollowCurrentProvider
+        ? { ...translationSetting, model: currentModel, provider: currentProvider }
+        : translationSetting;
 
     // create translate extra
     await updateMessageTranslate(id, { content: '', from: '', to: targetLang });
@@ -65,7 +82,7 @@ export const chatTranslate: StateCreator<
 
         await updateMessageTranslate(id, { content, from, to: targetLang });
       },
-      params: merge(translationSetting, chainLangDetect(message.content)),
+      params: merge(taskConfig, chainLangDetect(message.content)),
       trace: get().getCurrentTracePayload({ traceName: TraceNameMap.LanguageDetect }),
     });
 
@@ -91,7 +108,7 @@ export const chatTranslate: StateCreator<
           }
         }
       },
-      params: merge(translationSetting, chainTranslate(message.content, targetLang)),
+      params: merge(taskConfig, chainTranslate(message.content, targetLang)),
       trace: get().getCurrentTracePayload({ traceName: TraceNameMap.Translator }),
     });
   },

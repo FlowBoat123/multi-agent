@@ -134,6 +134,15 @@ describe('initModelRuntimeWithUserPayload method', () => {
       expect(runtime['_runtime']['baseURL']).toEqual(jwtPayload.baseURL);
     });
 
+    it('Ollama provider: with endpoint missing protocol', async () => {
+      const jwtPayload: ClientSecretPayload = { baseURL: '127.0.0.1:11434' };
+      const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Ollama, jwtPayload);
+
+      expect(runtime).toBeInstanceOf(ModelRuntime);
+      expect(runtime['_runtime']).toBeInstanceOf(LobeOllamaAI);
+      expect(runtime['_runtime']['baseURL']).toEqual('http://127.0.0.1:11434');
+    });
+
     it('Perplexity AI provider: with apikey', async () => {
       const jwtPayload: ClientSecretPayload = { apiKey: 'user-perplexity-key' };
       const runtime = await initModelRuntimeWithUserPayload(ModelProvider.Perplexity, jwtPayload);

@@ -26,6 +26,16 @@ export interface OllamaModelCard {
   name: string;
 }
 
+const normalizeOllamaBaseURL = (baseURL?: string) => {
+  if (!baseURL) return undefined;
+
+  const trimmed = baseURL.trim();
+  const hasProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(trimmed);
+  const url = new URL(hasProtocol ? trimmed : `http://${trimmed}`);
+
+  return url.toString().replace(/\/$/, '');
+};
+
 export class LobeOllamaAI implements LobeRuntimeAI {
   private client: Ollama;
 
@@ -33,24 +43,24 @@ export class LobeOllamaAI implements LobeRuntimeAI {
 
   constructor({ baseURL }: ClientOptions = {}) {
     try {
-      if (baseURL) new URL(baseURL);
+      const normalizedBaseURL = normalizeOllamaBaseURL(baseURL);
+
+      this.client = new Ollama(!normalizedBaseURL ? undefined : { host: normalizedBaseURL });
+
+      if (normalizedBaseURL) this.baseURL = normalizedBaseURL;
     } catch (e) {
       throw AgentRuntimeError.createError(AgentRuntimeErrorType.InvalidOllamaArgs, e);
     }
-
-    this.client = new Ollama(!baseURL ? undefined : { host: baseURL });
-
-    if (baseURL) this.baseURL = baseURL;
   }
 
   async chat(payload: ChatStreamPayload, options?: ChatMethodOptions) {
-    try {
-      const abort = () => {
-        this.client.abort();
-        options?.signal?.removeEventListener('abort', abort);
-      };
+    const abort = () => {
+      this.client.abort();
+      options?.signal?.removeEventListener('abort', abort);
+    };
 
-      options?.signal?.addEventListener('abort', abort);
+    try {
+      options?.signal?.addEventListener('abort', abort, { once: true });
 
       const response = await this.client.chat({
         messages: this.buildOllamaMessages(payload.messages),
@@ -102,6 +112,8 @@ export class LobeOllamaAI implements LobeRuntimeAI {
         errorType: AgentRuntimeErrorType.OllamaBizError,
         provider: ModelProvider.Ollama,
       });
+    } finally {
+      options?.signal?.removeEventListener('abort', abort);
     }
   }
 

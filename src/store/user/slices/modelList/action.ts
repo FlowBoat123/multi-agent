@@ -119,8 +119,14 @@ export const createModelListSlice: StateCreator<
     get().refreshModelProviderList({ trigger: 'refreshDefaultModelList' });
   },
   refreshModelProviderList: (params) => {
+    const FORCE_VISIBLE_MODELS: Record<string, string[]> = {
+      openai: ['multi-agent-v1'],
+    };
+
     const modelProviderList = get().defaultModelProviderList.map((list) => {
       const enabledModels = modelProviderSelectors.getEnableModelsById(list.id)(get());
+      const forceVisibleModels = FORCE_VISIBLE_MODELS[list.id] || [];
+
       return {
         ...list,
         chatModels: modelProviderSelectors
@@ -128,9 +134,11 @@ export const createModelListSlice: StateCreator<
           ?.map((model) => {
             if (!enabledModels) return model;
 
+            const isForceVisible = forceVisibleModels.includes(model.id);
+
             return {
               ...model,
-              enabled: enabledModels?.some((m) => m === model.id),
+              enabled: isForceVisible || enabledModels?.some((m) => m === model.id),
             };
           }),
         enabled: modelProviderSelectors.isProviderEnabled(list.id as any)(get()),

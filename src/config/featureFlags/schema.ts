@@ -61,8 +61,8 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
   edit_agent: true,
 
   plugins: true,
-  dalle: true,
-  ai_image: true,
+  dalle: false,
+  ai_image: false,
 
   check_updates: true,
   welcome_suggest: false,
@@ -101,8 +101,9 @@ export const mapFeatureFlagsEnvToState = (config: IFeatureFlags) => {
     showApiKeyManage: config.api_key_manage,
 
     enablePlugins: config.plugins,
-    showDalle: config.dalle,
-    showAiImage: config.ai_image,
+    // Hard-disable AI image feature while keeping implementation code intact.
+    showDalle: false,
+    showAiImage: false,
     showChangelog: config.changelog,
 
     enableCheckUpdates: config.check_updates,

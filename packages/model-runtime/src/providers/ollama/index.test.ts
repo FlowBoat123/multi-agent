@@ -25,9 +25,15 @@ describe('LobeOllamaAI', () => {
       expect(ollamaAI.baseURL).toBe('https://example.com');
     });
 
+    it('should normalize baseURL without protocol', () => {
+      const runtime = new LobeOllamaAI({ baseURL: '127.0.0.1:11434' });
+
+      expect(runtime.baseURL).toBe('http://127.0.0.1:11434');
+    });
+
     it('should throw AgentRuntimeError with invalid baseURL', () => {
       try {
-        new LobeOllamaAI({ baseURL: 'invalid-url' });
+        new LobeOllamaAI({ baseURL: 'http://:' });
       } catch (e) {
         expect(e).toMatchObject({
           error: new TypeError('Invalid URL'),

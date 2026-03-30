@@ -13,13 +13,8 @@ import HighlightLayer from './HighlightLayer';
 import { useStyles } from './style';
 import useResizeObserver from './useResizeObserver';
 
-// 如果海外的地址： https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs
-pdfjs.GlobalWorkerOptions.workerSrc = `https://registry.npmmirror.com/pdfjs-dist/${pdfjs.version}/files/build/pdf.worker.min.mjs`;
-
-const options = {
-  cMapUrl: `https://registry.npmmirror.com/pdfjs-dist/${pdfjs.version}/files/cmaps/`,
-  standardFontDataUrl: `https://registry.npmmirror.com/pdfjs-dist/${pdfjs.version}/files/standard_fonts/`,
-};
+// Use static worker file from /public to avoid Turbopack HMR static-module mismatch.
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 const maxWidth = 1200;
 
@@ -71,7 +66,6 @@ const PDFViewer = memo<PDFViewerProps>(({ url, fileId }) => {
           className={styles.document}
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
-          options={options}
         >
           {Array.from({ length: numPages }, (el, index) => {
             const width = containerWidth ? Math.min(containerWidth, maxWidth) : maxWidth;

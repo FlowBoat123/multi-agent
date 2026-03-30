@@ -1,0 +1,602 @@
+[
+    {
+        "id": "qa_1",
+        "level": 1,
+        "anchor": "Luật Chứng khoán điều chỉnh những hoạt động nào?",
+        "positive": "Luật này quy định các hoạt động về chứng khoán và thị trường chứng khoán; quyền và nghĩa vụ của tổ chức, cá nhân trong lĩnh vực chứng khoán; tổ chức thị trường chứng khoán; quản lý nhà nước về chứng khoán và thị trường chứng khoán."
+    },
+    {
+        "id": "qa_2",
+        "level": 1,
+        "anchor": "Đối tượng nào áp dụng Luật Chứng khoán?",
+        "positive": "Luật Chứng khoán áp dụng cho tổ chức, cá nhân Việt Nam và tổ chức, cá nhân nước ngoài tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam."
+    },
+    {
+        "id": "qa_3",
+        "level": 1,
+        "anchor": "Chứng khoán bao gồm những loại nào?",
+        "positive": "Chứng khoán bao gồm cổ phiếu, trái phiếu, chứng chỉ quỹ; chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký; chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_4",
+        "level": 1,
+        "anchor": "Cổ phiếu là gì?",
+        "positive": "Cổ phiếu là loại chứng khoán xác nhận quyền và lợi ích hợp pháp của người sở hữu đối với một phần vốn cổ phần của tổ chức phát hành."
+    },
+    {
+        "id": "qa_5",
+        "level": 1,
+        "anchor": "Trái phiếu là gì?",
+        "positive": "Trái phiếu là loại chứng khoán xác nhận quyền và lợi ích hợp pháp của người sở hữu đối với một phần nợ của tổ chức phát hành."
+    },
+    {
+        "id": "qa_6",
+        "level": 1,
+        "anchor": "Chứng chỉ quỹ là gì?",
+        "positive": "Chứng chỉ quỹ là loại chứng khoán xác nhận quyền sở hữu của nhà đầu tư đối với một phần vốn góp của quỹ đầu tư chứng khoán."
+    },
+    {
+        "id": "qa_7",
+        "level": 1,
+        "anchor": "Chứng quyền có bảo đảm là gì?",
+        "positive": "Chứng quyền có bảo đảm là loại chứng khoán có tài sản bảo đảm do công ty chứng khoán phát hành, cho phép người sở hữu được quyền mua hoặc quyền bán chứng khoán cơ sở với tổ chức phát hành chứng quyền đó theo mức giá đã xác định."
+    },
+    {
+        "id": "qa_8",
+        "level": 1,
+        "anchor": "Quyền mua cổ phần là gì?",
+        "positive": "Quyền mua cổ phần là loại chứng khoán do công ty cổ phần phát hành nhằm mang lại cho cổ đông hiện hữu quyền được mua cổ phần mới theo điều kiện đã xác định."
+    },
+    {
+        "id": "qa_9",
+        "level": 1,
+        "anchor": "Thị trường chứng khoán gồm mấy loại?",
+        "positive": "Thị trường chứng khoán gồm thị trường sơ cấp và thị trường thứ cấp."
+    },
+    {
+        "id": "qa_10",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh là gì?",
+        "positive": "Chứng khoán phái sinh là loại chứng khoán được phát hành trên cơ sở chứng khoán của tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam."
+    },
+    {
+        "id": "qa_11",
+        "level": 1,
+        "anchor": "Luật Chứng khoán quy định các hoạt động nào trên thị trường chứng khoán?",
+        "positive": "Luật Chứng khoán quy định các hoạt động về chứng khoán và thị trường chứng khoán, quyền và nghĩa vụ của tổ chức, cá nhân trong lĩnh vực chứng khoán, tổ chức thị trường chứng khoán và quản lý nhà nước về chứng khoán và thị trường chứng khoán."
+    },
+    {
+        "id": "qa_12",
+        "level": 1,
+        "anchor": "Nhà đầu tư chứng khoán là ai?",
+        "positive": "Nhà đầu tư chứng khoán là tổ chức hoặc cá nhân thực hiện hoạt động mua, bán hoặc nắm giữ chứng khoán trên thị trường."
+    },
+    {
+        "id": "qa_13",
+        "level": 1,
+        "anchor": "Thị trường sơ cấp là gì?",
+        "positive": "Thị trường sơ cấp là nơi các tổ chức phát hành chứng khoán lần đầu tiên để huy động vốn từ các nhà đầu tư."
+    },
+    {
+        "id": "qa_14",
+        "level": 1,
+        "anchor": "Thị trường thứ cấp là gì?",
+        "positive": "Thị trường thứ cấp là nơi diễn ra các giao dịch mua bán chứng khoán đã được phát hành trên thị trường sơ cấp."
+    },
+    {
+        "id": "qa_15",
+        "level": 1,
+        "anchor": "Chứng quyền là gì?",
+        "positive": "Chứng quyền là loại chứng khoán được phát hành kèm với trái phiếu hoặc cổ phiếu ưu đãi, cho phép người sở hữu mua cổ phiếu phổ thông trong tương lai với giá xác định trước."
+    },
+    {
+        "id": "qa_16",
+        "level": 1,
+        "anchor": "Tổ chức nào quản lý nhà nước về chứng khoán và thị trường chứng khoán?",
+        "positive": "Cơ quan quản lý nhà nước về chứng khoán và thị trường chứng khoán là Ủy ban Chứng khoán Nhà nước."
+    },
+    {
+        "id": "qa_17",
+        "level": 1,
+        "anchor": "Quyền mua cổ phần có ý nghĩa gì đối với cổ đông?",
+        "positive": "Quyền mua cổ phần cho phép cổ đông hiện hữu được ưu tiên mua thêm cổ phần mới của công ty với giá ưu đãi, giúp họ duy trì tỷ lệ sở hữu vốn."
+    },
+    {
+        "id": "qa_18",
+        "level": 1,
+        "anchor": "Chứng chỉ lưu ký là gì?",
+        "positive": "Chứng chỉ lưu ký là loại chứng khoán được phát hành trên cơ sở chứng khoán của tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam."
+    },
+    {
+        "id": "qa_19",
+        "level": 1,
+        "anchor": "Mục đích phát hành trái phiếu của doanh nghiệp là gì?",
+        "positive": "Doanh nghiệp phát hành trái phiếu để huy động vốn cho hoạt động sản xuất, kinh doanh hoặc mở rộng đầu tư."
+    },
+    {
+        "id": "qa_20",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh bao gồm những loại nào?",
+        "positive": "Chứng khoán phái sinh bao gồm các loại hợp đồng tương lai, hợp đồng quyền chọn và các công cụ tài chính khác dựa trên tài sản cơ sở."
+    },
+    {
+        "id": "qa_21",
+        "level": 1,
+        "anchor": "Công ty cổ phần phát hành quyền mua cổ phần nhằm mục đích gì?",
+        "positive": "Nhằm tăng vốn điều lệ và huy động vốn từ cổ đông hiện hữu để mở rộng hoạt động kinh doanh."
+    },
+    {
+        "id": "qa_22",
+        "level": 1,
+        "anchor": "Luật Chứng khoán quy định quyền lợi nào cho nhà đầu tư?",
+        "positive": "Nhà đầu tư có quyền mua, bán, nắm giữ chứng khoán và hưởng các quyền lợi từ việc sở hữu chứng khoán như cổ tức, quyền biểu quyết."
+    },
+    {
+        "id": "qa_23",
+        "level": 1,
+        "anchor": "Cổ phiếu ưu đãi là gì?",
+        "positive": "Cổ phiếu ưu đãi là loại cổ phiếu mang lại quyền lợi ưu tiên về cổ tức hoặc quyền biểu quyết so với cổ phiếu phổ thông."
+    },
+    {
+        "id": "qa_24",
+        "level": 1,
+        "anchor": "Chứng khoán là gì theo quy định của Luật Chứng khoán?",
+        "positive": "Chứng khoán là tài sản bao gồm cổ phiếu, trái phiếu, chứng chỉ quỹ, chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký, chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_25",
+        "level": 1,
+        "anchor": "Nhà đầu tư nước ngoài có được phép tham gia thị trường chứng khoán Việt Nam không?",
+        "positive": "Có, nhà đầu tư nước ngoài được phép tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam."
+    },
+    {
+        "id": "qa_26",
+        "level": 1,
+        "anchor": "Cơ quan nào tổ chức thị trường chứng khoán tại Việt Nam?",
+        "positive": "Sở Giao dịch Chứng khoán và Trung tâm Lưu ký Chứng khoán Việt Nam là các tổ chức thực hiện chức năng tổ chức thị trường chứng khoán."
+    },
+    {
+        "id": "qa_27",
+        "level": 2,
+        "anchor": "Trái phiếu doanh nghiệp khác gì trái phiếu chính phủ?",
+        "positive": "Trái phiếu doanh nghiệp do các công ty phát hành để huy động vốn, trong khi trái phiếu chính phủ do Nhà nước phát hành để tài trợ cho các dự án công."
+    },
+    {
+        "id": "qa_28",
+        "level": 1,
+        "anchor": "Công ty chứng khoán có chức năng gì trên thị trường?",
+        "positive": "Công ty chứng khoán thực hiện các nghiệp vụ môi giới, tư vấn đầu tư, quản lý tài sản, phát hành chứng khoán và các dịch vụ tài chính khác."
+    },
+    {
+        "id": "qa_29",
+        "level": 1,
+        "anchor": "Quyền và nghĩa vụ của tổ chức phát hành chứng khoán là gì?",
+        "positive": "Tổ chức phát hành có quyền huy động vốn từ công chúng thông qua phát hành chứng khoán và có nghĩa vụ công bố thông tin minh bạch, tuân thủ pháp luật."
+    },
+    {
+        "id": "qa_30",
+        "level": 2,
+        "anchor": "Chứng quyền khác gì quyền mua cổ phần?",
+        "positive": "Chứng quyền là công cụ tài chính được phát hành cùng với trái phiếu hoặc cổ phiếu ưu đãi, còn quyền mua cổ phần là quyền dành cho cổ đông hiện hữu mua thêm cổ phiếu mới."
+    },
+    {
+        "id": "qa_31",
+        "level": 1,
+        "anchor": "Thị trường chứng khoán giúp gì cho nền kinh tế?",
+        "positive": "Thị trường chứng khoán giúp huy động vốn cho doanh nghiệp, phân bổ nguồn lực hiệu quả và là kênh đầu tư sinh lời cho nhà đầu tư."
+    },
+    {
+        "id": "qa_32",
+        "level": 1,
+        "anchor": "Cổ phiếu phổ thông là gì?",
+        "positive": "Cổ phiếu phổ thông là loại cổ phiếu xác nhận quyền sở hữu của cổ đông đối với công ty và cho phép tham gia biểu quyết các quyết định quan trọng."
+    },
+    {
+        "id": "qa_33",
+        "level": 3,
+        "anchor": "Tổ chức phát hành chứng khoán có nghĩa vụ gì với nhà đầu tư?",
+        "positive": "Tổ chức phát hành phải công bố đầy đủ, minh bạch thông tin về tình hình tài chính, hoạt động kinh doanh và đảm bảo quyền lợi cho nhà đầu tư."
+    },
+    {
+        "id": "qa_34",
+        "level": 1,
+        "anchor": "Luật Chứng khoán quy định về những nội dung nào?",
+        "positive": "Luật này quy định các hoạt động về chứng khoán và thị trường chứng khoán; quyền và nghĩa vụ của tổ chức, cá nhân trong lĩnh vực chứng khoán; tổ chức thị trường chứng khoán và quản lý nhà nước về chứng khoán và thị trường chứng khoán."
+    },
+    {
+        "id": "qa_35",
+        "level": 1,
+        "anchor": "Đối tượng nào phải tuân thủ Luật Chứng khoán?",
+        "positive": "Tổ chức, cá nhân Việt Nam và tổ chức, cá nhân nước ngoài tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam."
+    },
+    {
+        "id": "qa_36",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh là gì?",
+        "positive": "Chứng khoán phái sinh là các công cụ tài chính được phát hành trên cơ sở giá trị của các tài sản cơ sở như cổ phiếu, trái phiếu."
+    },
+    {
+        "id": "qa_37",
+        "level": 1,
+        "anchor": "Thị trường chứng khoán bao gồm những thành phần nào?",
+        "positive": "Thị trường chứng khoán bao gồm thị trường sơ cấp và thị trường thứ cấp."
+    },
+    {
+        "id": "qa_38",
+        "level": 1,
+        "anchor": "Mục tiêu của Luật Chứng khoán là gì?",
+        "positive": "Mục tiêu của Luật Chứng khoán là điều chỉnh hoạt động về chứng khoán và thị trường chứng khoán, bảo vệ quyền lợi của nhà đầu tư và phát triển thị trường chứng khoán minh bạch, công bằng."
+    },
+    {
+        "id": "qa_39",
+        "level": 1,
+        "anchor": "Thị trường sơ cấp là gì?",
+        "positive": "Thị trường sơ cấp là nơi các công ty phát hành chứng khoán lần đầu để huy động vốn từ nhà đầu tư."
+    },
+    {
+        "id": "qa_40",
+        "level": 1,
+        "anchor": "Tổ chức thị trường chứng khoán là gì?",
+        "positive": "Tổ chức thị trường chứng khoán là các sàn giao dịch chứng khoán và các cơ quan liên quan tổ chức và điều hành hoạt động giao dịch chứng khoán."
+    },
+    {
+        "id": "qa_41",
+        "level": 2,
+        "anchor": "Trái phiếu có đảm bảo khác gì trái phiếu không có đảm bảo?",
+        "positive": "Trái phiếu có đảm bảo được đảm bảo bằng tài sản của tổ chức phát hành, còn trái phiếu không có đảm bảo không gắn với tài sản đảm bảo nào."
+    },
+    {
+        "id": "qa_42",
+        "level": 1,
+        "anchor": "Tổ chức phát hành chứng khoán có quyền gì?",
+        "positive": "Tổ chức phát hành có quyền huy động vốn từ công chúng thông qua phát hành chứng khoán."
+    },
+    {
+        "id": "qa_43",
+        "level": 1,
+        "anchor": "Quyền và nghĩa vụ của nhà đầu tư là gì?",
+        "positive": "Nhà đầu tư có quyền mua, bán, sở hữu chứng khoán và nghĩa vụ tuân thủ pháp luật về chứng khoán."
+    },
+    {
+        "id": "qa_44",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh có vai trò gì trên thị trường chứng khoán?",
+        "positive": "Chứng khoán phái sinh giúp nhà đầu tư phòng ngừa rủi ro, đa dạng hóa danh mục đầu tư và tăng tính thanh khoản cho thị trường."
+    },
+    {
+        "id": "qa_45",
+        "level": 1,
+        "anchor": "Sở Giao dịch Chứng khoán thực hiện chức năng gì?",
+        "positive": "Sở Giao dịch Chứng khoán tổ chức, quản lý và điều hành hoạt động giao dịch chứng khoán trên thị trường."
+    },
+    {
+        "id": "qa_46",
+        "level": 1,
+        "anchor": "Cổ đông phổ thông có quyền gì?",
+        "positive": "Cổ đông phổ thông có quyền biểu quyết, nhận cổ tức và được ưu tiên mua cổ phần mới phát hành."
+    },
+    {
+        "id": "qa_47",
+        "level": 3,
+        "anchor": "Tại sao các công ty phát hành cổ phiếu?",
+        "positive": "Các công ty phát hành cổ phiếu để huy động vốn phục vụ hoạt động kinh doanh và mở rộng đầu tư."
+    },
+    {
+        "id": "qa_48",
+        "level": 1,
+        "anchor": "Luật Chứng khoán quy định quyền và nghĩa vụ của những ai?",
+        "positive": "Luật Chứng khoán quy định quyền và nghĩa vụ của tổ chức, cá nhân Việt Nam và tổ chức, cá nhân nước ngoài tham gia đầu tư chứng khoán và hoạt động trên thị trường chứng khoán Việt Nam."
+    },
+    {
+        "id": "qa_49",
+        "level": 1,
+        "anchor": "Quản lý nhà nước về chứng khoán và thị trường chứng khoán bao gồm những nội dung nào?",
+        "positive": "Quản lý nhà nước về chứng khoán và thị trường chứng khoán bao gồm xây dựng chính sách, ban hành quy định pháp luật, tổ chức và giám sát hoạt động chứng khoán."
+    },
+    {
+        "id": "qa_50",
+        "level": 1,
+        "anchor": "Thị trường chứng khoán Việt Nam bao gồm những thành phần nào?",
+        "positive": "Thị trường chứng khoán Việt Nam bao gồm Sở Giao dịch Chứng khoán, Trung tâm Lưu ký Chứng khoán Việt Nam và các công ty chứng khoán."
+    },
+    {
+        "id": "qa_51",
+        "level": 2,
+        "anchor": "Chứng quyền có bảo đảm khác gì chứng quyền thông thường?",
+        "positive": "Chứng quyền có bảo đảm là loại chứng khoán có tài sản bảo đảm do công ty chứng khoán phát hành, trong khi chứng quyền thông thường không có tài sản đảm bảo."
+    },
+    {
+        "id": "qa_52",
+        "level": 3,
+        "anchor": "Quyền mua cổ phần giúp ích gì cho cổ đông hiện hữu?",
+        "positive": "Quyền mua cổ phần cho phép cổ đông hiện hữu được ưu tiên mua cổ phần mới theo điều kiện đã xác định, giúp duy trì tỷ lệ sở hữu vốn."
+    },
+    {
+        "id": "qa_53",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh là gì theo quy định của Luật Chứng khoán?",
+        "positive": "Chứng khoán phái sinh là công cụ tài chính được phát hành dựa trên giá trị của các tài sản cơ sở như cổ phiếu, trái phiếu hoặc các công cụ tài chính khác."
+    },
+    {
+        "id": "qa_54",
+        "level": 1,
+        "anchor": "Ai là tổ chức phát hành chứng khoán?",
+        "positive": "Tổ chức phát hành chứng khoán là công ty hoặc tổ chức phát hành các loại chứng khoán để huy động vốn từ nhà đầu tư."
+    },
+    {
+        "id": "qa_55",
+        "level": 3,
+        "anchor": "Nhà đầu tư được hưởng những quyền lợi nào khi đầu tư vào chứng khoán?",
+        "positive": "Nhà đầu tư có quyền hưởng cổ tức, quyền biểu quyết (đối với cổ phiếu), và quyền mua cổ phần mới phát hành."
+    },
+    {
+        "id": "qa_56",
+        "level": 1,
+        "anchor": "Cơ quan nào thực hiện giám sát hoạt động thị trường chứng khoán?",
+        "positive": "Ủy ban Chứng khoán Nhà nước là cơ quan giám sát hoạt động của thị trường chứng khoán."
+    },
+    {
+        "id": "qa_57",
+        "level": 1,
+        "anchor": "Mục tiêu của việc phát hành trái phiếu là gì?",
+        "positive": "Mục tiêu của việc phát hành trái phiếu là để huy động vốn phục vụ các hoạt động đầu tư, sản xuất, kinh doanh."
+    },
+    {
+        "id": "qa_58",
+        "level": 1,
+        "anchor": "Chứng quyền được phát hành kèm với loại chứng khoán nào?",
+        "positive": "Chứng quyền thường được phát hành kèm với trái phiếu hoặc cổ phiếu ưu đãi."
+    },
+    {
+        "id": "qa_59",
+        "level": 1,
+        "anchor": "Cổ đông là gì?",
+        "positive": "Cổ đông là người sở hữu cổ phần của công ty cổ phần và có quyền tham gia vào hoạt động quản trị của công ty."
+    },
+    {
+        "id": "qa_60",
+        "level": 1,
+        "anchor": "Quyền biểu quyết của cổ đông phổ thông là gì?",
+        "positive": "Cổ đông phổ thông có quyền biểu quyết tại Đại hội đồng cổ đông đối với các quyết định quan trọng của công ty."
+    },
+    {
+        "id": "qa_61",
+        "level": 1,
+        "anchor": "Các loại chứng khoán nào cần tuân theo quy định của Chính phủ?",
+        "positive": "Các loại chứng khoán khác ngoài cổ phiếu, trái phiếu, chứng chỉ quỹ, chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký và chứng khoán phái sinh do Chính phủ quy định."
+    },
+    {
+        "id": "qa_62",
+        "level": 2,
+        "anchor": "Cổ phiếu ưu đãi cổ tức khác gì cổ phiếu phổ thông?",
+        "positive": "Cổ phiếu ưu đãi cổ tức cho phép người sở hữu nhận cổ tức với mức cố định trước cổ phiếu phổ thông, nhưng có thể không có quyền biểu quyết."
+    },
+    {
+        "id": "qa_63",
+        "level": 1,
+        "anchor": "Các tổ chức nào được phép phát hành chứng khoán?",
+        "positive": "Các công ty cổ phần, tổ chức tín dụng và các tổ chức tài chính khác được phép phát hành chứng khoán theo quy định của pháp luật."
+    },
+    {
+        "id": "qa_64",
+        "level": 1,
+        "anchor": "Trái phiếu có đảm bảo là gì?",
+        "positive": "Trái phiếu có đảm bảo là loại trái phiếu được bảo đảm bằng tài sản cụ thể của tổ chức phát hành."
+    },
+    {
+        "id": "qa_65",
+        "level": 1,
+        "anchor": "Công ty chứng khoán có những nhiệm vụ gì?",
+        "positive": "Công ty chứng khoán thực hiện các hoạt động môi giới, tư vấn đầu tư, quản lý danh mục đầu tư và bảo lãnh phát hành chứng khoán."
+    },
+    {
+        "id": "qa_66",
+        "level": 3,
+        "anchor": "Thị trường chứng khoán đóng vai trò gì trong nền kinh tế?",
+        "positive": "Thị trường chứng khoán giúp huy động vốn cho doanh nghiệp, thúc đẩy tăng trưởng kinh tế và tạo cơ hội đầu tư cho nhà đầu tư."
+    },
+    {
+        "id": "qa_67",
+        "level": 1,
+        "anchor": "Tổ chức lưu ký chứng khoán là gì?",
+        "positive": "Tổ chức lưu ký chứng khoán là đơn vị thực hiện lưu ký, thanh toán và bù trừ các giao dịch chứng khoán."
+    },
+    {
+        "id": "qa_68",
+        "level": 1,
+        "anchor": "Công ty đại chúng là gì?",
+        "positive": "Công ty đại chúng là công ty có cổ phiếu được chào bán rộng rãi ra công chúng hoặc niêm yết trên sàn giao dịch chứng khoán."
+    },
+    {
+        "id": "qa_69",
+        "level": 1,
+        "anchor": "Cổ tức là gì?",
+        "positive": "Cổ tức là khoản lợi nhuận mà công ty chia cho cổ đông từ kết quả hoạt động kinh doanh."
+    },
+    {
+        "id": "qa_70",
+        "level": 1,
+        "anchor": "Đâu là cơ sở pháp lý điều chỉnh hoạt động chứng khoán tại Việt Nam?",
+        "positive": "Hoạt động chứng khoán tại Việt Nam được điều chỉnh bởi Luật Chứng khoán và các văn bản pháp lý liên quan."
+    },
+    {
+        "id": "qa_71",
+        "level": 1,
+        "anchor": "Nhà đầu tư tổ chức là ai?",
+        "positive": "Nhà đầu tư tổ chức là các tổ chức tài chính như quỹ đầu tư, công ty bảo hiểm, ngân hàng tham gia đầu tư vào thị trường tài chính."
+    },
+    {
+        "id": "qa_72",
+        "level": 1,
+        "anchor": "Mục đích của việc phát hành cổ phiếu là gì?",
+        "positive": "Mục đích của việc phát hành cổ phiếu là huy động vốn cho hoạt động kinh doanh và mở rộng đầu tư của doanh nghiệp."
+    },
+    {
+        "id": "qa_73",
+        "level": 1,
+        "anchor": "Chứng khoán là gì?",
+        "positive": "Chứng khoán là tài sản bao gồm cổ phiếu, trái phiếu, chứng chỉ quỹ, chứng quyền, quyền mua cổ phần, chứng chỉ lưu ký, chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_74",
+        "level": 1,
+        "anchor": "Chứng khoán là gì?",
+        "positive": "Chứng khoán là tài sản bao gồm cổ phiếu, trái phiếu, chứng chỉ quỹ; chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký; chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_75",
+        "level": 1,
+        "anchor": "Chứng quyền là gì?",
+        "positive": "Chứng quyền là loại chứng khoán được phát hành cùng với việc phát hành trái phiếu hoặc cổ phiếu ưu đãi, cho phép người sở hữu chứng quyền được quyền mua một số cổ phiếu phổ thông nhất định theo mức giá đã được xác định trước trong khoảng thời gian xác định."
+    },
+    {
+        "id": "qa_76",
+        "level": 1,
+        "anchor": "Chứng quyền có bảo đảm là gì?",
+        "positive": "Chứng quyền có bảo đảm là loại chứng khoán có tài sản bảo đảm do công ty chứng khoán phát hành, cho phép người sở hữu được quyền mua hoặc quyền bán chứng khoán cơ sở với tổ chức phát hành chứng quyền có bảo đảm đó theo mức giá đã được xác định trước."
+    },
+    {
+        "id": "qa_77",
+        "level": 1,
+        "anchor": "Quyền mua cổ phần là gì?",
+        "positive": "Quyền mua cổ phần là loại chứng khoán do công ty cổ phần phát hành nhằm mang lại cho cổ đông hiện hữu quyền được mua cổ phần mới theo điều kiện đã được xác định."
+    },
+    {
+        "id": "qa_78",
+        "level": 1,
+        "anchor": "Chứng khoán nợ là gì?",
+        "positive": "Chứng khoán nợ là những giấy tờ, chứng chỉ điện tử hoặc bút toán ghi sổ chứng nhận mối quan hệ chủ nợ của người nắm giữ giấy tờ đối với người phát hành."
+    },
+    {
+        "id": "qa_79",
+        "level": 1,
+        "anchor": "Chứng khoán vốn là gì?",
+        "positive": "Chứng khoán vốn là các loại chứng khoán đại diện cho quyền sở hữu một phần vốn của tổ chức phát hành, như cổ phiếu."
+    },
+    {
+        "id": "qa_80",
+        "level": 3,
+        "anchor": "Tại sao công ty phát hành trái phiếu?",
+        "positive": "Công ty phát hành trái phiếu để huy động vốn phục vụ các hoạt động sản xuất, kinh doanh hoặc đầu tư."
+    },
+    {
+        "id": "qa_81",
+        "level": 3,
+        "anchor": "Tại sao công ty phát hành cổ phiếu?",
+        "positive": "Công ty phát hành cổ phiếu để huy động vốn từ công chúng nhằm mở rộng hoạt động kinh doanh và đầu tư."
+    },
+    {
+        "id": "qa_82",
+        "level": 1,
+        "anchor": "Lợi ích của việc đầu tư vào chứng khoán là gì?",
+        "positive": "Đầu tư vào chứng khoán giúp nhà đầu tư tăng thu nhập, đa dạng hóa danh mục đầu tư và tham gia vào sự phát triển của doanh nghiệp."
+    },
+    {
+        "id": "qa_83",
+        "level": 1,
+        "anchor": "Tổ chức phát hành chứng khoán phải tuân thủ những quy định nào?",
+        "positive": "Tổ chức phát hành chứng khoán phải tuân thủ các quy định về công bố thông tin, minh bạch tài chính và đảm bảo quyền lợi của nhà đầu tư."
+    },
+    {
+        "id": "qa_84",
+        "level": 1,
+        "anchor": "Chứng khoán là gì theo Luật Chứng khoán?",
+        "positive": "Chứng khoán là tài sản bao gồm các loại như: cổ phiếu, trái phiếu, chứng chỉ quỹ; chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký; chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_85",
+        "level": 1,
+        "anchor": "Mục đích phát hành trái phiếu là gì?",
+        "positive": "Mục đích phát hành trái phiếu là để huy động vốn phục vụ các hoạt động đầu tư, sản xuất, kinh doanh."
+    },
+    {
+        "id": "qa_86",
+        "level": 1,
+        "anchor": "Ai là cơ quan quản lý thị trường chứng khoán tại Việt Nam?",
+        "positive": "Ủy ban Chứng khoán Nhà nước là cơ quan quản lý thị trường chứng khoán tại Việt Nam."
+    },
+    {
+        "id": "qa_87",
+        "level": 1,
+        "anchor": "Chứng khoán bao gồm những loại nào?",
+        "positive": "Chứng khoán bao gồm các loại như cổ phiếu, trái phiếu, chứng chỉ quỹ; chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký; chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_88",
+        "level": 2,
+        "anchor": "Chứng quyền có bảo đảm khác gì chứng quyền thông thường?",
+        "positive": "Chứng quyền có bảo đảm là loại chứng khoán có tài sản bảo đảm do công ty chứng khoán phát hành, trong khi chứng quyền thông thường không có tài sản bảo đảm."
+    },
+    {
+        "id": "qa_89",
+        "level": 1,
+        "anchor": "Chứng quyền là gì?",
+        "positive": "Chứng quyền là loại chứng khoán được phát hành cùng với trái phiếu hoặc cổ phiếu ưu đãi, cho phép người sở hữu được quyền mua một số cổ phiếu phổ thông nhất định theo mức giá đã xác định trước."
+    },
+    {
+        "id": "qa_90",
+        "level": 1,
+        "anchor": "Chứng khoán phái sinh là gì?",
+        "positive": "Chứng khoán phái sinh là công cụ tài chính được phát hành trên cơ sở giá trị của các tài sản cơ sở như cổ phiếu, trái phiếu hoặc các công cụ tài chính khác."
+    },
+    {
+        "id": "qa_91",
+        "level": 1,
+        "anchor": "Mục tiêu của việc phát hành cổ phiếu là gì?",
+        "positive": "Mục tiêu của việc phát hành cổ phiếu là để huy động vốn phục vụ hoạt động kinh doanh và mở rộng đầu tư."
+    },
+    {
+        "id": "qa_92",
+        "level": 1,
+        "anchor": "Tổ chức thị trường chứng khoán bao gồm những gì?",
+        "positive": "Tổ chức thị trường chứng khoán bao gồm các sàn giao dịch chứng khoán và các cơ quan liên quan tổ chức và điều hành hoạt động giao dịch chứng khoán."
+    },
+    {
+        "id": "qa_93",
+        "level": 1,
+        "anchor": "Cơ quan nào quản lý hoạt động thị trường chứng khoán?",
+        "positive": "Ủy ban Chứng khoán Nhà nước là cơ quan quản lý hoạt động của thị trường chứng khoán."
+    },
+    {
+        "id": "qa_94",
+        "level": 1,
+        "anchor": "Ai chịu trách nhiệm công bố thông tin chứng khoán?",
+        "positive": "Tổ chức phát hành chứng khoán có trách nhiệm công bố thông tin đầy đủ, chính xác và kịp thời theo quy định pháp luật."
+    },
+    {
+        "id": "qa_95",
+        "level": 1,
+        "anchor": "Chứng khoán là gì?",
+        "positive": "Chứng khoán là tài sản bao gồm các loại: cổ phiếu, trái phiếu, chứng chỉ quỹ; chứng quyền, chứng quyền có bảo đảm, quyền mua cổ phần, chứng chỉ lưu ký; chứng khoán phái sinh và các loại chứng khoán khác do Chính phủ quy định."
+    },
+    {
+        "id": "qa_96",
+        "level": 1,
+        "anchor": "Cơ quan nào quản lý thị trường chứng khoán Việt Nam?",
+        "positive": "Ủy ban Chứng khoán Nhà nước là cơ quan quản lý nhà nước về chứng khoán và thị trường chứng khoán tại Việt Nam."
+    },
+    {
+        "id": "qa_97",
+        "level": 1,
+        "anchor": "Tổ chức nào giám sát hoạt động chứng khoán tại Việt Nam?",
+        "positive": "Ủy ban Chứng khoán Nhà nước là cơ quan trực tiếp giám sát hoạt động chứng khoán và thị trường chứng khoán tại Việt Nam."
+    },
+    {
+        "id": "qa_98",
+        "level": 1,
+        "anchor": "Mục đích của việc phát hành trái phiếu là gì?",
+        "positive": "Mục đích của việc phát hành trái phiếu là huy động vốn phục vụ cho các hoạt động đầu tư, sản xuất, kinh doanh của tổ chức phát hành."
+    },
+    {
+        "id": "qa_99",
+        "level": 2,
+        "anchor": "Cổ phiếu ưu đãi khác gì cổ phiếu phổ thông?",
+        "positive": "Cổ phiếu ưu đãi mang lại quyền lợi ưu tiên về cổ tức hoặc quyền biểu quyết so với cổ phiếu phổ thông."
+    },
+    {
+        "id": "qa_100",
+        "level": 1,
+        "anchor": "Lợi ích của nhà đầu tư khi sở hữu chứng khoán là gì?",
+        "positive": "Nhà đầu tư được hưởng lợi từ cổ tức, lãi suất từ trái phiếu, quyền biểu quyết (đối với cổ phiếu) và cơ hội tăng giá trị tài sản đầu tư."
+    }
+]

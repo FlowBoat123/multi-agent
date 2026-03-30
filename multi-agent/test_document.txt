@@ -1,0 +1,10 @@
+﻿Quy dinh ve nghi phep tai cong ty ABC
+
+Dieu 1: Nhan vien chinh thuc duoc huong 12 ngay nghi phep nam co luong.
+Dieu 2: Nhan vien co tham nien tren 5 nam duoc cong them 2 ngay nghi phep moi nam.
+Dieu 3: De xin nghi phep, nhan vien can gui don truoc it nhat 3 ngay lam viec.
+Dieu 4: Nghi phep dot xuat chi duoc chap nhan khi co ly do chinh dang (om dau, tai nan).
+Dieu 5: Ngay nghi phep khong su dung het trong nam co the duoc chuyen sang nam sau, toi da 5 ngay.
+Dieu 6: Nhan vien nghi khong phep qua 3 ngay trong thang se bi ky luat.
+Dieu 7: Nhan vien nu duoc nghi thai san 6 thang theo quy dinh phap luat.
+Dieu 8: Nhan vien duoc nghi 3 ngay khi ket hon va 1 ngay khi con ket hon.

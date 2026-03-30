@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { redirect } from 'next/navigation';
 
 import StructuredData from '@/components/StructuredData';
 import { BRANDING_NAME } from '@/const/branding';
@@ -23,6 +24,9 @@ export const generateMetadata = async (props: DynamicLayoutProps) => {
 };
 
 const AiImage = async (props: DynamicLayoutProps) => {
+  // Feature is intentionally disabled. Keep page code for future re-enable.
+  redirect('/chat');
+
   const { locale } = await RouteVariants.getVariantsFromProps(props);
   const { t } = await translation('metadata', locale);
   const ld = ldModule.generate({
